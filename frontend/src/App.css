@@ -1,3 +1,8 @@
 body {
   font-family: "Exo 2 Variable", sans-serif;
 }
+
+*::selection {
+  color: #ffffff;
+  background-color: rgb(3, 114, 77);
+}
