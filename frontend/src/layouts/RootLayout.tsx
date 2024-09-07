@@ -4,9 +4,9 @@ import Footer from "../components/footer/Footer";
 
 export default function RootLayout() {
   return (
-    <div className="min-h-screen h-full w-full bg-black text-gray-300">
+    <div className="min-h-screen h-full w-full bg-background-real text-text-real">
       <Header />
-      <main className="px-24 lg:px-16 md:px-10 sm:px-6 xs:px-4">
+      <main className="base-paddings">
         <Outlet />
       </main>
       <Footer />

@@ -1,21 +1,16 @@
 import { Link } from "react-router-dom";
+import NavItem from "../common/NavItem";
 
 export default function Header() {
   return (
-    <header className="flex items-center py-2 px-24 lg:px-16 md:px-10 sm:px-6 xs:px-4">
-      <h1 className="text-xl mr-auto font-bold text-white">
+    <header className="flex items-center base-paddings">
+      <h1 className="text-xl mr-auto font-bold text-primary-mid">
         <Link to="/">Memories</Link>
       </h1>
       <nav className="">
-        <Link className="mx-2 text-white font-medium" to="/">
-          Home
-        </Link>
-        <Link className="mx-2 text-white font-medium" to="/login">
-          Login
-        </Link>
-        <Link className="mx-2 text-white font-medium" to="/register">
-          Register
-        </Link>
+        <NavItem title="Home" hrefValue="/" />
+        <NavItem title="Login" hrefValue="/login" />
+        <NavItem title="Register" hrefValue="/register" />
       </nav>
     </header>
   );

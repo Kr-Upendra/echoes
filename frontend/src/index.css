@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.transition-color {
+  @apply transition-colors duration-500;
+}
+
+.base-paddings {
+  @apply py-2 px-24 lg:px-16 md:px-10 sm:px-6 xs:px-4;
+}
