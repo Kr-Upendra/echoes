@@ -3,7 +3,7 @@ import { Feature, features } from "../utils";
 
 export default function Features() {
   return (
-    <section className="text-text-real py-12 base-paddings">
+    <section id="feature" className="my-4 py-12 base-paddings">
       <div className="container mx-auto text-center">
         <h2 className="text-3xl font-bold mb-8 text-primary-real">
           Feature Overview
