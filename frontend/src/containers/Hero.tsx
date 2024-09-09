@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
-    <section id="hero" className="py-2 min-h-[90vh]">
+    <section id="hero" className="py-2 min-h-[92vh] base-paddings">
       <div className="flex flex-col items-center">
         <h1 className="mt-44 sm:mt-40 xs:mt-36 text-5xl sm:text-2xl text-center font-bold text-primary-mid">
           <span>Capture Your Moments,</span> <br />{" "}

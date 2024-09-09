@@ -6,7 +6,7 @@ export default function RootLayout() {
   return (
     <div className="min-h-screen h-full w-full bg-background-real text-text-real">
       <Header />
-      <main className="base-paddings">
+      <main className="">
         <Outlet />
       </main>
       <Footer />
