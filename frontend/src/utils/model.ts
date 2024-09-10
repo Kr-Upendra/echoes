@@ -5,3 +5,10 @@ export interface Feature {
   image: string;
   shortDescription: string;
 }
+
+export interface HowItWork {
+  id: string;
+  index: string;
+  title: string;
+  description: string;
+}

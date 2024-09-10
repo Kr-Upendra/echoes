@@ -37,3 +37,30 @@ export const features = [
       "Keep photos and audio files alongside your notes to capture full memories.",
   },
 ];
+
+export const howItWorks = [
+  {
+    id: "howItWork001",
+    index: "01",
+    title: "Signup",
+    description: "Create your account in seconds.",
+  },
+  {
+    id: "howItWork002",
+    index: "02",
+    title: "Take Notes",
+    description: "Capture your thoughts or memories.",
+  },
+  {
+    id: "howItWork003",
+    index: "03",
+    title: "Set Reminders",
+    description: "Never miss an important task.",
+  },
+  {
+    id: "howItWork004",
+    index: "04",
+    title: "Access Anytime",
+    description: "Retrieve your memories across devices.",
+  },
+];
