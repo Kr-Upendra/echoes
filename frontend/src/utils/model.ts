@@ -12,3 +12,10 @@ export interface HowItWork {
   title: string;
   description: string;
 }
+
+export interface UserStory {
+  id: string;
+  userName: string;
+  userStory: string;
+  userImage: string;
+}
