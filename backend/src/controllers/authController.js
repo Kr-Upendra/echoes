@@ -1,4 +1,5 @@
 import { userModel } from "../models/userModel.js";
+import { userSessionModel } from "../models/userSessionModel.js";
 import {
   API_RESPONSE_CODE,
   API_RESPONSE_MESSAGE,
@@ -53,7 +54,9 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log("body=======", { email, password });
+  const ipAddress =
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress; // Capture IP address
+  const userAgent = req.headers["user-agent"];
 
   if (!email || !password)
     return sendResponse(
@@ -64,7 +67,6 @@ export const login = async (req, res) => {
     );
   try {
     const user = await userModel.findOne({ email: email });
-    console.log("user=======", user);
     if (!user)
       return sendResponse(
         res,
@@ -85,7 +87,18 @@ export const login = async (req, res) => {
     const accessToken = generateAccessToken(user._id, user.email);
     const refreshToken = generateRefreshToken(user._id, user.email);
 
-    console.log({ accessToken, refreshToken });
+    const session = {
+      userId: user._id,
+      accessToken,
+      refreshToken,
+      ipAddress,
+      userAgent,
+      expiresAt: new Date(
+        Date.now() + parseInt(process.env.JWT_ACCESS_EXPIRE_TIME, 10) * 1000
+      ),
+    };
+
+    await userSessionModel.create(session);
 
     const data = {
       _id: user._id,
@@ -95,7 +108,7 @@ export const login = async (req, res) => {
       profilePicture: user.profilePicture,
       accessToken,
       refreshToken,
-     };
+    };
 
     return sendResponse(
       res,
