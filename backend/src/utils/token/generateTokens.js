@@ -1,13 +1,26 @@
-export const generateAccessToken = (userData) => {};
+import dotenv from "dotenv";
+dotenv.config();
 
-export const generateRefreshToken = (userData) => {};
+import jwt from "jsonwebtoken";
 
-// userSchema.methods.generateAuthToken = async function () {
-//   const user = this;
-//   const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, {
-//     expiresIn: "7d",
-//   });
-//   user.tokens = user.tokens.concat({ token });
-//   await user.save();
-//   return token;
-// };
+export const generateAccessToken = (id, email) => {
+  const payload = { _id: id.toString(), email: email };
+  const accessSecret = process.env.JWT_ACCESS_SECRET;
+  const accessExpireTime = process.env.JWT_ACCESS_EXPIRE_TIME;
+
+  const token = jwt.sign(payload, accessSecret, {
+    expiresIn: accessExpireTime,
+  });
+  return token;
+};
+
+export const generateRefreshToken = (id, email) => {
+  const refreshSecret = process.env.JWT_REFRESH_SECRET;
+  const refreshExpireTime = process.env.JWT_REFRESH_EXPIRE_TIME;
+  const payload = { _id: id.toString(), email: email };
+
+  const token = jwt.sign(payload, refreshSecret, {
+    expiresIn: refreshExpireTime,
+  });
+  return token;
+};

@@ -6,6 +6,10 @@ import {
   sendResponse,
 } from "../utils/api-response/index.js";
 import { capitalizeFirstLetter } from "../utils/helper/index.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../utils/token/generateTokens.js";
 
 export const register = async (req, res) => {
   const { email, firstname, lastname, password } = req.body;
@@ -47,13 +51,61 @@ export const register = async (req, res) => {
   }
 };
 
-export const login = (req, res) => {
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  console.log("body=======", { email, password });
+
+  if (!email || !password)
+    return sendResponse(
+      res,
+      API_RESPONSE_CODE.BAD_REQUEST,
+      API_RESPONSE_STATUS.ERROR,
+      API_RESPONSE_MESSAGE.BAD_REQUEST
+    );
   try {
-    return res.status(API_RESPONSE_CODE.SUCCESS).json({
-      status: API_RESPONSE_STATUS.SUCCESS,
-      message: API_RESPONSE_MESSAGE.LOGIN_SUCCESS,
-    });
+    const user = await userModel.findOne({ email: email });
+    console.log("user=======", user);
+    if (!user)
+      return sendResponse(
+        res,
+        API_RESPONSE_CODE.UNAUTHORIZED,
+        API_RESPONSE_STATUS.FAILED,
+        API_RESPONSE_MESSAGE.INVALID_CREDENTIALS
+      );
+
+    const isMatch = await user.isPasswordMatch(password);
+    if (!isMatch)
+      return sendResponse(
+        res,
+        API_RESPONSE_CODE.UNAUTHORIZED,
+        API_RESPONSE_STATUS.FAILED,
+        API_RESPONSE_MESSAGE.INVALID_CREDENTIALS
+      );
+
+    const accessToken = generateAccessToken(user._id, user.email);
+    const refreshToken = generateRefreshToken(user._id, user.email);
+
+    console.log({ accessToken, refreshToken });
+
+    const data = {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      profilePicture: user.profilePicture,
+      accessToken,
+      refreshToken,
+     };
+
+    return sendResponse(
+      res,
+      API_RESPONSE_CODE.SUCCESS,
+      API_RESPONSE_STATUS.SUCCESS,
+      API_RESPONSE_MESSAGE.LOGIN_SUCCESS,
+      data
+    );
   } catch (error) {
+    console.log(error);
     return res.status(API_RESPONSE_CODE.INTERNAL_SERVER_ERROR).json({
       status: API_RESPONSE_STATUS.ERROR,
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
