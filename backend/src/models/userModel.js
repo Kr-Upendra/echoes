@@ -6,13 +6,11 @@ const userSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     lastName: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
     email: {
@@ -20,7 +18,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
-      lower: true,
+      lowercase: true,
     },
     password: {
       type: String,
@@ -28,11 +26,11 @@ const userSchema = new mongoose.Schema(
     },
     profilePicture: {
       type: String,
-      default: "",
+      default: null,
     },
     about: {
       type: String,
-      default: "",
+      default: null,
     },
   },
   { timestamps: true }
@@ -41,7 +39,7 @@ const userSchema = new mongoose.Schema(
 userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
-    user.password = await bcrypt.hash(user.password, 8);
+    user.password = await bcrypt.hash(user.password, 12);
   }
   next();
 });
@@ -53,4 +51,4 @@ userSchema.methods.isPasswordMatch = async function (password) {
 
 const User = mongoose.model("User", userSchema);
 
-export default User;
+export { User as userModel };
