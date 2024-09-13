@@ -5,7 +5,7 @@ const userSessionSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "User", // Reference to the User model
+      ref: "User",
     },
     accessToken: {
       type: String,
@@ -16,13 +16,13 @@ const userSessionSchema = new mongoose.Schema(
       required: true,
     },
     ipAddress: {
-      type: String, // Store the user's IP address for security purposes
+      type: String,
     },
     userAgent: {
-      type: String, // Store the user's device information (optional)
+      type: String,
     },
     expiresAt: {
-      type: Date, // Expiry time for access tokens
+      type: Date,
       required: true,
     },
   },
@@ -31,4 +31,4 @@ const userSessionSchema = new mongoose.Schema(
 
 const UserSession = mongoose.model("UserSession", userSessionSchema);
 
-export {UserSession as userSessionModel};
+export { UserSession as userSessionModel };
