@@ -19,17 +19,17 @@ export const register = async (req, res) => {
     return sendResponse(
       res,
       API_RESPONSE_CODE.BAD_REQUEST,
-      API_RESPONSE_STATUS.ERROR,
-      API_RESPONSE_MESSAGE.BAD_REQUEST
+      API_RESPONSE_MESSAGE.BAD_REQUEST,
+      API_RESPONSE_STATUS.ERROR
     );
   try {
-    const user = await userModel.findOne({ where: { email } });
+    const user = await userModel.findOne({ email });
     if (user)
       return sendResponse(
         res,
         API_RESPONSE_CODE.CONFLICT,
-        API_RESPONSE_STATUS.FAILED,
-        API_RESPONSE_MESSAGE.EMAIL_ALREADY_IN_USE
+        API_RESPONSE_MESSAGE.EMAIL_ALREADY_IN_USE,
+        API_RESPONSE_STATUS.FAILED
       );
 
     await userModel.create({
@@ -39,10 +39,12 @@ export const register = async (req, res) => {
       lastName: capitalizeFirstLetter(lastname),
     });
 
-    return res.status(API_RESPONSE_CODE.SUCCESS).json({
-      status: API_RESPONSE_STATUS.SUCCESS,
-      message: API_RESPONSE_MESSAGE.REGISTER_SUCCESS,
-    });
+    return sendResponse(
+      res,
+      API_RESPONSE_CODE.CREATED,
+      API_RESPONSE_MESSAGE.REGISTER_SUCCESS,
+      API_RESPONSE_STATUS.SUCCESS
+    );
   } catch (error) {
     console.log(error);
     return res.status(API_RESPONSE_CODE.INTERNAL_SERVER_ERROR).json({
@@ -62,8 +64,8 @@ export const login = async (req, res) => {
     return sendResponse(
       res,
       API_RESPONSE_CODE.BAD_REQUEST,
-      API_RESPONSE_STATUS.ERROR,
-      API_RESPONSE_MESSAGE.BAD_REQUEST
+      API_RESPONSE_MESSAGE.BAD_REQUEST,
+      API_RESPONSE_STATUS.ERROR
     );
   try {
     const user = await userModel.findOne({ email: email });
@@ -71,8 +73,8 @@ export const login = async (req, res) => {
       return sendResponse(
         res,
         API_RESPONSE_CODE.UNAUTHORIZED,
-        API_RESPONSE_STATUS.FAILED,
-        API_RESPONSE_MESSAGE.INVALID_CREDENTIALS
+        API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
+        API_RESPONSE_STATUS.FAILED
       );
 
     const isMatch = await user.isPasswordMatch(password);
@@ -80,8 +82,8 @@ export const login = async (req, res) => {
       return sendResponse(
         res,
         API_RESPONSE_CODE.UNAUTHORIZED,
-        API_RESPONSE_STATUS.FAILED,
-        API_RESPONSE_MESSAGE.INVALID_CREDENTIALS
+        API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
+        API_RESPONSE_STATUS.FAILED
       );
 
     const accessToken = generateAccessToken(user._id, user.email);
@@ -113,8 +115,8 @@ export const login = async (req, res) => {
     return sendResponse(
       res,
       API_RESPONSE_CODE.SUCCESS,
-      API_RESPONSE_STATUS.SUCCESS,
       API_RESPONSE_MESSAGE.LOGIN_SUCCESS,
+      API_RESPONSE_STATUS.SUCCESS,
       data
     );
   } catch (error) {

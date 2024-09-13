@@ -1,4 +1,3 @@
-
 export const API_RESPONSE_MESSAGE = {
   LOGIN_SUCCESS: "Logged in successfully.",
   REGISTER_SUCCESS: "Registered successfully.",
@@ -12,9 +11,10 @@ export const API_RESPONSE_MESSAGE = {
   EMAIL_NOT_FOUND: "Email not found.",
   ACCOUNT_LOCKED: "Account locked due to multiple failed attempts.",
   OPERATION_FAILED: "An error occurred. Try again later.",
-  ITEM_CREATED: "Item created.",
-  ITEM_UPDATED: "Item updated.",
-  ITEM_DELETED: "Item deleted.",
+  RECORD_LIST: "Record list.",
+  RECORD_CREATED: "Record created.",
+  RECORD_UPDATED: "Record updated.",
+  RECORD_DELETED: "Record deleted.",
   BAD_REQUEST: "Bad request. Check parameters.",
   SERVER_ERROR: "Server error. Try again later.",
   FORGOT_PASSWORD: "Password reset link sent.",
