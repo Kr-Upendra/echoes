@@ -57,4 +57,16 @@ export const protect = async (req, res, next) => {
   next();
 };
 
-
+export const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req?.user?.role)) {
+      return sendResponse(
+        res,
+        API_RESPONSE_CODE.FORBIDDEN,
+        API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
+        API_RESPONSE_STATUS.FAILED
+      );
+    }
+    next();
+  };
+};
