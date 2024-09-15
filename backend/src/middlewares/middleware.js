@@ -1,5 +1,6 @@
-// import jwt from "jsonwebtoken";
-// import { accessToken } from "../utils/helper";
+import { accessToken } from "../utils/helper/index.js";
+import jwt from "jsonwebtoken";
+import { userModel } from "../models/userModel.js";
 
 import {
   API_RESPONSE_CODE,
@@ -8,7 +9,7 @@ import {
   sendResponse,
 } from "../utils/api-response/index.js";
 
-const protect = (req, res, next) => {
+export const protect = async (req, res, next) => {
   let token;
   if (
     req.headers.authorization &&
@@ -24,22 +25,36 @@ const protect = (req, res, next) => {
       API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
       API_RESPONSE_STATUS.FAILED
     );
-  console.log(token);
 
-  //   // Check if token existse
-  //   if (!token)
-  //     return res
-  //       .status(401)
-  //       .json({ message: "Access denied, no token provided" });
+  const decoded = jwt.verify(token, accessToken);
+  const freshUser = await userModel.findById(decoded._id).exec();
 
-  //   try {
-  //     const verified = jwt.verify(token, accessToken);
-  //     req.user = verified;
-  //     next();
-  //   } catch (error) {
-  //     res.status(400).json({ message: "Invalid token" });
-  //   }
+  if (!freshUser)
+    return sendResponse(
+      res,
+      API_RESPONSE_CODE.UNAUTHORIZED_ACCESS,
+      API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
+      API_RESPONSE_STATUS.FAILED
+    );
+
+  if (freshUser.changedPasswordAfter(decoded.iat))
+    return sendResponse(
+      res,
+      API_RESPONSE_CODE.UNAUTHORIZED_ACCESS,
+      API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
+      API_RESPONSE_STATUS.FAILED
+    );
+
+  const user = {
+    id: freshUser.id,
+    email: freshUser.email,
+    firstname: freshUser.firstName,
+    lastname: freshUser.lastName,
+    role: freshUser.userRole,
+  };
+
+  req.user = user;
   next();
 };
 
-export { protect };
+
