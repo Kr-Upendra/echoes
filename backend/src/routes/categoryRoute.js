@@ -9,6 +9,6 @@ import {
 import { protect, restrictTo } from "../middlewares/middleware.js";
 const router = express.Router();
 
-router.route("/").post(protect, createCategory);
+router.route("/").post(protect, createCategory).get(protect, categories);
 
 export { router as categoryRouter };
