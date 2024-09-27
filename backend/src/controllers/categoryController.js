@@ -51,9 +51,11 @@ export const categories = async (req, res) => {
   const search = req.query.search || "";
   const offset = (page - 1) * limit;
   try {
-    let query = categoryModel.find({
-      title: { $regex: search, $options: "i" },
-    });
+    let query = categoryModel
+      .find({
+        title: { $regex: search, $options: "i" },
+      })
+      .populate("authorId", "firstName lastName email");
     query = query.skip(offset).limit(limit);
 
     const categories = await query;
@@ -85,7 +87,9 @@ export const categories = async (req, res) => {
 
 export const category = async (req, res) => {
   try {
-    const category = await categoryModel.findById(req.params.id);
+    const category = await categoryModel
+      .findById(req.params.id)
+      .populate("authorId", "firstName lastName email");
     return res.status(STATUS_CODES.SUCCESS).json({
       status: "success",
       message: "Category found by given ID.",
