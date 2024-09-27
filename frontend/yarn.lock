@@ -347,10 +347,15 @@
   resolved "https://registry.yarnpkg.com/@eslint/object-schema/-/object-schema-2.1.4.tgz#9e69f8bb4031e11df79e03db09f9dbbae1740843"
   integrity sha512-BsWiH1yFGjXXS2yvrf5LyuoSIIbPrGUWob917o+BTKuZ7qJdxX8aJLRxs1fS9n6r7vESrq1OUqb68dANcFXuQQ==
 
-"@fontsource-variable/exo-2@^5.0.20":
-  version "5.0.20"
-  resolved "https://registry.yarnpkg.com/@fontsource-variable/exo-2/-/exo-2-5.0.20.tgz#8c767e63e9983a99c5471b055f65df82cfa69b0d"
-  integrity sha512-J1RuOPaDFa8QRHwyf65e0muSfGfWt+RLtHUt86wXddKQK2zhTfB8NjnpbhpNHFCRZaugVzlEW16TtIBJo63fPw==
+"@fontsource-variable/open-sans@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource-variable/open-sans/-/open-sans-5.1.0.tgz#77a856ca40134dfdebba94a9cf21fdc0131296ce"
+  integrity sha512-NuJdoORzM6qp+bf5j7dyo6MO8rBEEiSw8wiZv9t7sga0RIODgLLbBAMaZMaZiLwNbXcGPxhFcHcuDaQr1xj9kA==
+
+"@fontsource/fredoka-one@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/fredoka-one/-/fredoka-one-5.1.0.tgz#d9394f04ffa42a6052780f2e4e0cc79ca44f2338"
+  integrity sha512-mDw7dkPmkBsG4alg01P6tbrPJc5LzjJ3V0k2vVV+nKZZ+UWp9tt+eDtlbSga5seLK5eeD1D58wRbJ6hBf8eaug==
 
 "@humanwhocodes/module-importer@^1.0.1":
   version "1.0.1"

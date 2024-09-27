@@ -2,25 +2,9 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    colors: {
-      "primary-real": "#2e41d3",
-      "primary-mid": "#4559e1",
-      "primary-light": "#7883eb",
-      "primary-alpha": "#00d5ff41",
-      "secondary-real": "#2D2F41",
-      "secondary-mid": "#404358",
-      "secondary-light": "#606278",
-      "accent-real": "#00D4FF",
-      "accent-mid": "#33e0ff",
-      "accent-light": "#99ecff",
-      "accent-alpha": "#00d5ff41",
-      "text-light": "#eceef2",
-      "text-mid": "#e0e3e9",
-      "text-real": "#D1D5DB",
-      "text-alpha": "#ffffff",
-      "background-light": "#2a2a2a",
-      "background-mid": "#1b1b1b",
-      "background-real": "#121212",
+    fontFamily: {
+      display: ["Fredoka One", "system-ui"],
+      body: ["Open Sans Variable", "sans-serif"],
     },
     screens: {
       "2xl": { max: "1535px" },

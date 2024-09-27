@@ -1,8 +1,21 @@
 body {
-  font-family: "Exo 2 Variable", sans-serif;
+  font-family: "Open Sans Variable", sans-serif;
 }
 
 *::selection {
   color: #ffffff;
-  background-color: rgb(3, 114, 77);
+  background-color: rgb(1, 104, 40);
+}
+
+.hero-bg {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 31, 0, 0.548),
+      #000000c9,
+      #000000e0
+    ),
+    url("./assets/bg/hero_bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
