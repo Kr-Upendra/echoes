@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../components/form/CustomInput";
 import { z } from "zod";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { registerUser } from "../api";
+import { ApiResponse, RegisterFromData } from "../utils";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   firstname: z.string().min(1, "First name is required"),
@@ -11,8 +15,9 @@ const schema = z.object({
 });
 
 export default function RegisterForm() {
-  const [errors, setErrors] = useState<any>({});
-  const [formData, setFormData] = useState({
+  const navigate = useNavigate();
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [formData, setFormData] = useState<RegisterFromData>({
     firstname: "",
     lastname: "",
     email: "",
@@ -24,12 +29,34 @@ export default function RegisterForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: (response: ApiResponse) => {
+      if (response.status === "success") {
+        setFormData({
+          email: "",
+          password: "",
+          firstname: "",
+          lastname: "",
+        });
+        toast.success(response?.message);
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.message);
+    },
+  });
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     try {
       schema.parse(formData);
       setErrors({});
       console.log("Register Form submitted:", formData);
+      mutation.mutate(formData);
     } catch (err) {
       if (err instanceof z.ZodError) {
         const formattedErrors: any = {};
@@ -91,7 +118,7 @@ export default function RegisterForm() {
           </div>
           <div className="mt-4 text-center">
             <button className="rounded-full py-2 px-10 bg-green-700 text-lg text-white font-display">
-              Register
+              {mutation.isPending ? "Registering" : "Register"}
             </button>
           </div>
         </div>
