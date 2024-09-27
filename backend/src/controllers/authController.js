@@ -6,7 +6,11 @@ import {
   API_RESPONSE_STATUS,
   sendResponse,
 } from "../utils/api-response/index.js";
-import { capitalizeFirstLetter } from "../utils/helper/index.js";
+import {
+  accessTokenExpireTime,
+  capitalizeFirstLetter,
+  refreshTokenExpireTime,
+} from "../utils/helper/index.js";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -96,7 +100,7 @@ export const login = async (req, res) => {
       ipAddress,
       userAgent,
       expiresAt: new Date(
-        Date.now() + parseInt(process.env.JWT_ACCESS_EXPIRE_TIME, 10) * 1000
+        Date.now() + parseInt(accessTokenExpireTime, 10) * 1000
       ),
     };
 
@@ -112,12 +116,65 @@ export const login = async (req, res) => {
       refreshToken,
     };
 
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
+      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      maxAge: parseInt(accessTokenExpireTime, 10) * 1000, // Same expiration as the access token
+      sameSite: "strict", // CSRF protection
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: parseInt(refreshTokenExpireTime, 10) * 1000, // Set refresh token expiration as well
+      sameSite: "strict",
+    });
+
     return sendResponse(
       res,
       API_RESPONSE_CODE.SUCCESS,
       API_RESPONSE_MESSAGE.LOGIN_SUCCESS,
       API_RESPONSE_STATUS.SUCCESS,
       data
+    );
+  } catch (error) {
+    console.log(error);
+    return res.status(API_RESPONSE_CODE.INTERNAL_SERVER_ERROR).json({
+      status: API_RESPONSE_STATUS.ERROR,
+      message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
+
+export const check = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming you have middleware to verify the JWT and attach user info
+
+    if (!userId) {
+      return sendResponse(
+        res,
+        API_RESPONSE_CODE.UNAUTHORIZED,
+        API_RESPONSE_MESSAGE.UNAUTHORIZED,
+        API_RESPONSE_STATUS.FAILED
+      );
+    }
+
+    const userSession = await userSessionModel.findOne({ userId });
+    if (!userSession) {
+      return sendResponse(
+        res,
+        API_RESPONSE_CODE.UNAUTHORIZED,
+        API_RESPONSE_MESSAGE.SESSION_EXPIRED,
+        API_RESPONSE_STATUS.FAILED
+      );
+    }
+
+    return sendResponse(
+      res,
+      API_RESPONSE_CODE.SUCCESS,
+      API_RESPONSE_MESSAGE.SESSION_VALID,
+      API_RESPONSE_STATUS.SUCCESS,
+      { userId } // Optionally send back user info
     );
   } catch (error) {
     console.log(error);
