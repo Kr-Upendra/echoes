@@ -5,7 +5,7 @@ import NavItem from "../common/NavItem";
 import { useState } from "react";
 
 export default function Header() {
-  const [showNavbar, setShowNavbar] = useState<boolean>(false);
+  const [showNavbar, setShowNavbar] = useState<boolean>(true);
 
   return (
     <header className="flex items-center base-paddings pt-3 pb-6 fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-green-500/20 to-[#0000000c]">

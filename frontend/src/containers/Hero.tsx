@@ -2,9 +2,9 @@ import LinkButton from "../components/buttons/LinkButton";
 
 export default function Hero() {
   return (
-    <section id="hero" className="py-3 min-h-screen base-paddings hero-bg">
-      <div className="flex flex-col items-center">
-        <h1 className="mt-56 sm:mt-40 xs:mt-36 text-5xl sm:text-2xl text-center text-green-500 font-display">
+    <section id="hero" className="min-h-screen base-paddings hero-bg">
+      <div className="flex items-center justify-center flex-col min-h-screen">
+        <h1 className="text-5xl sm:text-2xl text-center text-green-500 font-display">
           <span>Capture Your Moments,</span> <br />
           <span>Keep Your Memories Safe</span>
         </h1>
