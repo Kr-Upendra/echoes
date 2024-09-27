@@ -9,6 +9,7 @@ import {
 import {
   accessTokenExpireTime,
   capitalizeFirstLetter,
+  nodeEnv,
   refreshTokenExpireTime,
 } from "../utils/helper/index.js";
 import {
@@ -118,14 +119,14 @@ export const login = async (req, res) => {
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-      secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+      secure: nodeEnv === "production", // Use secure cookies in production
       maxAge: parseInt(accessTokenExpireTime, 10) * 1000, // Same expiration as the access token
       sameSite: "strict", // CSRF protection
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: nodeEnv === "production",
       maxAge: parseInt(refreshTokenExpireTime, 10) * 1000, // Set refresh token expiration as well
       sameSite: "strict",
     });
