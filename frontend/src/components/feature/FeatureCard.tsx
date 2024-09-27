@@ -4,9 +4,9 @@ type Props = { feature: Feature };
 
 export default function FeatureCard({ feature }: Props) {
   return (
-    <div className="flex flex-col items-center relative py-8 px-6 border border-accent-alpha rounded-lg transition-custom">
-      <div className="absolute top-6 left-6 sm:top-3 sm:left-3 border p-2 px-3 rounded-full border-primary-alpha">
-        <span className="font-semibold text-xl sm:text-base">
+    <div className="flex flex-col items-center relative py-8 px-6 border border-gray-900 rounded-lg shadow-2xl shadow-green-500/10 transition-custom">
+      <div className="absolute top-6 left-6 sm:top-3 sm:left-3 border-2 p-2 px-3 rounded-full border-green-600">
+        <span className="font-display text-green-500 text-xl sm:text-base">
           {feature.index}
         </span>
       </div>
@@ -17,12 +17,8 @@ export default function FeatureCard({ feature }: Props) {
           className="w-full h-full"
         />
       </div>
-      <h3 className="text-xl font-semibold mb-2 text-accent-real">
-        {feature.title}
-      </h3>
-      <p className="text-secondary-light max-w-[400px]">
-        {feature.shortDescription}
-      </p>
+      <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
+      <p className="text-gray-400 max-w-[400px]">{feature.shortDescription}</p>
     </div>
   );
 }
