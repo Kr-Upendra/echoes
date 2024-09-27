@@ -3,7 +3,6 @@ import {
   STATUS_CODES,
   API_RESPONSE_MESSAGE,
   API_RESPONSE_STATUS,
-  sendResponse,
 } from "../utils/api-response/index.js";
 import { categoryModel } from "../models/categoryModel.js";
 
