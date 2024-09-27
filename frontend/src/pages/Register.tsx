@@ -1,77 +1,71 @@
-import { Link } from "react-router-dom";
 import CustomInput from "../components/form/CustomInput";
+import SectionHeading from "../components/common/SectionHeading";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   return (
-    <section
-      id="feature"
-      className="mb-5 py-20 min-h-screen h-full base-paddings"
-    >
-      <div className="px-40 lg:px-20 md:px-10 sm:px-0">
-        <div className="">
-          <div className="text-center mb-10">
-            <h1 className="text-2xl text-text-alpha font-bold">
-              Register Yourself
-            </h1>
-          </div>
+    <section id="feature" className="mb-10 pt-24 base-paddings">
+      <main>
+        <SectionHeading
+          title="Register yourself"
+          description="Start your journey from here"
+        />
+        <div className="container my-6">
           <form action="">
-            <div className="max-w-[400px] sm:w-full mx-auto">
-              <div className="w-full mb-5">
-                <label
-                  htmlFor="firstname"
-                  className="block mb-1 text-text-light"
-                >
-                  Firstname
-                </label>
-                <input
-                  type="text"
-                  name="firstname"
-                  id="firstname"
-                  placeholder="Enter your firstname"
-                  className="w-full p-2 text-text-alpha outline-none border border-primary-alpha rounded-lg bg-background-mid"
-                />
+            <div className="border px-10 py-6 rounded-md border-gray-900 md:px-6 sm:px-4 max-w-[500px] sm:w-full mx-auto">
+              <CustomInput
+                id="firstname"
+                placeHolder="John"
+                type="text"
+                name="firstname"
+                label="Enter your firstname"
+                error=""
+                onchange={() => {}}
+              />
+              <CustomInput
+                id="lastname"
+                placeHolder="Doe"
+                type="text"
+                name="lastname"
+                label="Enter your lastname"
+                error=""
+                onchange={() => {}}
+              />
+              <CustomInput
+                id="email"
+                placeHolder="john.doe@mail.io"
+                type="email"
+                name="email"
+                label="Enter your email"
+                error=""
+                onchange={() => {}}
+              />
+              <CustomInput
+                id="password"
+                placeHolder="•••••••"
+                type="password"
+                name="password"
+                label="Create strong password"
+                error=""
+                onchange={() => {}}
+              />
+              <div className="-mt-2">
+                <span className="text-gray-400 text-sm">
+                  Already have an account?{" "}
+                  <Link to="/login" className="text-green-500 font-display">
+                    Login
+                  </Link>
+                </span>
               </div>
-
-              <CustomInput />
-
-              <div className="w-full mb-5">
-                <label htmlFor="email" className="block mb-1 text-text-light">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Enter your Email"
-                  className="w-full p-2 text-text-alpha outline-none border border-primary-alpha rounded-lg bg-background-mid"
-                />
-              </div>
-              <div className="w-full mb-5">
-                <label
-                  htmlFor="password"
-                  className="block mb-1 text-text-light"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Enter your password"
-                  className="w-full p-2 text-text-alpha outline-none border border-primary-alpha rounded-lg bg-background-mid"
-                />
-              </div>
-              <div className="w-full mb-5">
-                <span>Already have an account? </span>
-                <Link to="/login">Login</Link>
-              </div>
-              <div className="w-full mb-5">
-                <button>Register</button>
+              <div className="mt-4 text-center">
+                <button className="rounded-full py-2 px-10 bg-green-700 text-lg text-white font-display">
+                  Register
+                </button>
               </div>
             </div>
           </form>
         </div>
-      </div>
+      </main>
     </section>
   );
 }

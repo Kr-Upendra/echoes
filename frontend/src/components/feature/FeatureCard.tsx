@@ -17,8 +17,12 @@ export default function FeatureCard({ feature }: Props) {
           className="w-full h-full"
         />
       </div>
-      <h3 className="text-xl font-display mb-2 text-white">{feature.title}</h3>
-      <p className="text-gray-400 max-w-[400px]">{feature.shortDescription}</p>
+      <h3 className="text-xl text-center font-display mb-2 text-white">
+        {feature.title}
+      </h3>
+      <p className="text-gray-400 text-center max-w-[400px]">
+        {feature.shortDescription}
+      </p>
     </div>
   );
 }

@@ -5,12 +5,12 @@ import { userStories, UserStory } from "../utils";
 export default function UserStories() {
   return (
     <section id="user-stories" className="py-12 base-paddings">
-      <div className="container">
+      <div className="container my-10">
         <SectionHeading
           title="User Stories"
           description="See how others are using our platform to capture and organize their memories."
         />
-        <div className="grid grid-cols-3 gap-6 md:grid-cols-2 sm:grid-cols-1 sm:gap-4">
+        <div className="grid grid-cols-3 gap-6 md:grid-cols-2 sm:grid-cols-1 sm:gap-4 my-12">
           {userStories.map((userStory: UserStory) => (
             <UserStoriesCard key={userStory?.id} userStory={userStory} />
           ))}

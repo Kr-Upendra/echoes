@@ -1,13 +1,53 @@
+import CustomInput from "../components/form/CustomInput";
+import SectionHeading from "../components/common/SectionHeading";
+import { Link } from "react-router-dom";
+
 export default function Login() {
   return (
-    <div>
-      <h1>Login Page</h1>
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio dicta
-        asperiores rerum deleniti vitae cum magnam id ipsum, dignissimos hic
-        debitis velit? Deserunt natus tenetur veritatis architecto illum
-        cupiditate nisi.
-      </p>
-    </div>
+    <section id="feature" className="mb-10 pt-24 base-paddings">
+      <main>
+        <SectionHeading
+          title="Login to your account"
+          description="Start your journey from here"
+        />
+        <div className="container my-6">
+          <form action="">
+            <div className="border px-10 py-6 rounded-md border-gray-900 md:px-6 sm:px-4 max-w-[500px] sm:w-full mx-auto">
+              <CustomInput
+                id="email"
+                placeHolder="john.doe@mail.io"
+                type="email"
+                name="email"
+                label="Enter your email"
+                error=""
+                onchange={() => {}}
+              />
+              <CustomInput
+                id="password"
+                placeHolder="•••••••"
+                type="password"
+                name="password"
+                label="Enter your password"
+                error=""
+                onchange={() => {}}
+              />
+              <div className="-mt-2">
+                <span className="text-gray-400 text-sm">
+                  Don't have an account?{" "}
+                  <Link to="/register" className="text-green-500 font-display">
+                    Register
+                  </Link>
+                </span>
+              </div>
+              <div className="mt-4 text-center">
+                <button className="rounded-full py-2 px-10 bg-green-700 text-lg text-white font-display">
+                  Login
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </section>
   );
 }

@@ -2,7 +2,7 @@ type Props = { title: string; description: string };
 
 export default function SectionHeading({ title, description }: Props) {
   return (
-    <div className="my-10 text-center">
+    <div className="text-center">
       <h2 className="text-4xl sm:text-2xl font-display text-green-600">
         {title}
       </h2>

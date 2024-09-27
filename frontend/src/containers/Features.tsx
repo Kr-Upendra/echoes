@@ -5,7 +5,7 @@ import { Feature, features } from "../utils";
 export default function Features() {
   return (
     <section id="feature" className="my-4 py-12 base-paddings">
-      <div className="container mx-auto text-center">
+      <div className="container my-10">
         <SectionHeading
           title="Feature Overview"
           description="Explore key features to capture and organize your thoughts with ease."
