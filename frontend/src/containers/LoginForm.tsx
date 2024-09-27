@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomInput from "../components/form/CustomInput";
 import { z } from "zod";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { loginUser } from "../api";
+import { ApiResponse, LoginFromData } from "../utils";
+import { toast } from "react-toastify";
 
 const schema = z.object({
   email: z.string().email("Invalid email format"),
@@ -9,23 +13,43 @@ const schema = z.object({
 });
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const [errors, setErrors] = useState<any>({});
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<LoginFromData>({
     email: "",
     password: "",
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: any) => {
+  const mutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (response: ApiResponse) => {
+      if (response.status === "success") {
+        setFormData({
+          email: "",
+          password: "",
+        });
+        toast.success(response?.message);
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      }
+    },
+    onError: (error: any) => {
+      toast.error(error?.message);
+    },
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       schema.parse(formData);
       setErrors({});
-      console.log("Login Form submitted:", formData);
+      mutation.mutate(formData);
     } catch (err) {
       if (err instanceof z.ZodError) {
         const formattedErrors: any = {};
@@ -69,7 +93,7 @@ export default function LoginForm() {
           </div>
           <div className="mt-4 text-center">
             <button className="rounded-full py-2 px-10 bg-green-700 text-lg text-white font-display">
-              Login
+              {mutation.isPending ? "Logging in" : "Login"}
             </button>
           </div>
         </div>
