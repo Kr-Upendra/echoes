@@ -10,8 +10,8 @@ export default function NavItem({ title, hrefValue }: INavItem) {
     <>
       <NavLink
         className={({ isActive }) =>
-          `ml-6 font-medium hover:text-green-500 transition-color text-base ${
-            isActive && "text-green-500 font-semibold"
+          `ml-6 font-display hover:text-green-500 transition-color text-base ${
+            isActive && "text-green-500 font-display"
           }`
         }
         to={hrefValue}

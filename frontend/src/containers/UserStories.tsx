@@ -4,8 +4,8 @@ import { userStories, UserStory } from "../utils";
 
 export default function UserStories() {
   return (
-    <section id="user-stories" className="my-4 py-12 base-paddings">
-      <div className="container my-10">
+    <section id="user-stories" className="py-12 base-paddings">
+      <div className="container">
         <SectionHeading
           title="User Stories"
           description="See how others are using our platform to capture and organize their memories."
