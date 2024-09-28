@@ -8,7 +8,7 @@ export default function UserStoriesCard({ userStory }: Props) {
       <div className="flex items-center mb-3">
         <div className="mr-3 w-12 rounded-full p-0.5 border-2 border-green-500">
           <img
-            className="rounded-full "
+            className="rounded-full selectDisable"
             src={userStory?.userImage}
             alt={userStory?.userName}
           />

@@ -3,13 +3,15 @@ import LoginForm from "../containers/LoginForm";
 
 export default function Login() {
   return (
-    <section id="feature" className="mb-10 pt-24 base-paddings">
+    <section className="base-paddings">
       <main>
-        <SectionHeading
-          title="Login to your account"
-          description="Start your journey from here"
-        />
-        <LoginForm />
+        <div className="min-h-screen h-full flex justify-center items-center flex-col">
+          <SectionHeading
+            title="Login to your account"
+            description="Start your journey from here"
+          />
+          <LoginForm />
+        </div>
       </main>
     </section>
   );

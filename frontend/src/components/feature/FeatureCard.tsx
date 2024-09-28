@@ -14,7 +14,7 @@ export default function FeatureCard({ feature }: Props) {
         <img
           src={feature.image}
           alt="Take Notes Icon"
-          className="w-full h-full"
+          className="w-full h-full selectDisable"
         />
       </div>
       <h3 className="text-xl text-center font-display mb-2 text-white">
