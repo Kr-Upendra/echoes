@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../api";
-import { ApiResponse, LoginFromData } from "../utils";
+import { ApiResponse, LoginFromData, setTokens, setUserData } from "../utils";
 import { toast } from "react-toastify";
 
 const schema = z.object({
@@ -34,6 +34,9 @@ export default function LoginForm() {
           password: "",
         });
         toast.success(response?.message);
+        const { accessToken, refreshToken } = response?.data;
+        setTokens(accessToken, refreshToken);
+        setUserData(response?.data);
         setTimeout(() => {
           navigate("/");
         }, 2000);
