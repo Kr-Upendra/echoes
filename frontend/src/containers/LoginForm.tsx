@@ -38,7 +38,7 @@ export default function LoginForm() {
         setTokens(accessToken, refreshToken);
         setUserData(response?.data);
         setTimeout(() => {
-          navigate("/");
+          navigate("/dashboard");
         }, 2000);
       }
     },

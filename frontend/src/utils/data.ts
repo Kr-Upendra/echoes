@@ -8,7 +8,17 @@ import user_03 from "../assets/users/user_03.jpg";
 import user_04 from "../assets/users/user_04.jpg";
 import user_05 from "../assets/users/user_05.jpg";
 import user_06 from "../assets/users/user_06.jpg";
-import { Feature, HowItWork, UserStory } from "./model";
+import { Feature, HowItWork, UserStat, UserStory } from "./model";
+import { MdNoteAlt } from "react-icons/md";
+import {
+  FaBook,
+  FaCalendar,
+  FaHeart,
+  FaMicrophone,
+  FaTags,
+  FaTrophy,
+} from "react-icons/fa6";
+import { BiCategory } from "react-icons/bi";
 
 export const features: Feature[] = [
   {
@@ -114,5 +124,56 @@ export const userStories: UserStory[] = [
     userStory:
       "I’m amazed at how easy it is to capture my ideas, notes, and reminders. This app is the best for staying organized and productive every single day.",
     userImage: user_06,
+  },
+];
+
+export const userStats: UserStat[] = [
+  {
+    id: "01",
+    icon: MdNoteAlt,
+    count: 25,
+    label: "Total Memories",
+  },
+  {
+    id: "02",
+    icon: FaHeart,
+    count: 45,
+    label: "Favorite Memories",
+  },
+  {
+    id: "03",
+    icon: BiCategory,
+    count: 5,
+    label: "Your Category",
+  },
+  {
+    id: "04",
+    icon: FaCalendar,
+    count: 20,
+    label: "Memories This Month",
+  },
+  {
+    id: "05",
+    icon: FaBook,
+    count: 15,
+    label: "Journal Entries",
+  },
+  {
+    id: "09",
+    icon: FaTags,
+    count: 12,
+    label: "Tags Created",
+  },
+  {
+    id: "13",
+    icon: FaMicrophone,
+    count: 5,
+    label: "Audio Notes",
+  },
+  {
+    id: "14",
+    icon: FaTrophy,
+    count: 3,
+    label: "Completed Goals",
   },
 ];

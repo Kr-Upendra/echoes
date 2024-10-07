@@ -1,3 +1,5 @@
+import { IconType } from "react-icons";
+
 export interface Feature {
   id: string;
   index: string;
@@ -18,4 +20,11 @@ export interface UserStory {
   userName: string;
   userStory: string;
   userImage: string;
+}
+
+export interface UserStat {
+  id: string;
+  icon: IconType;
+  count: number;
+  label: string;
 }
