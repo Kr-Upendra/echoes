@@ -6,6 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../api";
 import { ApiResponse, LoginFromData, setTokens, setUserData } from "../utils";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setCurrentUser } from "../state";
 
 const schema = z.object({
   email: z.string().email("Invalid email format"),
@@ -14,6 +16,7 @@ const schema = z.object({
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [errors, setErrors] = useState<any>({});
   const [formData, setFormData] = useState<LoginFromData>({
     email: "",
@@ -34,9 +37,10 @@ export default function LoginForm() {
           password: "",
         });
         toast.success(response?.message);
-        const { accessToken, refreshToken } = response?.data;
+        const { accessToken, refreshToken, user } = response?.data;
         setTokens(accessToken, refreshToken);
-        setUserData(response?.data);
+        setUserData(user);
+        dispatch(setCurrentUser(user));
         setTimeout(() => {
           navigate("/dashboard");
         }, 2000);
