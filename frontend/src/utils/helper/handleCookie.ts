@@ -20,17 +20,3 @@ export const getAccessToken = () => {
 export const getRefreshToken = () => {
   return Cookies.get(REFRESH_TOKEN_KEY);
 };
-
-// {
-//     data: {
-//         accessToken: "",
-//         refreshToken: "",
-//         firstName: "",
-//         lastname: "",
-//         userId: "",
-//         userRole: "",
-//         profilePicture: ""
-//     },
-//     status: "success",
-//     message: "user logged in successfully."
-// }
