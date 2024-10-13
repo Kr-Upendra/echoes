@@ -1,8 +1,17 @@
 import app from "./app.js";
 import mongoose from "mongoose";
-import { port, dbPassword, mongoUri } from "./utils/helper/constants.js";
+import {
+  nodeEnv,
+  port,
+  dbPassword,
+  mongoUri,
+  mongoUriLocal,
+} from "./utils/helper/constants.js";
 
-const dbUri = mongoUri.replace("<db_password>", dbPassword);
+let dbUri;
+
+if (nodeEnv === "development") dbUri = mongoUriLocal;
+else dbUri = mongoUri.replace("<db_password>", dbPassword);
 
 mongoose
   .connect(dbUri)
