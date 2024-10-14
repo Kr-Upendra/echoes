@@ -1,13 +1,13 @@
-import SectionHeading from "../../components/common/SectionHeading";
+import SectionHeading from "../components/common/SectionHeading";
 
-export default function Profile() {
+export default function Setting() {
   return (
     <section className="base-paddings">
       <main>
         <div className="min-h-screen h-full flex justify-center items-center flex-col">
           <SectionHeading
-            title="User Profile page"
-            description="Here you can view or update your details"
+            title="Setting page"
+            description="Here you can update you settings"
           />
         </div>
       </main>

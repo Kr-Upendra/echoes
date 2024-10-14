@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux";
-import Banner from "../../components/dashboard/Banner";
-import StatCard from "../../components/dashboard/StatCard";
-import { UserStat, userStats } from "../../utils";
-
-import { RootState } from "../../state";
+import { RootState } from "../state";
+import Banner from "../components/dashboard/Banner";
+import { UserStat, userStats } from "../utils";
+import StatCard from "../components/dashboard/StatCard";
 
 export default function Dashboard() {
   const currentUserInfo = useSelector(

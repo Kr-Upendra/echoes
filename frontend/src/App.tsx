@@ -1,19 +1,21 @@
-import "./App.css";
 import {
   createBrowserRouter,
   Route,
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import RootLayout from "./layouts/RootLayout";
-import Dashboard from "./pages/dashboard/Dashboard";
-import Setting from "./pages/settings/Setting";
-import Profile from "./pages/profile/Profile";
+import "./App.css";
+import { RootLayout } from "./layouts";
+import {
+  Dashboard,
+  Home,
+  Login,
+  Profile,
+  Register,
+  Reminder,
+  Setting,
+} from "./pages";
 import Note from "./pages/Note";
-import Reminder from "./pages/Reminder";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
