@@ -62,7 +62,7 @@ export default function Header() {
             />
 
             <button
-              onClick={() => setUserMenu(true)}
+              onClick={() => setUserMenu((prev) => !prev)}
               className="ml-2 font-display hover:text-green-500 transition-color text-base"
             >
               <img
