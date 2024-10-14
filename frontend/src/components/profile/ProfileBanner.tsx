@@ -1,7 +1,14 @@
-// import { FaEdit } from "react-icons/fa";
+import { FaPen } from "react-icons/fa6";
 import default_bg_cover from "../../assets/bg/default_cover_image.jpg";
+import { useState } from "react";
+import ImageUploader from "../uploader/FileUploader";
 
 export default function ProfileBanner() {
+  const [showUploader, setShowUploader] = useState<boolean>(false);
+
+  const handleUploadClick = () => {
+    setShowUploader(true);
+  };
   return (
     <div
       style={{
@@ -10,14 +17,22 @@ export default function ProfileBanner() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
-      className="h-80 md:h-64 sm:h-48 xs:h-40 rounded-lg shadow-2xl shadow-black/20"
+      className="h-80 md:h-64 sm:h-48 xs:h-40 rounded-lg shadow-2xl shadow-black/20 text-end p-2"
     >
-      {/* <button className="bg-green-500 text-white shadow-xl shadow-black/20 cursor-pointer rounded-full px-4 py-2 flex items-center gap-x-2 font-display">
-        Edit
+      <button
+        onClick={handleUploadClick}
+        className="bg-green-500 text-white shadow-xl shadow-black/20 cursor-pointer rounded-full p-3"
+      >
         <span>
-          <FaEdit />
+          <FaPen />
         </span>
-      </button> */}
+      </button>
+
+      {showUploader && (
+        <ImageUploader
+          onClose={() => setShowUploader(false)} // Pass a function to close the uploader
+        />
+      )}
     </div>
   );
 }
