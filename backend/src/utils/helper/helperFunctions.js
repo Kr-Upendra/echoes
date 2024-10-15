@@ -4,6 +4,6 @@ export function capitalizeFirstLetter(str) {
 }
 
 export function validatePassword(str) {
-  if (str.length < 3) return true;
-  return false;
+  if (str.length < 3) return false;
+  return true;
 }

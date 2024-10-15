@@ -1,3 +1,5 @@
+import bcrypt from "bcryptjs";
+
 import { userModel } from "../models/userModel.js";
 import {
   STATUS_CODES,
@@ -24,20 +26,41 @@ export const updatePassword = async (req, res) => {
       message: "Invalid input.",
     });
 
-  if (!validatePassword(str))
+  if (!validatePassword(newPassword))
     return res.status(STATUS_CODES.BAD_REQUEST).json({
       status: "failed",
       message: "Not a valid password.",
     });
 
   try {
-    console.log({ currentPassword, newPassword, user });
+    const currentUser = await userModel.findById(user.id).select("password");
+    const isMatch = await currentUser.isPasswordMatch(currentPassword);
+    if (!isMatch)
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
+        status: "failed",
+        message: "Current password is incorrect.",
+      });
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+
+    currentUser.password = hashedNewPassword;
+    const result = await userModel.updateOne(
+      { _id: user.id },
+      { password: hashedNewPassword }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+        status: "failed",
+        message: "Failed to update password.",
+      });
+    }
+
     return res.status(STATUS_CODES.SUCCESS).json({
       status: "success",
       message: "Password updated successfully.",
     });
   } catch (err) {
-    console.log(err);
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       status: "failed",
       message: "Something went wrong.",
