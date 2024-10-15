@@ -1,41 +1,31 @@
 import { userModel } from "../models/userModel.js";
 import { userSessionModel } from "../models/userSessionModel.js";
 import {
-  API_RESPONSE_CODE,
-  API_RESPONSE_MESSAGE,
-  API_RESPONSE_STATUS,
-  sendResponse,
-} from "../utils/api-response/index.js";
-import {
   accessTokenExpireTime,
   capitalizeFirstLetter,
   nodeEnv,
   refreshTokenExpireTime,
-} from "../utils/helper/index.js";
-import {
+  STATUS_CODES,
+  API_RESPONSE_MESSAGE,
   generateAccessToken,
   generateRefreshToken,
-} from "../utils/token/generateTokens.js";
+} from "../utils/index.js";
 
 export const register = async (req, res) => {
   const { email, firstname, lastname, password } = req.body;
 
   if (!email || !firstname || !lastname || !password)
-    return sendResponse(
-      res,
-      API_RESPONSE_CODE.BAD_REQUEST,
-      API_RESPONSE_MESSAGE.BAD_REQUEST,
-      API_RESPONSE_STATUS.ERROR
-    );
+    return res.status(STATUS_CODES.BAD_REQUEST).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.BAD_REQUEST,
+    });
   try {
     const user = await userModel.findOne({ email });
     if (user)
-      return sendResponse(
-        res,
-        API_RESPONSE_CODE.CONFLICT,
-        API_RESPONSE_MESSAGE.EMAIL_ALREADY_IN_USE,
-        API_RESPONSE_STATUS.FAILED
-      );
+      return res.status(STATUS_CODES.CONFLICT).json({
+        status: "failed",
+        message: API_RESPONSE_MESSAGE.EMAIL_ALREADY_IN_USE,
+      });
 
     await userModel.create({
       email,
@@ -44,16 +34,13 @@ export const register = async (req, res) => {
       lastName: capitalizeFirstLetter(lastname),
     });
 
-    return sendResponse(
-      res,
-      API_RESPONSE_CODE.CREATED,
-      API_RESPONSE_MESSAGE.REGISTER_SUCCESS,
-      API_RESPONSE_STATUS.SUCCESS
-    );
+    return res.status(STATUS_CODES.CREATED).json({
+      status: "success",
+      message: API_RESPONSE_MESSAGE.REGISTER_SUCCESS,
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(API_RESPONSE_CODE.INTERNAL_SERVER_ERROR).json({
-      status: API_RESPONSE_STATUS.ERROR,
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
     });
   }
@@ -66,30 +53,24 @@ export const login = async (req, res) => {
   const userAgent = req.headers["user-agent"];
 
   if (!email || !password)
-    return sendResponse(
-      res,
-      API_RESPONSE_CODE.BAD_REQUEST,
-      API_RESPONSE_MESSAGE.BAD_REQUEST,
-      API_RESPONSE_STATUS.ERROR
-    );
+    return res.status(STATUS_CODES.BAD_REQUEST).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.BAD_REQUEST,
+    });
   try {
     const user = await userModel.findOne({ email: email });
     if (!user)
-      return sendResponse(
-        res,
-        API_RESPONSE_CODE.UNAUTHORIZED,
-        API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
-        API_RESPONSE_STATUS.FAILED
-      );
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        status: "failed",
+        message: API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
+      });
 
     const isMatch = await user.isPasswordMatch(password);
     if (!isMatch)
-      return sendResponse(
-        res,
-        API_RESPONSE_CODE.UNAUTHORIZED,
-        API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
-        API_RESPONSE_STATUS.FAILED
-      );
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        status: "failed",
+        message: API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
+      });
 
     const accessToken = generateAccessToken(user._id, user.email);
     const refreshToken = generateRefreshToken(user._id, user.email);
@@ -134,17 +115,15 @@ export const login = async (req, res) => {
       sameSite: "strict",
     });
 
-    return sendResponse(
-      res,
-      API_RESPONSE_CODE.SUCCESS,
-      API_RESPONSE_MESSAGE.LOGIN_SUCCESS,
-      API_RESPONSE_STATUS.SUCCESS,
-      data
-    );
+    return res.status(STATUS_CODES.SUCCESS).json({
+      status: "success",
+      message: API_RESPONSE_MESSAGE.LOGIN_SUCCESS,
+      data,
+    });
   } catch (error) {
     console.log(error);
-    return res.status(API_RESPONSE_CODE.INTERNAL_SERVER_ERROR).json({
-      status: API_RESPONSE_STATUS.ERROR,
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
     });
   }
@@ -155,34 +134,28 @@ export const check = async (req, res) => {
     const userId = req.user.id; // Assuming you have middleware to verify the JWT and attach user info
 
     if (!userId) {
-      return sendResponse(
-        res,
-        API_RESPONSE_CODE.UNAUTHORIZED,
-        API_RESPONSE_MESSAGE.UNAUTHORIZED,
-        API_RESPONSE_STATUS.FAILED
-      );
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        status: "failed",
+        message: API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
+      });
     }
 
     const userSession = await userSessionModel.findOne({ userId });
     if (!userSession) {
-      return sendResponse(
-        res,
-        API_RESPONSE_CODE.UNAUTHORIZED,
-        API_RESPONSE_MESSAGE.SESSION_EXPIRED,
-        API_RESPONSE_STATUS.FAILED
-      );
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        status: "failed",
+        message: API_RESPONSE_MESSAGE.SESSION_EXPIRED,
+      });
     }
 
-    return sendResponse(
-      res,
-      API_RESPONSE_CODE.SUCCESS,
-      API_RESPONSE_MESSAGE.SESSION_VALID,
-      API_RESPONSE_STATUS.SUCCESS,
-      { userId } // Optionally send back user info
-    );
+    return res.status(STATUS_CODES.SUCCESS).json({
+      status: "success",
+      message: API_RESPONSE_MESSAGE.SESSION_VALID,
+      data: { userId },
+    });
   } catch (error) {
     console.log(error);
-    return res.status(API_RESPONSE_CODE.INTERNAL_SERVER_ERROR).json({
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       status: API_RESPONSE_STATUS.ERROR,
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
     });

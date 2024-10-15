@@ -1,12 +1,9 @@
-import { accessToken } from "../utils/helper/index.js";
 import jwt from "jsonwebtoken";
+import { accessToken } from "../utils/helper/index.js";
 import { userModel } from "../models/userModel.js";
-
 import {
-  API_RESPONSE_CODE,
+  STATUS_CODES,
   API_RESPONSE_MESSAGE,
-  API_RESPONSE_STATUS,
-  sendResponse,
 } from "../utils/api-response/index.js";
 
 export const protect = async (req, res, next) => {
@@ -19,53 +16,55 @@ export const protect = async (req, res, next) => {
   }
 
   if (!token)
-    return sendResponse(
-      res,
-      API_RESPONSE_CODE.UNAUTHORIZED,
-      API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
-      API_RESPONSE_STATUS.FAILED
-    );
+    return res.status(STATUS_CODES.UNAUTHORIZED).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
+    });
 
-  const decoded = jwt.verify(token, accessToken);
-  const freshUser = await userModel.findById(decoded._id).exec();
+  try {
+    const decoded = jwt.verify(token, accessToken);
+    const freshUser = await userModel.findById(decoded._id).exec();
 
-  if (!freshUser)
-    return sendResponse(
-      res,
-      API_RESPONSE_CODE.UNAUTHORIZED_ACCESS,
-      API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
-      API_RESPONSE_STATUS.FAILED
-    );
+    if (!freshUser)
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        status: "failed",
+        message: API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
+      });
 
-  if (freshUser.changedPasswordAfter(decoded.iat))
-    return sendResponse(
-      res,
-      API_RESPONSE_CODE.UNAUTHORIZED_ACCESS,
-      API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
-      API_RESPONSE_STATUS.FAILED
-    );
+    if (freshUser.changedPasswordAfter(decoded.iat))
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        status: "failed",
+        message: API_RESPONSE_MESSAGE.INVALID_CREDENTIALS,
+      });
 
-  const user = {
-    id: freshUser.id,
-    email: freshUser.email,
-    firstname: freshUser.firstName,
-    lastname: freshUser.lastName,
-    role: freshUser.userRole,
-  };
+    const user = {
+      id: freshUser.id,
+      email: freshUser.email,
+      firstname: freshUser.firstName,
+      lastname: freshUser.lastName,
+      role: freshUser.userRole,
+    };
 
-  req.user = user;
-  next();
+    req.user = user;
+    next();
+  } catch (err) {
+    console.log("error from middleware", err?.name);
+    if (err?.name === "TokenExpiredError")
+      return res.status(STATUS_CODES.UNAUTHORIZED).json({
+        status: "failed",
+        message: "Access denied due to expired token.",
+        error: err?.name,
+      });
+  }
 };
 
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req?.user?.role)) {
-      return sendResponse(
-        res,
-        API_RESPONSE_CODE.FORBIDDEN,
-        API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
-        API_RESPONSE_STATUS.FAILED
-      );
+      return res.status(STATUS_CODES.FORBIDDEN).json({
+        status: "failed",
+        message: API_RESPONSE_MESSAGE.UNAUTHORIZED_ACCESS,
+      });
     }
     next();
   };

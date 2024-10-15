@@ -1,9 +1,5 @@
 import slugify from "slugify";
-import {
-  STATUS_CODES,
-  API_RESPONSE_MESSAGE,
-  API_RESPONSE_STATUS,
-} from "../utils/api-response/index.js";
+import { STATUS_CODES, API_RESPONSE_MESSAGE } from "../utils/index.js";
 import { categoryModel } from "../models/categoryModel.js";
 
 export const createCategory = async (req, res) => {
@@ -38,7 +34,7 @@ export const createCategory = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      status: API_RESPONSE_STATUS.ERROR,
+      status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
     });
   }
@@ -78,7 +74,7 @@ export const categories = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      status: API_RESPONSE_STATUS.ERROR,
+      status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
     });
   }
@@ -98,7 +94,7 @@ export const category = async (req, res) => {
     });
   } catch (err) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      status: API_RESPONSE_STATUS.ERROR,
+      status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
     });
   }
@@ -129,7 +125,7 @@ export const updateCategory = async (req, res) => {
 
     if (!updatedCategory) {
       return res.status(404).json({
-        status: "error",
+        status: "failed",
         message: "Category not found",
       });
     }
@@ -140,7 +136,7 @@ export const updateCategory = async (req, res) => {
     });
   } catch (error) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      status: API_RESPONSE_STATUS.ERROR,
+      status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
     });
   }
@@ -156,7 +152,7 @@ export const deleteCategory = async (req, res) => {
     });
   } catch (err) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      status: API_RESPONSE_STATUS.ERROR,
+      status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
     });
   }

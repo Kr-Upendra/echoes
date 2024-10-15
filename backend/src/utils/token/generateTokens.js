@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import {
   accessToken,
-  refreshToken,
   accessTokenExpireTime,
+  refreshToken,
   refreshTokenExpireTime,
-} from "../helper/index.js";
+} from "./../helper/index.js";
 
 export const generateAccessToken = (id, email) => {
   const payload = { _id: id.toString(), email: email };
