@@ -17,6 +17,18 @@ export const getUsers = async (req, res) => {
   });
 };
 
+export const userProfile = async (req, res) => {
+  const { id } = req.user;
+  const excludeFields = "-password -passwordChangedAt -userRole -__v";
+  const user = await userModel.findById(id).select(excludeFields);
+
+  return res.status(STATUS_CODES.SUCCESS).json({
+    status: "success",
+    message: "Record found successfully.",
+    data: { user },
+  });
+};
+
 export const updatePassword = async (req, res) => {
   const user = req.user;
   const { currentPassword, newPassword } = req.body;

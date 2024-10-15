@@ -13,3 +13,13 @@ export const updatePassword = async (
     true
   );
 };
+
+export const getProfile = async () => {
+  return apiFetch(
+    "/users/profile",
+    {
+      method: "GET",
+    },
+    true
+  );
+};
