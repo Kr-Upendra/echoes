@@ -1,5 +1,5 @@
 import SectionHeading from "../components/common/SectionHeading";
-import LoginForm from "../containers/LoginForm";
+import { LoginForm } from "../containers";
 
 export default function Login() {
   return (

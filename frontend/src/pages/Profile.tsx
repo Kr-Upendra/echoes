@@ -1,4 +1,4 @@
-import ProfileContainer from "../containers/profile";
+import { ProfileContainer } from "../containers";
 
 export default function Profile() {
   return (

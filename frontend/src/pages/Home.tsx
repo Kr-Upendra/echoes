@@ -1,7 +1,4 @@
-import Features from "../containers/Features";
-import Hero from "../containers/Hero";
-import HowItWorks from "../containers/HowItWorks";
-import UserStories from "../containers/UserStories";
+import { Features, Hero, HowItWorks, UserStories } from "../containers";
 
 export default function Home() {
   return (

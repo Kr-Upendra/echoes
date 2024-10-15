@@ -14,7 +14,7 @@ const schema = z.object({
   password: z.string().min(4, "Password must be at least 6 characters"),
 });
 
-export default function RegisterForm() {
+export default function RegistrationForm() {
   const navigate = useNavigate();
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [formData, setFormData] = useState<RegisterFromData>({

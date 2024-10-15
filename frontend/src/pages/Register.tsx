@@ -1,5 +1,5 @@
 import SectionHeading from "../components/common/SectionHeading";
-import RegisterForm from "../containers/RegisterForm";
+import { RegistrationForm } from "../containers";
 
 export default function Register() {
   return (
@@ -10,7 +10,7 @@ export default function Register() {
             title="Register yourself"
             description="Start your journey from here"
           />
-          <RegisterForm />
+          <RegistrationForm />
         </div>
       </main>
     </section>
