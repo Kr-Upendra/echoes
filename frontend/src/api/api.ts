@@ -1,10 +1,23 @@
-import { BASE_URL } from "../utils";
+import { BASE_URL, getAccessToken } from "../utils";
 
-export const apiFetch = async (endpoint: string, options = {}) => {
+export const apiFetch = async (
+  endpoint: string,
+  options = {},
+  token?: boolean
+) => {
+  let header: any = {
+    "Content-Type": "application/json",
+  };
+
+  if (token) {
+    const accesstoken = getAccessToken();
+    if (accesstoken) header.Authorization = `Bearer ${accesstoken}`;
+  }
+
   const response = await fetch(`${BASE_URL}${endpoint}`, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      ...header,
     },
   });
 

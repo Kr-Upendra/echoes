@@ -1,5 +1,6 @@
 import CustomInput from "../../components/form/CustomInput";
 import CustomTextArea from "../../components/form/CustomTextArea";
+import UpdatePasswordForm from "../../components/profile/UpdatePasswordForm";
 
 export default function EditableAccount() {
   return (
@@ -134,41 +135,7 @@ export default function EditableAccount() {
         </button>
       </div>
 
-      {/* CREDENTIALS */}
-      <div className="rounded-lg shadow-lg shadow-black/5 p-5 bg-green-200/5 mt-6">
-        <h4 className="font-display text-green-500 text-sm">
-          Change Credentials
-        </h4>
-        <div className="mt-4">
-          <form action="">
-            <div className="flex gap-5 lg:flex-col">
-              <CustomInput
-                id="currentPassword"
-                label="Current Password"
-                name="currentPassword"
-                type="password"
-                placeHolder="Current Password"
-                onchange={() => {}}
-                error={""}
-              />
-              <CustomInput
-                id="newPassword"
-                label="New Password"
-                name="newPassword"
-                type="password"
-                placeHolder="New Password"
-                onchange={() => {}}
-                error={""}
-              />
-            </div>
-            <div className="mt-2">
-              <button className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display">
-                Update Password
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+      <UpdatePasswordForm />
     </div>
   );
 }

@@ -78,7 +78,7 @@ export default function LoginForm() {
             type="email"
             name="email"
             label="Enter your email"
-            error={errors.email}
+            error={errors?.email}
             onchange={handleChange}
           />
           <CustomInput
@@ -87,7 +87,7 @@ export default function LoginForm() {
             type="password"
             name="password"
             label="Enter your password"
-            error={errors.password}
+            error={errors?.password}
             onchange={handleChange}
           />
           <div className="-mt-2">

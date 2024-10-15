@@ -16,6 +16,7 @@ export default function CustomInput({
   type,
   label,
   error,
+  value,
   onchange,
 }: Props) {
   return (
@@ -31,6 +32,7 @@ export default function CustomInput({
         name={name}
         id={id}
         placeholder={placeHolder}
+        value={value}
         onChange={onchange}
         className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black border rounded-md ${
           error ? "border-orange-900" : "border-green-500/15"

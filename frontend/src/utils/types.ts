@@ -10,6 +10,11 @@ export type RegisterFromData = {
   lastname: string;
 };
 
+export type UpdatePasswordFromData = {
+  currentPassword: string;
+  newPassword: string;
+};
+
 export type ApiResponse = {
   message: string;
   status?: string;
