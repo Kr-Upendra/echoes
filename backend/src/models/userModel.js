@@ -1,8 +1,36 @@
 import mongoose from "mongoose";
+import { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
+
+const addressSchema = new Schema(
+  {
+    street: { type: String, default: null },
+    city: { type: String, default: null },
+    state: { type: String, default: null },
+    country: { type: String, default: null },
+    zipcode: { type: String, default: null },
+  },
+  { _id: false }
+);
+
+const socialMediaSchema = new Schema(
+  {
+    facebook: { type: String, default: null },
+    thread: { type: String, default: null },
+    twitter: { type: String, default: null },
+    instagram: { type: String, default: null },
+    website: { type: String, default: null },
+  },
+  { _id: false }
+);
 
 const userSchema = new mongoose.Schema(
   {
+    userName: {
+      type: String,
+      unique: true,
+      lowercase: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -37,6 +65,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    address: addressSchema,
+    socialMedia: socialMediaSchema,
     passwordChangedAt: Date,
   },
   { timestamps: true }
@@ -46,6 +76,26 @@ userSchema.pre("save", async function (next) {
   const user = this;
   if (user.isModified("password")) {
     user.password = await bcrypt.hash(user.password, 12);
+  }
+  next();
+});
+
+userSchema.pre("save", async function (next) {
+  if (this.isNew || this.isModified("email")) {
+    const emailUsername = this.email
+      .split("@")[0]
+      .replace(/\./g, "")
+      .toLowerCase();
+
+    let userName = emailUsername;
+    let suffix = 1;
+
+    while (await this.constructor.findOne({ userName })) {
+      userName = `${emailUsername}${suffix}`;
+      suffix++;
+    }
+
+    this.userName = userName;
   }
   next();
 });
@@ -66,6 +116,6 @@ userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
   return false;
 };
 
-const User = mongoose.model("User", userSchema);  
+const User = mongoose.model("User", userSchema);
 
 export { User as userModel };

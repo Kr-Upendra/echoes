@@ -29,6 +29,70 @@ export const userProfile = async (req, res) => {
   });
 };
 
+export const updateProfile = async (req, res) => {
+  const userId = req.user.id;
+  const { firstName, lastName, about, socialMedia, address } = req.body;
+
+  const updateData = {};
+
+  if (firstName !== undefined) updateData.firstName = firstName;
+  if (lastName !== undefined) updateData.lastName = lastName;
+  if (about !== undefined) updateData.about = about;
+
+  if (address) {
+    if (address.street !== undefined)
+      updateData["address.street"] = address.street;
+    if (address.city !== undefined) updateData["address.city"] = address.city;
+    if (address.state !== undefined)
+      updateData["address.state"] = address.state;
+    if (address.country !== undefined)
+      updateData["address.country"] = address.country;
+    if (address.zipcode !== undefined)
+      updateData["address.zipcode"] = address.zipcode;
+  }
+
+  if (socialMedia) {
+    if (socialMedia.facebook !== undefined)
+      updateData["socialMedia.facebook"] = socialMedia.facebook;
+    if (socialMedia.thread !== undefined)
+      updateData["socialMedia.thread"] = socialMedia.thread;
+    if (socialMedia.twitter !== undefined)
+      updateData["socialMedia.twitter"] = socialMedia.twitter;
+    if (socialMedia.instagram !== undefined)
+      updateData["socialMedia.instagram"] = socialMedia.instagram;
+    if (socialMedia.website !== undefined)
+      updateData["socialMedia.website"] = socialMedia.website;
+  }
+
+  if (Object.keys(updateData).length === 0)
+    return res.status(STATUS_CODES.NOT_FOUND).json({
+      status: "failed",
+      message: "No data provided to made changes.",
+    });
+
+  try {
+    const result = await userModel.updateOne(
+      { _id: userId },
+      { $set: updateData }
+    );
+    if (result.nModified === 0) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        status: "failed",
+        message: "User not found or no changes made.",
+      });
+    }
+    return res.status(STATUS_CODES.SUCCESS).json({
+      status: "success",
+      message: "Profile updated successfully.",
+    });
+  } catch (error) {
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
+      message: error?.message || "Something went wrong.",
+    });
+  }
+};
+
 export const updatePassword = async (req, res) => {
   const user = req.user;
   const { currentPassword, newPassword } = req.body;
