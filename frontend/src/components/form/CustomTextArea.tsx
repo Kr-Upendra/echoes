@@ -5,7 +5,7 @@ type Props = {
   label: string;
   error: string;
   value?: string;
-  onchange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
 export default function CustomTextArea({
@@ -14,7 +14,7 @@ export default function CustomTextArea({
   name,
   label,
   error,
-  onchange,
+  onChange,
 }: Props) {
   return (
     <div className="mt-2 mb-3.5 w-full">
@@ -29,7 +29,7 @@ export default function CustomTextArea({
         rows={5}
         placeholder={placeHolder}
         id={id}
-        onChange={onchange}
+        onChange={onChange}
         className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black border rounded-md ${
           error ? "border-orange-900" : "border-green-500/15"
         }`}

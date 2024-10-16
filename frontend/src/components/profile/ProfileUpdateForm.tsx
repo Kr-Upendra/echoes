@@ -1,9 +1,80 @@
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state";
 import CustomInput from "../form/CustomInput";
 import CustomTextArea from "../form/CustomTextArea";
+import { z } from "zod";
+
+const schema = z.object({
+  firstName: z.string().min(2).optional(),
+  lastName: z.string().min(1).optional(),
+  about: z.string().optional(),
+  street: z.string().min(3).optional(),
+  city: z.string().min(2).optional(),
+  country: z.string().min(2).optional(),
+  zipcode: z.string().max(6).min(6).optional(),
+});
 
 export default function ProfileUpdateForm() {
+  const userProfile = useSelector(
+    (state: RootState) => state.userProfile.userProfile
+  );
+  const [errors, setErrors] = useState<any>({});
+  const [formData, setFormData] = useState({
+    userName: userProfile?.userName || "",
+    email: userProfile?.email || "",
+    firstName: userProfile?.firstName || "",
+    lastName: userProfile?.lastName || "",
+    about: userProfile?.about || "",
+    street: userProfile?.address?.street || "",
+    city: userProfile?.address?.city || "",
+    country: userProfile?.address?.country || "",
+    zipcode: userProfile?.address?.zipCode || "",
+  });
+
+  useEffect(() => {
+    if (userProfile) {
+      setFormData({
+        userName: userProfile.userName || "",
+        email: userProfile.email || "",
+        firstName: userProfile.firstName || "",
+        lastName: userProfile.lastName || "",
+        about: userProfile.about || "",
+        street: userProfile.address?.street || "",
+        city: userProfile.address?.city || "",
+        country: userProfile.address?.country || "",
+        zipcode: userProfile.address?.zipCode || "",
+      });
+    }
+  }, [userProfile]);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      schema.parse(formData);
+      setErrors({});
+      // mutation.mutate(formData);
+      console.log(formData);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        const formattedErrors: any = {};
+        err.errors.forEach((error) => {
+          formattedErrors[error.path[0]] = error.message;
+        });
+        setErrors(formattedErrors);
+      }
+    }
+  };
+
   return (
-    <form action="">
+    <form onSubmit={handleSubmit}>
       {/* USER INFORMATION  */}
       <div className="rounded-lg shadow-lg shadow-black/5 p-5 bg-green-200/5">
         <h4 className="font-display text-green-500 text-sm uppercase">
@@ -17,8 +88,10 @@ export default function ProfileUpdateForm() {
               name="username"
               type="text"
               placeHolder="johnny"
-              onchange={() => {}}
-              error={""}
+              value={formData?.userName}
+              isDisabled={true}
+              onchange={handleChange}
+              error={errors?.username}
             />
             <CustomInput
               id="email"
@@ -26,8 +99,10 @@ export default function ProfileUpdateForm() {
               name="email"
               type="email"
               placeHolder="john.doe@gmail.com"
-              onchange={() => {}}
-              error={""}
+              value={formData?.email}
+              isDisabled={true}
+              onchange={handleChange}
+              error={errors?.email}
             />
           </div>
           <div className="flex gap-x-5 lg:flex-col">
@@ -37,8 +112,9 @@ export default function ProfileUpdateForm() {
               name="firstName"
               type="text"
               placeHolder="John"
-              onchange={() => {}}
-              error={""}
+              value={formData?.firstName}
+              onchange={handleChange}
+              error={errors?.firstName}
             />
             <CustomInput
               id="lastname"
@@ -46,8 +122,9 @@ export default function ProfileUpdateForm() {
               name="lastName"
               type="text"
               placeHolder="Doe"
-              onchange={() => {}}
-              error={""}
+              value={formData?.lastName}
+              onchange={handleChange}
+              error={errors?.lastName}
             />
           </div>
         </div>
@@ -61,13 +138,14 @@ export default function ProfileUpdateForm() {
         <div className="mt-4">
           <div className="flex gap-x-5 lg:flex-col">
             <CustomInput
-              id="localAddress"
-              label="Local Address"
-              name="localAddress"
+              id="street"
+              label="Street"
+              name="street"
               type="text"
-              placeHolder="Home Address"
-              onchange={() => {}}
-              error={""}
+              placeHolder="Street"
+              value={formData?.street}
+              onchange={handleChange}
+              error={errors?.street}
             />
             <CustomInput
               id="city"
@@ -75,8 +153,9 @@ export default function ProfileUpdateForm() {
               name="city"
               type="text"
               placeHolder="Allahabad"
-              onchange={() => {}}
-              error={""}
+              value={formData?.city}
+              onchange={handleChange}
+              error={errors?.city}
             />
           </div>
           <div className="flex gap-x-5 lg:flex-col">
@@ -86,17 +165,19 @@ export default function ProfileUpdateForm() {
               name="country"
               type="text"
               placeHolder="India"
-              onchange={() => {}}
-              error={""}
+              value={formData?.country}
+              onchange={handleChange}
+              error={errors?.country}
             />
             <CustomInput
-              id="postalCode"
-              label="Postal Code"
-              name="postalCode"
+              id="zipCode"
+              label="Zip Code"
+              name="zipcode"
               type="number"
               placeHolder="000000"
-              onchange={() => {}}
-              error={""}
+              value={formData?.zipcode}
+              onchange={handleChange}
+              error={errors?.zipcode}
             />
           </div>
         </div>
@@ -110,12 +191,13 @@ export default function ProfileUpdateForm() {
         <div className="mt-4">
           <div className="flex lg:flex-col">
             <CustomTextArea
-              id="aboutMe"
+              id="about"
               label="About Me"
-              name="aboutMe"
+              name="about"
               placeHolder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo illo obcaecati laboriosam nemo maiores, blanditiis beatae error necessitatibus perspiciatis quis."
-              onchange={() => {}}
-              error={""}
+              value={formData?.about}
+              onChange={handleChange}
+              error={errors?.about}
             />
           </div>
         </div>

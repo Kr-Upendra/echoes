@@ -8,6 +8,14 @@ interface Address {
   zipCode?: string;
 }
 
+interface SocialMedia {
+  facebook?: string;
+  thread?: string;
+  instagram?: string;
+  twitter?: string;
+  website?: string;
+}
+
 interface IUserProfile {
   _id: string;
   userName?: string;
@@ -19,6 +27,7 @@ interface IUserProfile {
   createdAt: string;
   updatedAt: string;
   address?: Address;
+  socialMedia?: SocialMedia;
 }
 
 interface UserProfileState {
