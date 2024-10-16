@@ -1,5 +1,19 @@
-import { ApiResponse, UpdatePasswordFromData } from "../utils";
+import {
+  ApiResponse,
+  UpdatePasswordFromData,
+  UpdateProfileFormData,
+} from "../utils";
 import { apiFetch } from "./api";
+
+export const getProfile = async () => {
+  return apiFetch(
+    "/users/profile",
+    {
+      method: "GET",
+    },
+    true
+  );
+};
 
 export const updatePassword = async (
   formdata: UpdatePasswordFromData
@@ -14,11 +28,14 @@ export const updatePassword = async (
   );
 };
 
-export const getProfile = async () => {
+export const updateProfile = async (
+  formdata: UpdateProfileFormData
+): Promise<ApiResponse> => {
   return apiFetch(
-    "/users/profile",
+    "/users/update-profile",
     {
-      method: "GET",
+      method: "POST",
+      body: JSON.stringify(formdata),
     },
     true
   );

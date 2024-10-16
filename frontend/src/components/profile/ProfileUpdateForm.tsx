@@ -4,21 +4,39 @@ import { RootState } from "../../state";
 import CustomInput from "../form/CustomInput";
 import CustomTextArea from "../form/CustomTextArea";
 import { z } from "zod";
+import { updateProfile } from "../../api";
+import { ApiResponse, errorAlert, successAlert } from "../../utils";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+
+const addressSchema = z.object({
+  street: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
+  zipcode: z.string().optional(),
+});
+
+// Going to add this lator
+// const socialMediaSchema = z.object({
+//   facebook: z.string().optional(),
+//   thread: z.string().optional(),
+//   twitter: z.string().optional(),
+//   instagram: z.string().optional(),
+//   website: z.string().optional(),
+// });
 
 const schema = z.object({
   firstName: z.string().min(2).optional(),
   lastName: z.string().min(1).optional(),
   about: z.string().optional(),
-  street: z.string().min(3).optional(),
-  city: z.string().min(2).optional(),
-  country: z.string().min(2).optional(),
-  zipcode: z.string().max(6).min(6).optional(),
+  address: addressSchema,
+  // socialMedia: socialMediaSchema,
 });
 
 export default function ProfileUpdateForm() {
   const userProfile = useSelector(
     (state: RootState) => state.userProfile.userProfile
   );
+  const queryClient = useQueryClient();
   const [errors, setErrors] = useState<any>({});
   const [formData, setFormData] = useState({
     userName: userProfile?.userName || "",
@@ -26,10 +44,12 @@ export default function ProfileUpdateForm() {
     firstName: userProfile?.firstName || "",
     lastName: userProfile?.lastName || "",
     about: userProfile?.about || "",
-    street: userProfile?.address?.street || "",
-    city: userProfile?.address?.city || "",
-    country: userProfile?.address?.country || "",
-    zipcode: userProfile?.address?.zipCode || "",
+    address: {
+      city: userProfile?.address?.city || "",
+      street: userProfile?.address?.street || "",
+      country: userProfile?.address?.country || "",
+      zipcode: userProfile?.address?.zipcode || "",
+    },
   });
 
   useEffect(() => {
@@ -40,10 +60,12 @@ export default function ProfileUpdateForm() {
         firstName: userProfile.firstName || "",
         lastName: userProfile.lastName || "",
         about: userProfile.about || "",
-        street: userProfile.address?.street || "",
-        city: userProfile.address?.city || "",
-        country: userProfile.address?.country || "",
-        zipcode: userProfile.address?.zipCode || "",
+        address: {
+          street: userProfile.address?.street || "",
+          city: userProfile.address?.city || "",
+          country: userProfile.address?.country || "",
+          zipcode: userProfile.address?.zipcode || "",
+        },
       });
     }
   }, [userProfile]);
@@ -52,16 +74,39 @@ export default function ProfileUpdateForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name in formData.address) {
+      setFormData((prev) => ({
+        ...prev,
+        address: {
+          ...prev.address,
+          [name]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
+
+  const mutation = useMutation({
+    mutationFn: updateProfile,
+    onSuccess: (response: ApiResponse) => {
+      if (response.status === "success") {
+        queryClient.invalidateQueries({ queryKey: ["profileData"] });
+        successAlert(response?.message);
+      }
+    },
+    onError: (error: any) => {
+      errorAlert(error?.message);
+    },
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       schema.parse(formData);
       setErrors({});
-      // mutation.mutate(formData);
-      console.log(formData);
+      mutation.mutate(formData);
     } catch (err) {
       if (err instanceof z.ZodError) {
         const formattedErrors: any = {};
@@ -143,7 +188,7 @@ export default function ProfileUpdateForm() {
               name="street"
               type="text"
               placeHolder="Street"
-              value={formData?.street}
+              value={formData?.address?.street}
               onchange={handleChange}
               error={errors?.street}
             />
@@ -153,7 +198,7 @@ export default function ProfileUpdateForm() {
               name="city"
               type="text"
               placeHolder="Allahabad"
-              value={formData?.city}
+              value={formData?.address?.city}
               onchange={handleChange}
               error={errors?.city}
             />
@@ -165,7 +210,7 @@ export default function ProfileUpdateForm() {
               name="country"
               type="text"
               placeHolder="India"
-              value={formData?.country}
+              value={formData?.address?.country}
               onchange={handleChange}
               error={errors?.country}
             />
@@ -173,9 +218,9 @@ export default function ProfileUpdateForm() {
               id="zipCode"
               label="Zip Code"
               name="zipcode"
-              type="number"
+              type="text"
               placeHolder="000000"
-              value={formData?.zipcode}
+              value={formData?.address?.zipcode}
               onchange={handleChange}
               error={errors?.zipcode}
             />

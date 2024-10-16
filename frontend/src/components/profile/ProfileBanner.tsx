@@ -31,6 +31,7 @@ export default function ProfileBanner() {
       {showUploader && (
         <ImageUploader
           onClose={() => setShowUploader(false)} // Pass a function to close the uploader
+          title="Update your banner image"
         />
       )}
     </div>

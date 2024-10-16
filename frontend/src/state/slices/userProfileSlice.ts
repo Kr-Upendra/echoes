@@ -5,7 +5,7 @@ interface Address {
   city?: string;
   state?: string;
   country?: string;
-  zipCode?: string;
+  zipcode?: string;
 }
 
 interface SocialMedia {

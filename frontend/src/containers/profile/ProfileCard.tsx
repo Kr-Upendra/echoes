@@ -118,6 +118,7 @@ export default function ProfileCard() {
       {showUploader && (
         <ImageUploader
           onClose={() => setShowUploader(false)} // Pass a function to close the uploader
+          title="Update your profile picture"
         />
       )}
     </div>
