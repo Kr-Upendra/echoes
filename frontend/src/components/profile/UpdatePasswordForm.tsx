@@ -68,7 +68,7 @@ export default function UpdatePasswordForm() {
       </h4>
       <div className="mt-4">
         <form onSubmit={handleSubmit}>
-          <div className="flex gap-5 lg:flex-col">
+          <div className="flex gap-x-5 lg:flex-col">
             <CustomInput
               id="currentPassword"
               label="Current Password"

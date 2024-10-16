@@ -14,7 +14,7 @@ export default function EditableAccount() {
         </h4>
         <div className="mt-4">
           <form action="">
-            <div className="flex gap-5 lg:flex-col lg:gap-y-2">
+            <div className="flex gap-x-5 lg:flex-col">
               <CustomInput
                 id="username"
                 label="Username"
@@ -34,7 +34,7 @@ export default function EditableAccount() {
                 error={""}
               />
             </div>
-            <div className="flex gap-5 lg:flex-col">
+            <div className="flex gap-x-5 lg:flex-col">
               <CustomInput
                 id="firstname"
                 label="Firstname"
@@ -65,7 +65,7 @@ export default function EditableAccount() {
         </h4>
         <div className="mt-4">
           <form action="">
-            <div className="flex gap-5 lg:flex-col">
+            <div className="flex gap-x-5 lg:flex-col">
               <CustomInput
                 id="localAddress"
                 label="Local Address"
@@ -85,7 +85,7 @@ export default function EditableAccount() {
                 error={""}
               />
             </div>
-            <div className="flex gap-5 lg:flex-col">
+            <div className="flex gap-x-5 lg:flex-col">
               <CustomInput
                 id="country"
                 label="Country"
@@ -114,7 +114,7 @@ export default function EditableAccount() {
         <h4 className="font-display text-green-500 text-sm">ABOUT ME</h4>
         <div className="mt-4">
           <form action="">
-            <div className="flex gap-5 lg:flex-col">
+            <div className="flex lg:flex-col">
               <CustomTextArea
                 id="aboutMe"
                 label="About Me"
