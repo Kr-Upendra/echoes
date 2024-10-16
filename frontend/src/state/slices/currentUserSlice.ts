@@ -2,15 +2,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getUserData } from "../../utils";
 const currentUser = getUserData();
 
+interface ICurrentUser {
+  email: string;
+  firstName: string;
+  lastName: string;
+  profilePicture?: string;
+  userId: string;
+  role: string;
+}
+
 interface CurrentUserState {
-  currentUserInfo: {
-    email: string;
-    firstName: string;
-    lastName: string;
-    profilePicture?: string;
-    userId: string;
-    role: string;
-  } | null;
+  currentUserInfo: ICurrentUser | null;
 }
 
 const initialState: CurrentUserState = {

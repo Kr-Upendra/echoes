@@ -63,7 +63,7 @@ export default function UpdatePasswordForm() {
 
   return (
     <div className="rounded-lg shadow-lg shadow-black/5 p-5 bg-green-200/5 mt-6">
-      <h4 className="font-display text-green-500 text-sm">
+      <h4 className="font-display text-green-500 text-sm uppercase">
         Change Credentials
       </h4>
       <div className="mt-4">

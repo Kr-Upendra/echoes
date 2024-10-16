@@ -1,13 +1,19 @@
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import CustomInput from "../components/form/CustomInput";
 import { z } from "zod";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../api";
-import { ApiResponse, LoginFromData, setTokens, setUserData } from "../utils";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import {
+  ApiResponse,
+  errorAlert,
+  LoginFromData,
+  setTokens,
+  setUserData,
+  successAlert,
+} from "../utils";
 import { setCurrentUser } from "../state";
+import CustomInput from "../components/form/CustomInput";
 
 const schema = z.object({
   email: z.string().email("Invalid email format"),
@@ -36,7 +42,7 @@ export default function LoginForm() {
           email: "",
           password: "",
         });
-        toast.success(response?.message);
+        successAlert(response?.message);
         const { accessToken, refreshToken, user } = response?.data;
         setTokens(accessToken, refreshToken);
         setUserData(user);
@@ -47,7 +53,7 @@ export default function LoginForm() {
       }
     },
     onError: (error: any) => {
-      toast.error(error?.message);
+      errorAlert(error?.message);
     },
   });
 

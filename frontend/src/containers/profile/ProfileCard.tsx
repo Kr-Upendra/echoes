@@ -6,11 +6,16 @@ import {
   FaThreads,
   FaTwitter,
 } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import CountUp from "react-countup";
 import default_user from "../../assets/icons/default_user.png";
-import { Link } from "react-router-dom";
+import { RootState } from "../../state";
 
 export default function ProfileCard() {
+  const userProfile = useSelector(
+    (state: RootState) => state.userProfile.userProfile
+  );
   return (
     <div className="py-10 h-full px-4 w-[50%] lg:w-full bg-black/80 shadow-2xl shadow-green-500/20 rounded-lg">
       <div className="mx-auto relative w-32 aspect-square rounded-full border-2 border-green-500 p-1 flex justify-center items-center">
@@ -20,7 +25,7 @@ export default function ProfileCard() {
         </button>
       </div>
       <div className="text-center mt-3">
-        <h1 className="text-white font-display">Google Baba</h1>
+        <h1 className="text-white font-display">{`${userProfile?.firstName} ${userProfile?.lastName}`}</h1>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="p-3 py-4 rounded-lg bg-green-200/5 text-center shadow-lg shadow-black/5">
