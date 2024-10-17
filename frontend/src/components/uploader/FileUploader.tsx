@@ -1,7 +1,13 @@
 import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { errorAlert, successAlert, warnAlert } from "../../utils";
+import {
+  errorAlert,
+  successAlert,
+  supabaseUsersBucket,
+  warnAlert,
+  maxUploadFileSize,
+} from "../../utils";
 import { updateProfile, uploadFileToSupabase } from "../../api";
 
 type Props = { onClose: () => void; title?: string };
@@ -9,7 +15,6 @@ type Props = { onClose: () => void; title?: string };
 interface FileWithPreview extends File {
   preview: string;
 }
-const MAX_FILE_SIZE = 20 * 1024;
 
 export default function ImageUploader({ onClose, title }: Props) {
   const queryClient = useQueryClient();
@@ -23,8 +28,10 @@ export default function ImageUploader({ onClose, title }: Props) {
       if (acceptedFiles.length === 0) return;
 
       const fileSize = acceptedFiles[0].size;
-      if (fileSize > MAX_FILE_SIZE) {
-        warnAlert(`File size exceeds ${MAX_FILE_SIZE} KB limit.`);
+      if (fileSize > maxUploadFileSize.userProfile) {
+        warnAlert(
+          `File size exceeds ${maxUploadFileSize.userProfile} KB limit.`
+        );
         return;
       }
 
@@ -56,11 +63,12 @@ export default function ImageUploader({ onClose, title }: Props) {
       return;
     }
 
-    const fileExt = file.name.split(".").pop();
-    const fileName = `users/hello_user${Math.random()}.${fileExt}`;
-    const filePath = `${fileName}`;
     try {
-      const publicUrl = await uploadFileToSupabase(file, filePath);
+      const publicUrl = await uploadFileToSupabase(
+        file,
+        supabaseUsersBucket,
+        "avatar"
+      );
       mutation.mutate({ profilePicture: publicUrl });
     } catch (error) {
       errorAlert("Failed to upload file.");
