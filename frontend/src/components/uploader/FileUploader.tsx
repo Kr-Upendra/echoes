@@ -21,6 +21,7 @@ type Props = {
   title?: string;
   maxFiles?: number;
   imageProperties: ImageProperties;
+  oldImagePath?: string;
 };
 
 interface FileWithPreview extends File {
@@ -33,6 +34,7 @@ export default function ImageUploader({
   title,
   maxFiles = 1,
   imageProperties,
+  oldImagePath,
 }: Props) {
   const queryClient = useQueryClient();
   const [file, setFile] = useState<FileWithPreview | null>(null);
@@ -122,7 +124,8 @@ export default function ImageUploader({
       const publicUrl = await uploadFileToSupabase(
         file,
         imageProperties?.bucketName,
-        imageProperties?.dirName
+        imageProperties?.dirName,
+        oldImagePath
       );
       if (publicUrl) {
         const formData = { [imageProperties?.keyName]: publicUrl };

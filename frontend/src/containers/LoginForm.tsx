@@ -105,7 +105,10 @@ export default function LoginForm() {
             </span>
           </div>
           <div className="mt-4 text-center">
-            <button className="rounded-full py-2 px-10 bg-green-700 text-lg text-white font-display">
+            <button
+              disabled={mutation.isPending}
+              className="rounded-full py-2 px-10 bg-green-700 text-lg text-white font-display"
+            >
               {mutation.isPending ? "Logging in" : "Login"}
             </button>
           </div>

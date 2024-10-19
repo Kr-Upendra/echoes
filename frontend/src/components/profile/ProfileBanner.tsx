@@ -43,6 +43,7 @@ export default function ProfileBanner() {
           mutationFunction={updateProfile}
           title="Update your banner image"
           imageProperties={userBannerImageProperties}
+          oldImagePath={userProfile?.profileBanner}
         />
       )}
     </div>

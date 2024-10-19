@@ -124,6 +124,7 @@ export default function ProfileCard() {
           mutationFunction={updateProfile}
           title="Update your profile picture"
           imageProperties={userProfileImageProperties}
+          oldImagePath={userProfile?.profilePicture}
         />
       )}
     </div>
