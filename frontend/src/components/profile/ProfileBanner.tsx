@@ -2,9 +2,16 @@ import { FaPen } from "react-icons/fa6";
 import default_bg_cover from "../../assets/bg/default_cover_image.jpg";
 import { useState } from "react";
 import ImageUploader from "../uploader/FileUploader";
+import { updateProfile } from "../../api";
+import { maxUploadFileSize, supabaseUsersBucket } from "../../utils";
+import { useSelector } from "react-redux";
+import { RootState } from "../../state";
 
 export default function ProfileBanner() {
   const [showUploader, setShowUploader] = useState<boolean>(false);
+  const userProfile = useSelector(
+    (state: RootState) => state.userProfile.userProfile
+  );
 
   const handleUploadClick = () => {
     setShowUploader(true);
@@ -12,7 +19,9 @@ export default function ProfileBanner() {
   return (
     <div
       style={{
-        backgroundImage: `linear-gradient(to bottom, #00000099, #00000008), url(${default_bg_cover})`,
+        backgroundImage: `linear-gradient(to bottom, #00000099, #00000008), url(${
+          userProfile?.profileBanner || default_bg_cover
+        })`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -30,8 +39,13 @@ export default function ProfileBanner() {
 
       {showUploader && (
         <ImageUploader
-          onClose={() => setShowUploader(false)} // Pass a function to close the uploader
+          onClose={() => setShowUploader(false)}
+          mutationFunction={updateProfile}
           title="Update your banner image"
+          bucketName={supabaseUsersBucket}
+          dirName="banners"
+          imageKey="profileBanner" // same as database keyword for image
+          maxFileSize={maxUploadFileSize.userBanner}
         />
       )}
     </div>

@@ -85,7 +85,6 @@ export default function ImageUploader({
       const publicUrl = await uploadFileToSupabase(file, bucketName, dirName);
       if (publicUrl) {
         const formData = { [imageKey]: publicUrl };
-        console.log(formData);
         mutation.mutate(formData);
       } else {
         errorAlert("Failed to retrieve the uploaded file URL.");

@@ -31,7 +31,6 @@ export const updatePassword = async (
 export const updateProfile = async (
   formdata: UpdateProfileFormData
 ): Promise<ApiResponse> => {
-  console.log("api: ", formdata);
   return apiFetch(
     "/users/update-profile",
     {

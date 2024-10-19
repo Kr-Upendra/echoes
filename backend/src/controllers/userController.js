@@ -31,8 +31,15 @@ export const userProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
   const userId = req.user.id;
-  const { firstName, lastName, about, profilePicture, socialMedia, address } =
-    req.body;
+  const {
+    firstName,
+    lastName,
+    about,
+    profilePicture,
+    profileBanner,
+    socialMedia,
+    address,
+  } = req.body;
 
   const updateData = {};
 
@@ -40,6 +47,7 @@ export const updateProfile = async (req, res) => {
   if (lastName !== undefined) updateData.lastName = lastName;
   if (about !== undefined) updateData.about = about;
   if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
+  if (profileBanner !== undefined) updateData.profileBanner = profileBanner;
 
   if (address) {
     if (address.street !== undefined)

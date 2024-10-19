@@ -20,6 +20,7 @@ export type UpdateProfileFormData = {
   lastName?: string;
   about?: string;
   profilePicture?: string;
+  profileBanner?: string;
   address?: {
     street?: string;
     city?: string;

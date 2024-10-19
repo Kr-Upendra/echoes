@@ -56,6 +56,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    profileBanner: {
+      type: String,
+      default: null,
+    },
     userRole: {
       type: String,
       enum: ["user", "admin"],

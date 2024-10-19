@@ -23,6 +23,7 @@ interface IUserProfile {
   firstName: string;
   lastName: string;
   profilePicture?: string;
+  profileBanner?: string;
   about: string;
   createdAt: string;
   updatedAt: string;
