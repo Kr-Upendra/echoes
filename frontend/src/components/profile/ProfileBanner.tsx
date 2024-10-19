@@ -19,7 +19,7 @@ export default function ProfileBanner() {
   return (
     <div
       style={{
-        backgroundImage: `linear-gradient(to bottom, #00000099, #00000008), url(${
+        backgroundImage: `linear-gradient(to bottom, #005533a5, #00000088), url(${
           userProfile?.profileBanner || default_bg_cover
         })`,
         backgroundSize: "cover",

@@ -1,20 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface Address {
-  street?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  zipcode?: string;
-}
-
-interface SocialMedia {
-  facebook?: string;
-  thread?: string;
-  instagram?: string;
-  twitter?: string;
-  website?: string;
-}
+import { Address, SocialMedia } from "../../utils";
 
 interface IUserProfile {
   _id: string;

@@ -15,7 +15,7 @@ export type UpdatePasswordFromData = {
   newPassword: string;
 };
 
-type Address = {
+export type Address = {
   street?: string;
   city?: string;
   state?: string;
@@ -23,7 +23,7 @@ type Address = {
   zipcode?: string;
 };
 
-type SocialMedia = {
+export type SocialMedia = {
   facebook?: string;
   thread?: string;
   instagram?: string;

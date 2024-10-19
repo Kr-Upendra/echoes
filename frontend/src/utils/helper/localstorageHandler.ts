@@ -1,6 +1,15 @@
 const CURRENT_USER_INFO = "currentUser";
 
-export const setUserData = (data: any) => {
+interface ICurrentUser {
+  email: string;
+  firstName: string;
+  lastName: string;
+  profilePicture?: string;
+  userId: string;
+  role: string;
+}
+
+export const setUserData = (data: ICurrentUser) => {
   localStorage.setItem(CURRENT_USER_INFO, JSON.stringify(data));
 };
 

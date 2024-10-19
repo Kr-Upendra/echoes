@@ -18,6 +18,10 @@ export default function Header() {
     (state: RootState) => state.currentUser.currentUserInfo
   );
 
+  const userProfile = useSelector(
+    (state: RootState) => state.userProfile.userProfile
+  );
+
   function handleClick() {
     successAlert("You logged out successfully.");
     setTimeout(() => {
@@ -67,9 +71,15 @@ export default function Header() {
             >
               <img
                 className={`w-8 h-8 border-2 border-green-500 rounded-full ${
-                  currentUser?.profilePicture ? "p-0" : "p-1"
+                  currentUser?.profilePicture || userProfile?.profilePicture
+                    ? "p-0"
+                    : "p-1"
                 }`}
-                src={currentUser?.profilePicture || default_user}
+                src={
+                  currentUser?.profilePicture ||
+                  userProfile?.profilePicture ||
+                  default_user
+                }
                 alt={currentUser?.firstName || "Default User"}
               />
             </button>

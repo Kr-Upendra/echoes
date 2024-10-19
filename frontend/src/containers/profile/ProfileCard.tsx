@@ -18,6 +18,7 @@ import { userProfileImageProperties } from "../../utils";
 
 export default function ProfileCard() {
   const location = useLocation();
+  const currentPath = location?.pathname;
   const [showUploader, setShowUploader] = useState<boolean>(false);
   const userProfile = useSelector(
     (state: RootState) => state.userProfile.userProfile
@@ -81,35 +82,35 @@ export default function ProfileCard() {
       </div>
       <div className="mt-4 flex gap-4 sm:gap-2">
         <Link
-          to={userProfile?.socialMedia?.facebook || location.pathname}
+          to={userProfile?.socialMedia?.facebook || currentPath}
           className="w-full p-2"
           target="_blank"
         >
           <FaFacebook className="mx-auto text-2xl text-green-500" />
         </Link>
         <Link
-          to={userProfile?.socialMedia?.thread || location.pathname}
+          to={userProfile?.socialMedia?.thread || currentPath}
           className="w-full p-2"
           target="_blank"
         >
           <FaThreads className="mx-auto text-2xl text-green-500" />
         </Link>
         <Link
-          to={userProfile?.socialMedia?.thread || location.pathname}
+          to={userProfile?.socialMedia?.thread || currentPath}
           className="w-full p-2"
           target="_blank"
         >
           <FaInstagram className="mx-auto text-2xl text-green-500" />
         </Link>
         <Link
-          to={userProfile?.socialMedia?.thread || location.pathname}
+          to={userProfile?.socialMedia?.thread || currentPath}
           className="w-full p-2"
           target="_blank"
         >
           <FaTwitter className="mx-auto text-2xl text-green-500" />
         </Link>
         <Link
-          to={userProfile?.socialMedia?.thread || location.pathname}
+          to={userProfile?.socialMedia?.thread || currentPath}
           className="w-full p-2"
           target="_blank"
         >
