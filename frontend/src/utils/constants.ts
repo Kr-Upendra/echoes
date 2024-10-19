@@ -15,7 +15,7 @@ export const userBannerImageProperties = {
   },
   bucketName: supabaseUsersBucket,
   keyName: "profileBanner",
-  dirName: "banner",
+  dirName: "banners",
 };
 
 export const userProfileImageProperties = {

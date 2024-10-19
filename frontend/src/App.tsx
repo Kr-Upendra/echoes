@@ -16,6 +16,7 @@ import {
   Setting,
 } from "./pages";
 import Note from "./pages/Note";
+import NotFound from "./pages/Error/NotFound";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,11 +24,14 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      {/* <Route element={<ProtectedLayout isAuthenticated={false} />}> */}
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="settings" element={<Setting />} />
       <Route path="profile" element={<Profile />} />
       <Route path="notes" element={<Note />} />
       <Route path="reminders" element={<Reminder />} />
+      {/* </Route> */}
+      <Route path="*" element={<NotFound />} />
     </Route>
   )
 );

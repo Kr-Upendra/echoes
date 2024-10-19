@@ -1,6 +1,12 @@
+import { useSelector } from "react-redux";
 import LinkButton from "../components/buttons/LinkButton";
+import { RootState } from "../state";
 
 export default function Hero() {
+  const currentUserInfo = useSelector(
+    (state: RootState) => state.currentUser.currentUserInfo
+  );
+
   return (
     <section id="hero" className="min-h-screen base-paddings hero-bg">
       <div className="flex items-center justify-center flex-col min-h-screen">
@@ -15,7 +21,10 @@ export default function Hero() {
           productivity.
         </p>
         <div className="mt-3">
-          <LinkButton hrefValue="/register" title="Get Started" />
+          <LinkButton
+            hrefValue={currentUserInfo ? "/dashboard" : "/register"}
+            title="Get Started"
+          />
         </div>
       </div>
     </section>
