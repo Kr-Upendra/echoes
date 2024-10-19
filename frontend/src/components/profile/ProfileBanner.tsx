@@ -3,7 +3,7 @@ import default_bg_cover from "../../assets/bg/default_cover_image.jpg";
 import { useState } from "react";
 import ImageUploader from "../uploader/FileUploader";
 import { updateProfile } from "../../api";
-import { maxUploadFileSize, supabaseUsersBucket } from "../../utils";
+import { userBannerImageProperties } from "../../utils";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state";
 
@@ -42,10 +42,7 @@ export default function ProfileBanner() {
           onClose={() => setShowUploader(false)}
           mutationFunction={updateProfile}
           title="Update your banner image"
-          bucketName={supabaseUsersBucket}
-          dirName="banners"
-          imageKey="profileBanner" // same as database keyword for image
-          maxFileSize={maxUploadFileSize.userBanner}
+          imageProperties={userBannerImageProperties}
         />
       )}
     </div>

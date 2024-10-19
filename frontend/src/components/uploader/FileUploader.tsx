@@ -4,6 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ApiResponse,
   errorAlert,
+  ImageProperties,
   successAlert,
   UpdateProfileFormData,
   warnAlert,
@@ -19,10 +20,7 @@ type Props = {
   mutationFunction: UpdateProfileMutationFunction;
   title?: string;
   maxFiles?: number;
-  bucketName: string;
-  dirName: string;
-  imageKey: string;
-  maxFileSize: number;
+  imageProperties: ImageProperties;
 };
 
 interface FileWithPreview extends File {
@@ -34,31 +32,70 @@ export default function ImageUploader({
   mutationFunction,
   title,
   maxFiles = 1,
-  bucketName,
-  dirName,
-  imageKey,
-  maxFileSize,
+  imageProperties,
 }: Props) {
   const queryClient = useQueryClient();
   const [file, setFile] = useState<FileWithPreview | null>(null);
+
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: maxFiles,
-    accept: {
-      "image/*": [".jpeg", ".png", ".jpg"],
-    },
+    accept: imageProperties.acceptedTypes,
     onDrop: (acceptedFiles: File[]) => {
       if (acceptedFiles.length === 0) return;
 
-      const fileSize = acceptedFiles[0].size;
+      const file = acceptedFiles[0];
+      const maxFileSize = imageProperties?.fileSize?.max;
+      const minFileSize = imageProperties?.fileSize?.min;
+
+      const fileSize = file.size;
+
       if (fileSize > maxFileSize) {
-        warnAlert(`File size exceeds ${maxFileSize} KB limit.`);
+        warnAlert(`File size should not exceed ${maxFileSize / 1024} KB.`);
         return;
       }
 
-      const newFile = Object.assign(acceptedFiles[0], {
-        preview: URL.createObjectURL(acceptedFiles[0]),
-      }) as FileWithPreview;
-      setFile(newFile);
+      if (fileSize < minFileSize) {
+        warnAlert(`File size should be at least ${minFileSize / 1024} KB.`);
+        return;
+      }
+
+      const image = new Image();
+      const objectURL = URL.createObjectURL(file);
+
+      image.onload = () => {
+        const width = image.width;
+        const height = image.height;
+
+        const maxWidth = imageProperties?.dimension?.width?.max;
+        const minWidth = imageProperties?.dimension?.width?.min;
+        const maxHeight = imageProperties?.dimension?.height?.max;
+        const minHeight = imageProperties?.dimension?.height?.min;
+
+        if (width > maxWidth || height > maxHeight) {
+          warnAlert(
+            `Image dimensions should not exceed ${maxWidth}x${maxHeight} pixels.`
+          );
+          return;
+        }
+
+        if (width < minWidth || height < minHeight) {
+          warnAlert(
+            `Image dimensions should be at least ${minWidth}x${minHeight} pixels.`
+          );
+          return;
+        }
+
+        const newFile = Object.assign(file, {
+          preview: objectURL,
+        }) as FileWithPreview;
+        setFile(newFile);
+      };
+
+      image.onerror = () => {
+        warnAlert("Invalid image file.");
+      };
+
+      image.src = objectURL;
     },
   });
 
@@ -82,9 +119,13 @@ export default function ImageUploader({
     }
 
     try {
-      const publicUrl = await uploadFileToSupabase(file, bucketName, dirName);
+      const publicUrl = await uploadFileToSupabase(
+        file,
+        imageProperties?.bucketName,
+        imageProperties?.dirName
+      );
       if (publicUrl) {
-        const formData = { [imageKey]: publicUrl };
+        const formData = { [imageProperties?.keyName]: publicUrl };
         mutation.mutate(formData);
       } else {
         errorAlert("Failed to retrieve the uploaded file URL.");
@@ -111,6 +152,17 @@ export default function ImageUploader({
         >
           <input {...getInputProps()} />
           <p>Drag 'n' drop file, or click to select file</p>
+          <p className="mt-2 text-sm text-gray-700">
+            <strong>File Size:</strong> {imageProperties?.fileSize?.min / 1024}{" "}
+            KB - {imageProperties?.fileSize?.max / 1024} KB
+          </p>
+          <p className="mt-2 text-sm text-gray-700">
+            <strong>Dimensions:</strong> min&nbsp;
+            {imageProperties?.dimension?.width?.min} x&nbsp;
+            {imageProperties?.dimension?.height?.min} px, max &nbsp;
+            {imageProperties?.dimension?.width?.max} x&nbsp;
+            {imageProperties?.dimension?.height?.max}&nbsp;px
+          </p>
         </div>
         <div className="flex flex-wrap justify-center mt-4 gap-4">
           {file && (

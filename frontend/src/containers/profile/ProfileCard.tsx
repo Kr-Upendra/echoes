@@ -14,7 +14,7 @@ import { RootState } from "../../state";
 import { useState } from "react";
 import ImageUploader from "../../components/uploader/FileUploader";
 import { updateProfile } from "../../api";
-import { maxUploadFileSize, supabaseUsersBucket } from "../../utils";
+import { userProfileImageProperties } from "../../utils";
 
 export default function ProfileCard() {
   const location = useLocation();
@@ -122,10 +122,7 @@ export default function ProfileCard() {
           onClose={() => setShowUploader(false)} // Pass a function to close the uploader
           mutationFunction={updateProfile}
           title="Update your profile picture"
-          bucketName={supabaseUsersBucket}
-          dirName="avatar"
-          imageKey="profilePicture"
-          maxFileSize={maxUploadFileSize.userProfile}
+          imageProperties={userProfileImageProperties}
         />
       )}
     </div>
