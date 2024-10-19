@@ -12,7 +12,7 @@ export default function ProfileBanner() {
   return (
     <div
       style={{
-        backgroundImage: `linear-gradient(to bottom, rgba(34, 197, 94, 0.4), #000000a1), url(${default_bg_cover})`,
+        backgroundImage: `linear-gradient(to bottom, #00000099, #00000008), url(${default_bg_cover})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

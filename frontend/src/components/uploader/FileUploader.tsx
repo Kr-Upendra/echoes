@@ -2,25 +2,47 @@ import { useDropzone } from "react-dropzone";
 import { useEffect, useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  ApiResponse,
   errorAlert,
   successAlert,
-  supabaseUsersBucket,
+  UpdateProfileFormData,
   warnAlert,
-  maxUploadFileSize,
 } from "../../utils";
-import { updateProfile, uploadFileToSupabase } from "../../api";
+import { uploadFileToSupabase } from "../../api";
 
-type Props = { onClose: () => void; title?: string };
+type UpdateProfileMutationFunction = (
+  formdata: UpdateProfileFormData
+) => Promise<ApiResponse>;
+
+type Props = {
+  onClose: () => void;
+  mutationFunction: UpdateProfileMutationFunction;
+  title?: string;
+  maxFiles?: number;
+  bucketName: string;
+  dirName: string;
+  imageKey: string;
+  maxFileSize: number;
+};
 
 interface FileWithPreview extends File {
   preview: string;
 }
 
-export default function ImageUploader({ onClose, title }: Props) {
+export default function ImageUploader({
+  onClose,
+  mutationFunction,
+  title,
+  maxFiles = 1,
+  bucketName,
+  dirName,
+  imageKey,
+  maxFileSize,
+}: Props) {
   const queryClient = useQueryClient();
   const [file, setFile] = useState<FileWithPreview | null>(null);
   const { getRootProps, getInputProps } = useDropzone({
-    maxFiles: 1,
+    maxFiles: maxFiles,
     accept: {
       "image/*": [".jpeg", ".png", ".jpg"],
     },
@@ -28,10 +50,8 @@ export default function ImageUploader({ onClose, title }: Props) {
       if (acceptedFiles.length === 0) return;
 
       const fileSize = acceptedFiles[0].size;
-      if (fileSize > maxUploadFileSize.userProfile) {
-        warnAlert(
-          `File size exceeds ${maxUploadFileSize.userProfile} KB limit.`
-        );
+      if (fileSize > maxFileSize) {
+        warnAlert(`File size exceeds ${maxFileSize} KB limit.`);
         return;
       }
 
@@ -43,17 +63,15 @@ export default function ImageUploader({ onClose, title }: Props) {
   });
 
   const mutation = useMutation({
-    mutationFn: updateProfile,
+    mutationFn: mutationFunction,
     onSuccess: () => {
-      successAlert("Profile picture updated successfully.");
+      successAlert("Image uploaded successfully.");
       queryClient.invalidateQueries({ queryKey: ["profileData"] });
       setFile(null);
       onClose();
     },
     onError: (error: any) => {
-      errorAlert(
-        error.message || "An error occurred while updating profile picture."
-      );
+      errorAlert(error.message || "An error occurred while uploading.");
     },
   });
 
@@ -64,12 +82,14 @@ export default function ImageUploader({ onClose, title }: Props) {
     }
 
     try {
-      const publicUrl = await uploadFileToSupabase(
-        file,
-        supabaseUsersBucket,
-        "avatar"
-      );
-      mutation.mutate({ profilePicture: publicUrl });
+      const publicUrl = await uploadFileToSupabase(file, bucketName, dirName);
+      if (publicUrl) {
+        const formData = { [imageKey]: publicUrl };
+        console.log(formData);
+        mutation.mutate(formData);
+      } else {
+        errorAlert("Failed to retrieve the uploaded file URL.");
+      }
     } catch (error) {
       errorAlert("Failed to upload file.");
     }

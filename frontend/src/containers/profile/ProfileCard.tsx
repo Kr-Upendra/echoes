@@ -13,6 +13,8 @@ import default_user from "../../assets/icons/default_user.png";
 import { RootState } from "../../state";
 import { useState } from "react";
 import ImageUploader from "../../components/uploader/FileUploader";
+import { updateProfile } from "../../api";
+import { maxUploadFileSize, supabaseUsersBucket } from "../../utils";
 
 export default function ProfileCard() {
   const location = useLocation();
@@ -31,7 +33,7 @@ export default function ProfileCard() {
         <img
           className="rounded-full"
           src={userProfile?.profilePicture || default_user}
-          alt="Default User"
+          alt={`${userProfile?.firstName}'s display picture`}
         />
         <button
           onClick={handleUploadClick}
@@ -118,7 +120,12 @@ export default function ProfileCard() {
       {showUploader && (
         <ImageUploader
           onClose={() => setShowUploader(false)} // Pass a function to close the uploader
+          mutationFunction={updateProfile}
           title="Update your profile picture"
+          bucketName={supabaseUsersBucket}
+          dirName="avatar"
+          imageKey="profilePicture"
+          maxFileSize={maxUploadFileSize.userProfile}
         />
       )}
     </div>
