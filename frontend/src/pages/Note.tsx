@@ -1,15 +1,14 @@
-import SectionHeading from "../components/common/SectionHeading";
+import PageTitle from "../components/PageTitle";
+import PageFilter from "../components/PageFilter";
+import Grid from "../containers/Grid";
 
 export default function Note() {
   return (
     <section className="base-paddings">
-      <main>
-        <div className="min-h-screen h-full flex justify-center items-center flex-col">
-          <SectionHeading
-            title="Your Notes page"
-            description="The list of your notes page. you can also create, update or delete your note."
-          />
-        </div>
+      <main className="pt-20 pb-10">
+        <PageTitle title="My Notes" buttonTitle="New Note" />
+        <PageFilter />
+        <Grid />
       </main>
     </section>
   );
