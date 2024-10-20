@@ -19,18 +19,18 @@ export default function Card({
     <div className="card-diff rounded-lg p-4 group relative">
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-green-500 font-display line-clamp-1 sm:text-sm">
-          Lorem ipsum dolor sit amet consectet
+          {title || "Lorem ipsum dolor sit amet consectet"}
         </h2>
       </div>
       <p className="line-clamp-3 text-sm sm:text-xs text-gray-500 mb-4">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium
+        {content || "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium
         tenetur quasi, minima eveniet vitae quo, nobis culpa porro perspiciatis
         maiores explicabo earum sint beatae, non iure odio laborum adipisci
-        debitis!
+        debitis!"}
       </p>
       <div className="flex items-center justify-between mb-2">
         <span className="px-2.5 py-0.5 font-display rounded-full text-green-600 border border-green-600 text-xs">
-          Work
+          {category|| "Work"}
         </span>
         <div className="flex space-x-1">
           {tags.slice(0, 2).map((tag, index) => (
