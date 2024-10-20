@@ -54,7 +54,7 @@ export default function DropDown({
 
         {/* Dropdown Options */}
         {isOpen && (
-          <div className="absolute mt-2 w-full bg-black rounded-lg border border-green-500/20 p-1">
+          <div className="absolute z-50 mt-2 w-full bg-black rounded-lg border border-green-500/20 p-1">
             {options.map((option) => (
               <div
                 key={option}

@@ -52,3 +52,8 @@ input[type="number"] {
   background: #22c55e;
   border-radius: 8px;
 }
+
+.card-diff {
+  box-shadow: 0 35px 60px -15px rgba(19, 19, 19, 0.3);
+  background-color: rgba(202, 226, 201, 0.048);
+}
