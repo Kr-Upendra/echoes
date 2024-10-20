@@ -3,7 +3,7 @@ import PageFilter from "../components/PageFilter";
 import Card from "../components/Card";
 import { useState } from "react";
 import Pagination from "../components/Pagination";
-import NoRecord from "../components/NoRecord";
+// import NoRecord from "../components/NoRecord";
 
 export default function Note() {
   const [currentPage, setCurrentPage] = useState(1);
