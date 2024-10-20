@@ -14,6 +14,7 @@ import {
 } from "../utils";
 import { setCurrentUser } from "../state";
 import CustomInput from "../components/form/CustomInput";
+import Button from "../components/buttons/Button";
 
 const schema = z.object({
   email: z.string().email("Invalid email format"),
@@ -105,12 +106,10 @@ export default function LoginForm() {
             </span>
           </div>
           <div className="mt-4 text-center">
-            <button
-              disabled={mutation.isPending}
-              className="rounded-full py-2 px-10 bg-green-700 text-lg text-white font-display"
-            >
-              {mutation.isPending ? "Logging in" : "Login"}
-            </button>
+            <Button
+              title={mutation.isPending ? "Logging in" : "Login"}
+              isDisabled={mutation.isPending}
+            />
           </div>
         </div>
       </form>

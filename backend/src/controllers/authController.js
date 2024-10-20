@@ -39,6 +39,7 @@ export const register = async (req, res) => {
       message: API_RESPONSE_MESSAGE.REGISTER_SUCCESS,
     });
   } catch (error) {
+    console.log(error);
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,

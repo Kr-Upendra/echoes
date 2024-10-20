@@ -98,7 +98,6 @@ userSchema.pre("save", async function (next) {
       userName = `${emailUsername}${suffix}`;
       suffix++;
     }
-
     this.userName = userName;
   }
   next();

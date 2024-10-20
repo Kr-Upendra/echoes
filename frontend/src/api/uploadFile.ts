@@ -15,12 +15,9 @@ export const uploadFileToSupabase = async (
   if (oldImagePath) {
     const oldImage = oldImagePath.split("/").slice(8).join("/");
 
-    console.log("oldimage: ", oldImage);
     const { error: deleteError } = await supabase.storage
       .from(bucket)
       .remove([oldImage]);
-
-    console.log("deleteError ", deleteError);
 
     if (deleteError) {
       errorAlert(deleteError.message || "Failed to delete old image.");
@@ -36,8 +33,6 @@ export const uploadFileToSupabase = async (
     errorAlert(uploadError?.message || "Failed to upload file.");
     return;
   }
-
-  console.log("filename: ", filename);
 
   const { data } = supabase.storage.from(bucket).getPublicUrl(filename);
   return data?.publicUrl;

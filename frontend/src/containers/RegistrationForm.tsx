@@ -1,11 +1,16 @@
-import { Link, useNavigate } from "react-router-dom";
-import CustomInput from "../components/form/CustomInput";
-import { z } from "zod";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
 import { registerUser } from "../api";
-import { ApiResponse, RegisterFromData } from "../utils";
-import { toast } from "react-toastify";
+import CustomInput from "../components/form/CustomInput";
+import {
+  ApiResponse,
+  errorAlert,
+  RegisterFromData,
+  successAlert,
+} from "../utils";
+import Button from "../components/buttons/Button";
 
 const schema = z.object({
   firstname: z.string().min(1, "First name is required"),
@@ -39,14 +44,14 @@ export default function RegistrationForm() {
           firstname: "",
           lastname: "",
         });
-        toast.success(response?.message);
+        successAlert(response?.message);
         setTimeout(() => {
           navigate("/login");
         }, 2000);
       }
     },
     onError: (error: any) => {
-      toast.error(error?.message);
+      errorAlert(error?.message);
     },
   });
 
@@ -55,7 +60,6 @@ export default function RegistrationForm() {
     try {
       schema.parse(formData);
       setErrors({});
-      console.log("Register Form submitted:", formData);
       mutation.mutate(formData);
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -117,12 +121,10 @@ export default function RegistrationForm() {
             </span>
           </div>
           <div className="mt-4 text-center">
-            <button
-              disabled={mutation.isPending}
-              className="rounded-full py-2 px-10 bg-green-700 text-lg text-white font-display"
-            >
-              {mutation.isPending ? "Registering" : "Register"}
-            </button>
+            <Button
+              title={mutation.isPending ? "Registering" : "Register"}
+              isDisabled={mutation.isPending}
+            />
           </div>
         </div>
       </form>
