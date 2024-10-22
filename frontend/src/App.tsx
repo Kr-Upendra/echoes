@@ -5,17 +5,19 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./App.css";
-import { RootLayout } from "./layouts";
+import { PageLayout, RootLayout } from "./layouts";
 import {
+  AddNote,
   Dashboard,
+  EditNote,
   Home,
   Login,
+  Note,
   Profile,
   Register,
   Reminder,
   Setting,
 } from "./pages";
-import Note from "./pages/Note";
 import NotFound from "./pages/Error/NotFound";
 
 const router = createBrowserRouter(
@@ -28,7 +30,11 @@ const router = createBrowserRouter(
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="settings" element={<Setting />} />
       <Route path="profile" element={<Profile />} />
-      <Route path="notes" element={<Note />} />
+      <Route path="notes" element={<PageLayout />}>
+        <Route index element={<Note />} />
+        <Route path="create" element={<AddNote />} />
+        <Route path=":id" element={<EditNote />} />
+      </Route>
       <Route path="reminders" element={<Reminder />} />
       {/* </Route> */}
       <Route path="*" element={<NotFound />} />

@@ -1,4 +1,5 @@
 import { FaEye, FaHeart, FaTrash } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 type Props = {
   title: string;
@@ -15,8 +16,7 @@ export default function Card({
   tags,
   isFavorite,
 }: Props) {
-
-console.log(title, content, category, tags, isFavorite);
+  console.log(title, content, category, tags, isFavorite);
   return (
     <div className="card-diff rounded-lg p-4 group relative">
       <div className="flex justify-between items-center mb-2">
@@ -47,19 +47,23 @@ console.log(title, content, category, tags, isFavorite);
       </div>
 
       <div className="absolute p-2 sm:p-1 top-0 right-0 flex flex-col gap-y-2 -translate-x-full opacity-0 pointer-events-none group-hover:translate-x-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 sm:opacity-100 sm:translate-x-0">
-        <button className="bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
+        <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
           <FaHeart
             className={`text-lg  sm:text-sm ${
               isFavorite ? "text-green-500" : "text-white"
             }`}
           />
         </button>
-        <button className="bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
-          <FaEye className="text-lg sm:text-sm text-white" />
-        </button>
-        <button className="bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
-          <FaTrash className="text-lg sm:text-sm text-white" />
-        </button>
+        <Link to="/">
+          <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
+            <FaEye className="text-lg sm:text-sm text-white" />
+          </button>
+        </Link>
+        <Link to="/">
+          <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
+            <FaTrash className="text-lg sm:text-sm text-white" />
+          </button>
+        </Link>
       </div>
     </div>
   );

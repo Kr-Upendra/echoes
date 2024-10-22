@@ -65,3 +65,11 @@ export interface ImageProperties {
   keyName: string; // Key name for storage
   dirName: string; // Directory name for storage
 }
+
+export interface NoteFormData {
+  title: string;
+  category: string;
+  content: string;
+  tags: string[]; // Specify tags as an array of strings
+  isFavorite: boolean;
+}
