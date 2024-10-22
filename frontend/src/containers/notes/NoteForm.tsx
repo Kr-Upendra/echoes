@@ -49,8 +49,16 @@ export default function NoteForm() {
     >
   ) => {
     const { name, value, type } = e.target;
+    if (name === "tags") {
+      // Split the value by commas, trim whitespace, and filter out empty strings
+      const tagsArray = value
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== ""); // Only include non-empty tags
 
-    if (type === "checkbox") {
+      // Update formData with the new tags array
+      setFormData((prev) => ({ ...prev, [name]: tagsArray }));
+    } else if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData((prev) => ({ ...prev, [name]: checked }));
     } else {
@@ -125,7 +133,7 @@ export default function NoteForm() {
             name="tags"
             type="text"
             placeHolder="Comma separated values"
-            value={formData.tags}
+            value={formData.tags.join(", ")}
             isDisabled={false}
             onchange={handleChange}
             error={errors?.tags}
