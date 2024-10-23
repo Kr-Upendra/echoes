@@ -5,14 +5,78 @@ import {
   STATUS_CODES,
 } from "../utils/index.js";
 
-export const getNotes = async (req, res) => {
-  const notes = await noteModel.find();
+export const notes = async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const search = req.query.search || "";
+  const offset = (page - 1) * limit;
+  const userId = req.user.id;
+  try {
+    const searchQuery = {
+      title: { $regex: search, $options: "i" },
+      author: userId,
+    };
 
-  return res.status(STATUS_CODES.SUCCESS).json({
-    status: "success",
-    message: API_RESPONSE_MESSAGE.RECORD_LIST,
-    notes,
-  });
+    const count = await noteModel.countDocuments(searchQuery);
+    const totalPages = Math.ceil(count / limit);
+    const hasNextPage = page < totalPages;
+
+    const notes = await noteModel
+      .find(searchQuery)
+      .sort({ createdAt: -1 }) // Sort by latest first
+      .skip(offset)
+      .limit(limit)
+      .populate("author", "firstName lastName email")
+      .populate("category", "title slug");
+
+    const pagination = {
+      totalRecords: count,
+      pageSize: limit,
+      totalPages,
+      currentPage: page,
+      hasNextPage,
+    };
+
+    return res.status(STATUS_CODES.SUCCESS).json({
+      status: "success",
+      message: API_RESPONSE_MESSAGE.RECORD_LIST,
+      data: { notes, pagination },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
+
+export const note = async (req, res) => {
+  try {
+    const note = await noteModel
+      .findById(req.params.id)
+      .populate("author", "firstName lastName email")
+      .populate("category", "title slug");
+
+    if (!note)
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        status: "failed",
+        message: "Note not found by given ID.",
+      });
+
+    return res.status(STATUS_CODES.SUCCESS).json({
+      status: "success",
+      message: "Note found by given ID.",
+      data: {
+        note,
+      },
+    });
+  } catch (err) {
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
+    });
+  }
 };
 
 export const createNote = async (req, res) => {
@@ -51,6 +115,69 @@ export const createNote = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
+
+export const updateNote = async (req, res) => {
+  const id = req.params.id;
+  const { title, content, tags, isFavorite, category } = req.body;
+
+  const updateFields = {};
+  if (title !== undefined) {
+    updateFields.title = title;
+    updateFields.slug = createSlug(title);
+  }
+  if (content !== undefined) updateFields.content = content;
+  if (tags !== undefined) updateFields.tags = tags;
+  if (isFavorite !== undefined) updateFields.isFavorite = isFavorite;
+  if (category !== undefined) updateFields.category = category;
+
+  try {
+    const updatedNote = await noteModel.findByIdAndUpdate(
+      id,
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedNote) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        status: "failed",
+        message: "Note not found with given ID.",
+      });
+    }
+
+    return res.status(STATUS_CODES.SUCCESS).json({
+      status: "success",
+      message: "Note updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
+
+export const deleteNote = async (req, res) => {
+  try {
+    const note = await noteModel.findByIdAndDelete(req.params.id);
+
+    if (!note)
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        status: "failed",
+        message: "Note not found by given ID.",
+      });
+
+    return res.status(STATUS_CODES.NO_CONTENT).json({
+      status: "success",
+      message: "Note deleted successfully.",
+    });
+  } catch (err) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,

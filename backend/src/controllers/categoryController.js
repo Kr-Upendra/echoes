@@ -99,6 +99,7 @@ export const category = async (req, res) => {
     });
   }
 };
+
 export const updateCategory = async (req, res) => {
   const { id } = req.params;
   const { title, description, color, icon } = req.body;
