@@ -54,7 +54,7 @@ export default function Card({
             }`}
           />
         </button>
-        <Link to="/">
+        <Link to="hello">
           <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
             <FaEye className="text-lg sm:text-sm text-white" />
           </button>

@@ -6,28 +6,17 @@ import CustomTextArea from "../../components/form/CustomTextArea";
 import { z } from "zod";
 import { NoteFormData } from "../../utils";
 
-// Define allowed categories
 const allowedCategories = ["all", "work", "personal", "special"] as const; // Replace with your categories
 
 const schema = z.object({
   title: z
     .string()
     .min(3, { message: "Title must have at least 3 words" })
-    .max(50, { message: "Title must not exceed 50 words" })
-    .refine(
-      (val) =>
-        val.trim().split(/\s+/).length >= 3 &&
-        val.trim().split(/\s+/).length <= 50,
-      {
-        message: "Title must be between 3 and 50 words",
-      }
-    ),
+    .max(50, { message: "Title must not exceed 50 words" }),
   category: z.enum(allowedCategories, {
     message: "Category must be one of the predefined options",
   }),
-  content: z.string().refine((val) => val.trim().split(/\s+/).length >= 15, {
-    message: "Content must have at least 15 words",
-  }),
+  content: z.string().min(20),
   tags: z
     .array(z.string())
     .nonempty({ message: "Tags must be an array of strings" }),
@@ -51,7 +40,7 @@ export default function NoteForm() {
     const { name, value, type } = e.target;
     if (name === "tags") {
       const tagsArray = value
-        .split(",")
+        .split(", ")
         .map((tag) => tag.trim())
         .filter((tag) => tag !== "");
       setFormData((prev) => ({ ...prev, [name]: tagsArray }));
@@ -67,7 +56,6 @@ export default function NoteForm() {
     e.preventDefault();
     try {
       console.log(formData);
-      console.log("erros", errors);
       schema.parse(formData);
       setErrors({});
     } catch (err) {

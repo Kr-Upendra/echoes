@@ -1,7 +1,11 @@
+import PageTitle from "../../components/PageTitle";
+import NoteForm from "../../containers/notes/NoteForm";
+
 export default function EditNote() {
   return (
-    <div>
-      <h1>Edit Note Page</h1>
-    </div>
+    <>
+      <PageTitle title="Edit note" buttonTitle="" hrefValue="" />
+      <NoteForm />
+    </>
   );
 }
