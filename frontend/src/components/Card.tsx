@@ -16,7 +16,7 @@ export default function Card({
   tags,
   isFavorite,
 }: Props) {
-  console.log(title, content, category, tags, isFavorite);
+  console.log({ title, content, category });
   return (
     <div className="card-diff rounded-lg p-4 group relative">
       <div className="flex justify-between items-center mb-2">

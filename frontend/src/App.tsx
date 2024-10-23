@@ -19,10 +19,6 @@ import {
   Setting,
 } from "./pages";
 import NotFound from "./pages/Error/NotFound";
-import { getAccessToken } from "./utils";
-
-const accessToken = getAccessToken();
-const isAuthenticated = !!accessToken;
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +26,7 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
-      <Route element={<ProtectedLayout isAuthenticated={isAuthenticated} />}>
+      <Route element={<ProtectedLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="settings" element={<Setting />} />
         <Route path="profile" element={<Profile />} />

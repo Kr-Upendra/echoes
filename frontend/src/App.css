@@ -29,6 +29,45 @@ body {
   -ms-user-select: none;
 }
 
+.loading-svg {
+  width: 3.25em;
+  margin-inline: auto;
+  transform-origin: center;
+  animation: rotate4 2s linear infinite;
+}
+
+.loading-circle {
+  fill: none;
+  stroke: #20a752;
+  stroke-width: 3;
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: dash4 1.5s ease-in-out infinite;
+}
+
+@keyframes rotate4 {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash4 {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 200;
+    stroke-dashoffset: -35px;
+  }
+
+  100% {
+    stroke-dashoffset: -125px;
+  }
+}
+
 /* Hide array in number input */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

@@ -1,7 +1,10 @@
+import { Navigate } from "react-router-dom";
 import SectionHeading from "../components/common/SectionHeading";
 import { LoginForm } from "../containers";
+import { isAuthenticated } from "../utils";
 
 export default function Login() {
+  if (isAuthenticated()) return <Navigate to="/dashboard" replace={true} />;
   return (
     <section className="base-paddings">
       <main>

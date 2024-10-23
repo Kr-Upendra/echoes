@@ -1,9 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { isAuthenticated } from "../utils";
 
-type Props = { isAuthenticated: boolean };
-
-export default function ProtectedLayout({ isAuthenticated }: Props) {
-  console.log(isAuthenticated);
-  if (isAuthenticated) return <Outlet />;
-  return <Navigate to="/login" />;
+export default function ProtectedLayout() {
+  if (!isAuthenticated) return <Navigate to="/login" />;
+  return <Outlet />;
 }
