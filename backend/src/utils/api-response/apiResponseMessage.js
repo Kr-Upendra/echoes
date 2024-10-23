@@ -15,6 +15,7 @@ export const API_RESPONSE_MESSAGE = {
   RECORD_CREATED: "Record created.",
   RECORD_UPDATED: "Record updated.",
   RECORD_DELETED: "Record deleted.",
+  RECORD_ALREADY_EXIST: "Record already exist.",
   BAD_REQUEST: "Bad request. Check parameters.",
   SERVER_ERROR: "Server error. Try again later.",
   FORGOT_PASSWORD: "Password reset link sent.",
