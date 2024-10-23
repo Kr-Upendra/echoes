@@ -17,7 +17,7 @@ export default function CustomInput({
   type,
   label,
   error,
-  value = "",
+  value,
   isDisabled = false,
   onchange,
 }: Props) {

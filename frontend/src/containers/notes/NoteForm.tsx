@@ -50,13 +50,10 @@ export default function NoteForm() {
   ) => {
     const { name, value, type } = e.target;
     if (name === "tags") {
-      // Split the value by commas, trim whitespace, and filter out empty strings
       const tagsArray = value
         .split(",")
         .map((tag) => tag.trim())
-        .filter((tag) => tag !== ""); // Only include non-empty tags
-
-      // Update formData with the new tags array
+        .filter((tag) => tag !== "");
       setFormData((prev) => ({ ...prev, [name]: tagsArray }));
     } else if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;

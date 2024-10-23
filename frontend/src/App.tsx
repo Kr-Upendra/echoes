@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import "./App.css";
-import { PageLayout, RootLayout } from "./layouts";
+import { PageLayout, ProtectedLayout, RootLayout } from "./layouts";
 import {
   AddNote,
   Dashboard,
@@ -19,6 +19,10 @@ import {
   Setting,
 } from "./pages";
 import NotFound from "./pages/Error/NotFound";
+import { getAccessToken } from "./utils";
+
+const accessToken = getAccessToken();
+const isAuthenticated = !!accessToken;
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,17 +30,17 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
-      {/* <Route element={<ProtectedLayout isAuthenticated={false} />}> */}
-      <Route path="dashboard" element={<Dashboard />} />
-      <Route path="settings" element={<Setting />} />
-      <Route path="profile" element={<Profile />} />
-      <Route path="notes" element={<PageLayout />}>
-        <Route index element={<Note />} />
-        <Route path="create" element={<AddNote />} />
-        <Route path=":id" element={<EditNote />} />
+      <Route element={<ProtectedLayout isAuthenticated={isAuthenticated} />}>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="settings" element={<Setting />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="notes" element={<PageLayout />}>
+          <Route index element={<Note />} />
+          <Route path="create" element={<AddNote />} />
+          <Route path=":id" element={<EditNote />} />
+        </Route>
+        <Route path="reminders" element={<Reminder />} />
       </Route>
-      <Route path="reminders" element={<Reminder />} />
-      {/* </Route> */}
       <Route path="*" element={<NotFound />} />
     </Route>
   )
