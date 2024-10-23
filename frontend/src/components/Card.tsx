@@ -2,37 +2,39 @@ import { FaEye, FaHeart, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 type Props = {
+  id: string;
   title: string;
   content: string;
-  category: string;
+  category: {
+    id?: string;
+    title?: string;
+    slug?: string;
+  };
   tags: string[];
   isFavorite: boolean;
 };
 
 export default function Card({
+  id,
   title,
   content,
   category,
   tags,
   isFavorite,
 }: Props) {
-  console.log({ title, content, category });
   return (
     <div className="card-diff rounded-lg p-4 group relative">
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-green-500 font-display line-clamp-1 sm:text-sm">
-          Lorem ipsum dolor sit amet consectet
+          {title}
         </h2>
       </div>
       <p className="line-clamp-3 text-sm sm:text-xs text-gray-500 mb-4">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laudantium
-        tenetur quasi, minima eveniet vitae quo, nobis culpa porro perspiciatis
-        maiores explicabo earum sint beatae, non iure odio laborum adipisci
-        debitis!
+        {content}
       </p>
       <div className="flex items-center justify-between mb-2">
         <span className="px-2.5 py-0.5 font-display rounded-full text-green-600 border border-green-600 text-xs">
-          Work
+          {category?.title}
         </span>
         <div className="flex space-x-1">
           {tags.slice(0, 2).map((tag, index) => (
@@ -54,16 +56,15 @@ export default function Card({
             }`}
           />
         </button>
-        <Link to="hello">
+        <Link to={id}>
           <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
             <FaEye className="text-lg sm:text-sm text-white" />
           </button>
         </Link>
-        <Link to="/">
-          <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
-            <FaTrash className="text-lg sm:text-sm text-white" />
-          </button>
-        </Link>
+
+        <button  className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
+          <FaTrash className="text-lg sm:text-sm text-white" />
+        </button>
       </div>
     </div>
   );

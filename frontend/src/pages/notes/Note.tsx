@@ -18,10 +18,12 @@ export default function Note() {
     queryFn: allNotes,
   });
 
-  // const handlePageChange = (page: number) => {
-  //   console.log("Page changed to: ", page);
-  //   setCurrentPage(page);
-  // };
+  const notes = data?.data?.notes;
+
+  const handlePageChange = (page: number) => {
+    console.log("Page changed to: ", page);
+    setCurrentPage(page);
+  };
   return (
     <>
       <PageTitle title="My Notes" buttonTitle="New Note" hrefValue="create" />
@@ -31,7 +33,27 @@ export default function Note() {
       ) : error ? (
         <Error error={error} />
       ) : (
-        <h1>Hello</h1>
+        <>
+          <div className="grid grid-cols-4 gap-4 sm:gap-2.5 xs:gap-x-1.5 mt-5 lg:grid-cols-3 md:grid-cols-2">
+            {data &&
+              notes.map((note: INote) => (
+                <Card
+                  title={note?.title}
+                  content={note?.content}
+                  category={note?.category}
+                  tags={note?.tags}
+                  isFavorite={note?.isFavorite}
+                  id={note?._id}
+                  key={note?._id}
+                />
+              ))}
+          </div>
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
+          />
+        </>
       )}
     </>
   );
