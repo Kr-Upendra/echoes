@@ -140,7 +140,7 @@ export const createNote = async (req, res) => {
 
   const slug = createSlug(title);
   try {
-    const doesExist = await noteModel.findOne({ slug });
+    const doesExist = await noteModel.findOne({ slug, author });
     if (doesExist)
       return res.status(STATUS_CODES.CONFLICT).json({
         status: "failed",
@@ -156,6 +156,8 @@ export const createNote = async (req, res) => {
       category,
       author,
     });
+
+    console.log(note);
 
     await note.save();
 

@@ -5,19 +5,15 @@ import CustomSelect from "../../components/form/CustomSelect";
 import CustomTextArea from "../../components/form/CustomTextArea";
 import { z } from "zod";
 import { NoteFormData } from "../../utils";
-import { createNote } from "../../api";
+import { categories, createNote } from "../../api";
 import { useCreateItem } from "../../hooks/useCreateItem";
-
-const allowedCategories = ["all", "work", "personal", "special"] as const; // Replace with your categories
+import { useQuery } from "@tanstack/react-query";
 
 const schema = z.object({
   title: z
     .string()
     .min(3, { message: "Title must have at least 3 words" })
     .max(50, { message: "Title must not exceed 50 words" }),
-  // category: z.enum(allowedCategories, {
-  //   message: "Category must be one of the predefined options",
-  // }),
   content: z.string().min(20),
   tags: z
     .array(z.string())
@@ -25,10 +21,16 @@ const schema = z.object({
 });
 
 export default function NoteForm() {
-  const [errors, setErrors] = useState<any | null>(null);
+  const { data: categoryData, isLoading: isLoadingCategories } = useQuery({
+    queryKey: ["allCategories"],
+    queryFn: categories,
+  });
+  const categoriesList = categoryData?.data?.categories;
   const { mutate: addNoteMutation, isPending } = useCreateItem(createNote, [
     "allNotes",
   ]);
+
+  const [errors, setErrors] = useState<any | null>(null);
   const [formData, setFormData] = useState<NoteFormData>({
     title: "",
     category: "671866df6e63c7a251b33bb0",
@@ -96,12 +98,14 @@ export default function NoteForm() {
             value={formData?.category}
             isDisabled={false}
             onChange={handleChange}
-            options={[
-              { value: "all", label: "All" },
-              { value: "work", label: "Work" },
-              { value: "personal", label: "Personal" },
-              { value: "special", label: "Special" },
-            ]}
+            options={
+              isLoadingCategories
+                ? []
+                : categoriesList.map((category: any) => ({
+                    value: category._id,
+                    label: category.title,
+                  }))
+            }
             error={errors?.category}
           />
         </div>
