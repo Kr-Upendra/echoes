@@ -23,11 +23,6 @@ export type NoteFormData = {
   isFavorite?: boolean;
 };
 
-export type NoteFormDataWithId = {
-  id?: string;
-  formdata: NoteFormData;
-};
-
 export type Address = {
   street?: string;
   city?: string;

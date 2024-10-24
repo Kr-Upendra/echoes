@@ -1,4 +1,4 @@
-import { ApiResponse, NoteFormData, NoteFormDataWithId } from "../utils";
+import { ApiResponse, NoteFormData } from "../utils";
 import { apiFetch } from "./api";
 
 export const allNotes = async () => {
@@ -11,14 +11,14 @@ export const allNotes = async () => {
   );
 };
 
-export const createNote = async ({
-  formdata,
-  id,
-}: NoteFormDataWithId): Promise<ApiResponse> => {
+export const createNote = async (
+  id: string,
+  formdata: NoteFormData
+): Promise<ApiResponse> => {
   return apiFetch(
     `/notes/${id}`,
     {
-      method: "PATCH",
+      method: "POST",
       body: JSON.stringify(formdata),
     },
     true

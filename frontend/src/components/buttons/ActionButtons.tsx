@@ -35,7 +35,7 @@ export default function ActionButtons({ id, isFavorite }: Props) {
           }`}
         />
       </button>
-      <Link to={id} aria-label="Hello">
+      <Link to={id}>
         <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
           <FaEye className="text-lg sm:text-sm text-white" />
         </button>
