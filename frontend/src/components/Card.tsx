@@ -23,8 +23,6 @@ export default function Card({
   tags,
   isFavorite,
 }: Props) {
-  const { mutate: deleteItem } = useDeleteItem(deleteNote, ["allNotes"]);
-
   return (
     <div className="card-diff rounded-lg p-3 group relative">
       <div className="mb-2">
@@ -51,11 +49,7 @@ export default function Card({
         </div>
       </div>
 
-      <ActionButtons
-        id={id}
-        isFavorite={isFavorite}
-        onDelete={() => deleteItem(id)}
-      />
+      <ActionButtons id={id} isFavorite={isFavorite} />
     </div>
   );
 }

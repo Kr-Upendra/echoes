@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiResponse, successAlert } from "../utils";
+import { ApiResponse, errorAlert, successAlert } from "../utils";
 
 export const useDeleteItem = (
   deleteFn: (id: string) => Promise<ApiResponse>,
@@ -14,7 +14,7 @@ export const useDeleteItem = (
       queryClient.invalidateQueries({ queryKey });
     },
     onError: (error) => {
-      console.error("Error deleting note:", error);
+      errorAlert(error?.message);
     },
   });
 };

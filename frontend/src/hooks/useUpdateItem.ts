@@ -1,20 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiResponse, successAlert } from "../utils";
+import { ApiResponse, errorAlert, NoteFormData, successAlert } from "../utils";
 
-export const useDeleteItem = (
-  deleteFn: (id: string) => Promise<ApiResponse>,
+export const useUpdateItem = (
+  updateFn: (formdata: NoteFormData, id: string) => Promise<ApiResponse>,
   queryKey: string[]
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => deleteFn(id),
+    mutationFn: ({ formdata, id }: { formdata: any; id: string }) =>
+      updateFn(formdata, id),
     onSuccess: (response: ApiResponse) => {
-      successAlert(response?.message);
-      queryClient.invalidateQueries({ queryKey });
+      if (response.status === "success") {
+        successAlert(response?.message);
+        queryClient.invalidateQueries({ queryKey });
+      }
     },
     onError: (error) => {
-      console.error("Error deleting note:", error);
+      console.log(error);
+      errorAlert(error?.message);
     },
   });
 };

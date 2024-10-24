@@ -15,6 +15,7 @@ export const createNote = async ({
   formdata,
   id,
 }: NoteFormDataWithId): Promise<ApiResponse> => {
+  console.log({ formdata, id });
   return apiFetch(
     `/notes/${id}`,
     {

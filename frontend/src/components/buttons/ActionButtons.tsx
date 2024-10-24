@@ -1,16 +1,19 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaEye, FaHeart, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { updateNote } from "../../api";
+import { deleteNote, updateNote } from "../../api";
+import { useDeleteItem } from "../../hooks";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiResponse, errorAlert, successAlert } from "../../utils";
 
 type Props = {
   id: string;
   isFavorite: boolean;
-  onDelete: () => void;
 };
 
-export default function ActionButtons({ id, isFavorite, onDelete }: Props) {
+export default function ActionButtons({ id, isFavorite }: Props) {
+  const { mutate: deleteNoteMutation } = useDeleteItem(deleteNote, [
+    "allNotes",
+  ]);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -51,7 +54,7 @@ export default function ActionButtons({ id, isFavorite, onDelete }: Props) {
 
       <button
         aria-label="Delete"
-        onClick={onDelete}
+        onClick={() => deleteNoteMutation(id)}
         className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded"
       >
         <FaTrash className="text-lg sm:text-sm text-white" />
