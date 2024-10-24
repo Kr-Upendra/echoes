@@ -1,5 +1,3 @@
-import { deleteNote } from "../api";
-import { useDeleteItem } from "../hooks";
 import ActionButtons from "./buttons/ActionButtons";
 
 type Props = {

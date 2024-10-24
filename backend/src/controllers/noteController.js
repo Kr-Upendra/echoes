@@ -161,7 +161,7 @@ export const createNote = async (req, res) => {
 
     return res.status(STATUS_CODES.CREATED).json({
       status: "success",
-      messag: "New note added.",
+      message: "New note added.",
     });
   } catch (error) {
     console.log(error);

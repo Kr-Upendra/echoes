@@ -5,6 +5,8 @@ import CustomSelect from "../../components/form/CustomSelect";
 import CustomTextArea from "../../components/form/CustomTextArea";
 import { z } from "zod";
 import { NoteFormData } from "../../utils";
+import { createNote } from "../../api";
+import { useCreateItem } from "../../hooks/useCreateItem";
 
 const allowedCategories = ["all", "work", "personal", "special"] as const; // Replace with your categories
 
@@ -13,9 +15,9 @@ const schema = z.object({
     .string()
     .min(3, { message: "Title must have at least 3 words" })
     .max(50, { message: "Title must not exceed 50 words" }),
-  category: z.enum(allowedCategories, {
-    message: "Category must be one of the predefined options",
-  }),
+  // category: z.enum(allowedCategories, {
+  //   message: "Category must be one of the predefined options",
+  // }),
   content: z.string().min(20),
   tags: z
     .array(z.string())
@@ -24,9 +26,12 @@ const schema = z.object({
 
 export default function NoteForm() {
   const [errors, setErrors] = useState<any | null>(null);
+  const { mutate: addNoteMutation, isPending } = useCreateItem(createNote, [
+    "allNotes",
+  ]);
   const [formData, setFormData] = useState<NoteFormData>({
     title: "",
-    category: "all",
+    category: "671866df6e63c7a251b33bb0",
     content: "",
     tags: [],
     isFavorite: false,
@@ -40,7 +45,7 @@ export default function NoteForm() {
     const { name, value, type } = e.target;
     if (name === "tags") {
       const tagsArray = value
-        .split(", ")
+        .split(",")
         .map((tag) => tag.trim())
         .filter((tag) => tag !== "");
       setFormData((prev) => ({ ...prev, [name]: tagsArray }));
@@ -55,8 +60,8 @@ export default function NoteForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log(formData);
       schema.parse(formData);
+      addNoteMutation(formData);
       setErrors({});
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -118,7 +123,7 @@ export default function NoteForm() {
             name="tags"
             type="text"
             placeHolder="Comma separated values"
-            value={formData.tags.join(", ")}
+            value={formData?.tags && formData?.tags.join(",")}
             isDisabled={false}
             onchange={handleChange}
             error={errors?.tags}
@@ -134,8 +139,11 @@ export default function NoteForm() {
           />
         </div>
         <div className="mt-6">
-          <button className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display">
-            Add Note
+          <button
+            disabled={isPending}
+            className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
+          >
+            {isPending ? "Adding" : "Add Note"}
           </button>
         </div>
       </form>

@@ -12,11 +12,10 @@ export const allNotes = async () => {
 };
 
 export const createNote = async (
-  id: string,
   formdata: NoteFormData
 ): Promise<ApiResponse> => {
   return apiFetch(
-    `/notes/${id}`,
+    `/notes`,
     {
       method: "POST",
       body: JSON.stringify(formdata),
