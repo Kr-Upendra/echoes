@@ -1,5 +1,8 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaEye, FaHeart, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { deleteNote } from "../api";
+import { ApiResponse, successAlert } from "../utils";
 
 type Props = {
   id: string;
@@ -22,14 +25,27 @@ export default function Card({
   tags,
   isFavorite,
 }: Props) {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteNote(id),
+    onSuccess: (response: ApiResponse) => {
+      successAlert(response?.message);
+      queryClient.invalidateQueries({ queryKey: ["allNotes"] });
+    },
+    onError: (error) => {
+      console.error("Error deleting note:", error);
+    },
+  });
+
   return (
-    <div className="card-diff rounded-lg p-4 group relative">
-      <div className="flex justify-between items-center mb-2">
+    <div className="card-diff rounded-lg p-3 group relative">
+      <div className="mb-2">
         <h2 className="text-green-500 font-display line-clamp-1 sm:text-sm">
           {title}
         </h2>
       </div>
-      <p className="line-clamp-3 text-sm sm:text-xs text-gray-500 mb-4">
+      <p className="text-sm sm:text-xs text-gray-500 mb-4 h-20 line-clamp-4 md:h-17 sm:h-15">
         {content}
       </p>
       <div className="flex items-center justify-between mb-2">
@@ -62,12 +78,13 @@ export default function Card({
           </button>
         </Link>
 
-        <button  className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
+        <button
+          onClick={() => mutation.mutateAsync(id)}
+          className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded"
+        >
           <FaTrash className="text-lg sm:text-sm text-white" />
         </button>
       </div>
     </div>
   );
 }
-
-//  flex justify-between items-center opacity-100 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-300

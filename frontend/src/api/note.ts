@@ -9,3 +9,14 @@ export const allNotes = async () => {
     true
   );
 };
+
+export const deleteNote = async (id: string) => {
+  console.log("api id:", id);
+  return apiFetch(
+    `/notes/${id}`,
+    {
+      method: "DELETE",
+    },
+    true
+  );
+};

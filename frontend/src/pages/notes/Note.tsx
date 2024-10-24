@@ -8,6 +8,7 @@ import { allNotes } from "../../api";
 import Card from "../../components/Card";
 import Error from "../../components/Error";
 import { INote } from "../../utils";
+import NoRecord from "../../components/NoRecord";
 
 export default function Note() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,25 +35,30 @@ export default function Note() {
         <Error error={error} />
       ) : (
         <>
-          <div className="grid grid-cols-4 gap-4 sm:gap-2.5 xs:gap-x-1.5 mt-5 lg:grid-cols-3 md:grid-cols-2">
-            {data &&
-              notes.map((note: INote) => (
-                <Card
-                  title={note?.title}
-                  content={note?.content}
-                  category={note?.category}
-                  tags={note?.tags}
-                  isFavorite={note?.isFavorite}
-                  id={note?._id}
-                  key={note?._id}
-                />
-              ))}
-          </div>
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
+          {notes.length > 0 ? (
+            <>
+              <div className="grid grid-cols-4 gap-4 sm:gap-2.5 xs:gap-x-1.5 mt-5 lg:grid-cols-3 md:grid-cols-2">
+                {notes.map((note: INote) => (
+                  <Card
+                    title={note?.title}
+                    content={note?.content}
+                    category={note?.category}
+                    tags={note?.tags}
+                    isFavorite={note?.isFavorite}
+                    id={note?._id}
+                    key={note?._id}
+                  />
+                ))}
+              </div>
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                onPageChange={handlePageChange}
+              />
+            </>
+          ) : (
+            <NoRecord title="You don't have any notes." />
+          )}
         </>
       )}
     </>

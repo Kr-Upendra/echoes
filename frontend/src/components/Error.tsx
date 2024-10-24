@@ -2,7 +2,7 @@ type Props = { error: any };
 
 export default function Error({ error }: Props) {
   return (
-    <div className="w-full px-4 py-8 rounded-lg shadow-2xl shadow-green-500/20 bg-black/80">
+    <div className="mt-10 border border-green-500/10 shadow-2xl shadow-green-500/20 bg-black/80 flex justify-center items-center w-full px-4 py-16 rounded-lg">
       <div className="text-center">
         <h2 className="font-display text-xl text-orange-500 mb-2">
           Oops! Something went wrong.
