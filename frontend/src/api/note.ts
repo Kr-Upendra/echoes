@@ -1,4 +1,4 @@
-import { ApiResponse, NoteFormDataWithId } from "../utils";
+import { ApiResponse, NoteFormData, NoteFormDataWithId } from "../utils";
 import { apiFetch } from "./api";
 
 export const allNotes = async () => {
@@ -15,7 +15,6 @@ export const createNote = async ({
   formdata,
   id,
 }: NoteFormDataWithId): Promise<ApiResponse> => {
-  console.log({ formdata, id });
   return apiFetch(
     `/notes/${id}`,
     {
@@ -26,10 +25,10 @@ export const createNote = async ({
   );
 };
 
-export const updateNote = async ({
-  formdata,
-  id,
-}: NoteFormDataWithId): Promise<ApiResponse> => {
+export const updateNote = async (
+  id: string,
+  formdata: NoteFormData
+): Promise<ApiResponse> => {
   return apiFetch(
     `/notes/${id}`,
     {
@@ -41,7 +40,6 @@ export const updateNote = async ({
 };
 
 export const deleteNote = async (id: string) => {
-  console.log("api id:", id);
   return apiFetch(
     `/notes/${id}`,
     {

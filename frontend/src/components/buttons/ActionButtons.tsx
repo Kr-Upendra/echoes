@@ -2,8 +2,7 @@ import { FaEye, FaHeart, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { deleteNote, updateNote } from "../../api";
 import { useDeleteItem } from "../../hooks";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiResponse, errorAlert, successAlert } from "../../utils";
+import { useUpdateItem } from "../../hooks";
 
 type Props = {
   id: string;
@@ -14,30 +13,20 @@ export default function ActionButtons({ id, isFavorite }: Props) {
   const { mutate: deleteNoteMutation } = useDeleteItem(deleteNote, [
     "allNotes",
   ]);
-  const queryClient = useQueryClient();
 
-  const mutation = useMutation({
-    mutationFn: updateNote,
-    onSuccess: (response: ApiResponse) => {
-      if (response.status === "success") {
-        queryClient.invalidateQueries({ queryKey: ["allNotes"] });
-        successAlert(response?.message);
-      }
-    },
-    onError: (error: any) => {
-      errorAlert(error?.message);
-    },
-  });
+  const { mutate: updateNoteMutation } = useUpdateItem(updateNote, [
+    "allNotes",
+  ]);
 
-  const handleFavoriteToggle = () => {
+  const handleNoteUpdate = () => {
     const updatedFormData = { isFavorite: !isFavorite };
-    mutation.mutate({ formdata: updatedFormData, id });
+    updateNoteMutation({ id, formdata: updatedFormData });
   };
 
   return (
     <div className="absolute p-2 sm:p-1 top-0 right-0 flex flex-col gap-y-2 -translate-x-full opacity-0 pointer-events-none group-hover:translate-x-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 sm:opacity-100 sm:translate-x-0">
       <button
-        onClick={handleFavoriteToggle}
+        onClick={handleNoteUpdate}
         className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded"
       >
         <FaHeart
@@ -62,3 +51,23 @@ export default function ActionButtons({ id, isFavorite }: Props) {
     </div>
   );
 }
+
+// const queryClient = useQueryClient();
+
+// const mutation = useMutation({
+//   mutationFn: updateNote,
+//   onSuccess: (response: ApiResponse) => {
+//     if (response.status === "success") {
+//       queryClient.invalidateQueries({ queryKey: ["allNotes"] });
+//       successAlert(response?.message);
+//     }
+//   },
+//   onError: (error: any) => {
+//     errorAlert(error?.message);
+//   },
+// });
+
+// const handleFavoriteToggle = () => {
+//   const updatedFormData = { isFavorite: !isFavorite };
+//   mutation.mutate({ formdata: updatedFormData, id });
+// };

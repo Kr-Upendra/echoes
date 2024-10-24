@@ -2,22 +2,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiResponse, errorAlert, NoteFormData, successAlert } from "../utils";
 
 export const useUpdateItem = (
-  updateFn: (formdata: NoteFormData, id: string) => Promise<ApiResponse>,
+  updateFn: (id: string, formdata: NoteFormData) => Promise<ApiResponse>,
   queryKey: string[]
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ formdata, id }: { formdata: any; id: string }) =>
-      updateFn(formdata, id),
+    mutationFn: ({ id, formdata }: { id: string; formdata: NoteFormData }) =>
+      updateFn(id, formdata),
     onSuccess: (response: ApiResponse) => {
-      if (response.status === "success") {
-        successAlert(response?.message);
-        queryClient.invalidateQueries({ queryKey });
-      }
+      successAlert(response?.message);
+      queryClient.invalidateQueries({ queryKey });
     },
     onError: (error) => {
-      console.log(error);
       errorAlert(error?.message);
     },
   });
