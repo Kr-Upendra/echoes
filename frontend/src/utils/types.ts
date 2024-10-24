@@ -15,6 +15,19 @@ export type UpdatePasswordFromData = {
   newPassword: string;
 };
 
+export type NoteFormData = {
+  title?: string;
+  category?: string;
+  content?: string;
+  tags?: string[];
+  isFavorite?: boolean;
+};
+
+export type NoteFormDataWithId = {
+  id?: string;
+  formdata: NoteFormData;
+};
+
 export type Address = {
   street?: string;
   city?: string;
@@ -30,16 +43,6 @@ export type SocialMedia = {
   twitter?: string;
   website?: string;
 };
-
-export interface UpdateProfileFormData {
-  firstName?: string;
-  lastName?: string;
-  about?: string;
-  profilePicture?: string;
-  profileBanner?: string;
-  address?: Address;
-  socialMedia?: SocialMedia;
-}
 
 export type ApiResponse = {
   message: string;
@@ -58,18 +61,20 @@ type DimensionRange = {
 };
 
 export interface ImageProperties {
-  acceptedTypes: Record<string, string[]>; // Mapping of accepted types to file extensions
-  fileSize: FileSizeRange; // Object with max and min file size in bytes
-  dimension: DimensionRange; // Object with width and height ranges
-  bucketName: string; // Bucket name for storage
-  keyName: string; // Key name for storage
-  dirName: string; // Directory name for storage
+  acceptedTypes: Record<string, string[]>;
+  fileSize: FileSizeRange;
+  dimension: DimensionRange;
+  bucketName: string;
+  keyName: string;
+  dirName: string;
 }
 
-export interface NoteFormData {
-  title: string;
-  category: string;
-  content: string;
-  tags: string[]; // Specify tags as an array of strings
-  isFavorite: boolean;
+export interface UpdateProfileFormData {
+  firstName?: string;
+  lastName?: string;
+  about?: string;
+  profilePicture?: string;
+  profileBanner?: string;
+  address?: Address;
+  socialMedia?: SocialMedia;
 }
