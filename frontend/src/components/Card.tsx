@@ -1,8 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { FaEye, FaHeart, FaTrash } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 import { deleteNote } from "../api";
-import { ApiResponse, successAlert } from "../utils";
+import { useDeleteItem } from "../hooks";
+import ActionButtons from "./buttons/ActionButtons";
 
 type Props = {
   id: string;
@@ -25,18 +23,7 @@ export default function Card({
   tags,
   isFavorite,
 }: Props) {
-  const queryClient = useQueryClient();
-
-  const mutation = useMutation({
-    mutationFn: (id: string) => deleteNote(id),
-    onSuccess: (response: ApiResponse) => {
-      successAlert(response?.message);
-      queryClient.invalidateQueries({ queryKey: ["allNotes"] });
-    },
-    onError: (error) => {
-      console.error("Error deleting note:", error);
-    },
-  });
+  const { mutate: deleteItem } = useDeleteItem(deleteNote, ["allNotes"]);
 
   return (
     <div className="card-diff rounded-lg p-3 group relative">
@@ -64,27 +51,11 @@ export default function Card({
         </div>
       </div>
 
-      <div className="absolute p-2 sm:p-1 top-0 right-0 flex flex-col gap-y-2 -translate-x-full opacity-0 pointer-events-none group-hover:translate-x-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 sm:opacity-100 sm:translate-x-0">
-        <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
-          <FaHeart
-            className={`text-lg  sm:text-sm ${
-              isFavorite ? "text-green-500" : "text-white"
-            }`}
-          />
-        </button>
-        <Link to={id}>
-          <button className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded">
-            <FaEye className="text-lg sm:text-sm text-white" />
-          </button>
-        </Link>
-
-        <button
-          onClick={() => mutation.mutateAsync(id)}
-          className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded"
-        >
-          <FaTrash className="text-lg sm:text-sm text-white" />
-        </button>
-      </div>
+      <ActionButtons
+        id={id}
+        isFavorite={isFavorite}
+        onDelete={() => deleteItem(id)}
+      />
     </div>
   );
 }
