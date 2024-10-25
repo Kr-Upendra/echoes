@@ -1,16 +1,16 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiResponse, errorAlert, NoteFormData, successAlert } from "../utils";
+import { ApiResponse, errorAlert, successAlert } from "../utils";
 import { useNavigate } from "react-router-dom";
 
-export const useCreateItem = (
-  updateFn: (formdata: NoteFormData) => Promise<ApiResponse>,
+export const useCreateItem = <T>(
+  updateFn: (formdata: T) => Promise<ApiResponse>,
   queryKey: string[]
 ) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (formdata: NoteFormData) => updateFn(formdata),
+    mutationFn: (formdata: T) => updateFn(formdata),
     onSuccess: (response: ApiResponse) => {
       successAlert(response?.message);
       queryClient.invalidateQueries({ queryKey });

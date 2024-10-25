@@ -20,12 +20,10 @@ export default function NoteForm({
   categoriesList,
   isLoadingCategories,
 }: Props) {
-  const { mutate: addNoteMutation, isPending: isAddPending } = useCreateItem(
-    createNote,
-    ["allNotes"]
-  );
+  const { mutate: addNoteMutation, isPending: isAddPending } =
+    useCreateItem<NoteFormData>(createNote, ["allNotes"]);
   const { mutate: updateNoteMutation, isPending: isUpdatePending } =
-    useUpdateItem(updateNote, ["allNotes"], true);
+    useUpdateItem<NoteFormData>(updateNote, ["allNotes"], true);
   const { pathname } = useLocation();
 
   const { id } = useParams();

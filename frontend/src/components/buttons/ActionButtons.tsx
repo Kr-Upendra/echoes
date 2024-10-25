@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { deleteNote, updateNote } from "../../api";
 import { useDeleteItem } from "../../hooks";
 import { useUpdateItem } from "../../hooks";
+import { NoteFormData } from "../../utils";
 
 type Props = {
   id: string;
@@ -14,9 +15,10 @@ export default function ActionButtons({ id, isFavorite }: Props) {
     "allNotes",
   ]);
 
-  const { mutate: updateNoteMutation } = useUpdateItem(updateNote, [
-    "allNotes",
-  ]);
+  const { mutate: updateNoteMutation } = useUpdateItem<NoteFormData>(
+    updateNote,
+    ["allNotes"]
+  );
 
   const handleNoteUpdate = () => {
     const updatedFormData = { isFavorite: !isFavorite };
@@ -51,23 +53,3 @@ export default function ActionButtons({ id, isFavorite }: Props) {
     </div>
   );
 }
-
-// const queryClient = useQueryClient();
-
-// const mutation = useMutation({
-//   mutationFn: updateNote,
-//   onSuccess: (response: ApiResponse) => {
-//     if (response.status === "success") {
-//       queryClient.invalidateQueries({ queryKey: ["allNotes"] });
-//       successAlert(response?.message);
-//     }
-//   },
-//   onError: (error: any) => {
-//     errorAlert(error?.message);
-//   },
-// });
-
-// const handleFavoriteToggle = () => {
-//   const updatedFormData = { isFavorite: !isFavorite };
-//   mutation.mutate({ formdata: updatedFormData, id });
-// };

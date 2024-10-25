@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { ApiResponse, errorAlert, NoteFormData, successAlert } from "../utils";
+import { ApiResponse, errorAlert, successAlert } from "../utils";
 
-export const useUpdateItem = (
-  updateFn: (id: string, formdata: NoteFormData) => Promise<ApiResponse>,
+export const useUpdateItem = <T>(
+  updateFn: (id: string, formdata: T) => Promise<ApiResponse>,
   queryKey?: string[],
   isNavigation: boolean = false
 ) => {
@@ -11,7 +11,7 @@ export const useUpdateItem = (
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: ({ id, formdata }: { id: string; formdata: NoteFormData }) =>
+    mutationFn: ({ id, formdata }: { id: string; formdata: T }) =>
       updateFn(id, formdata),
     onSuccess: (response: ApiResponse) => {
       successAlert(response?.message);
