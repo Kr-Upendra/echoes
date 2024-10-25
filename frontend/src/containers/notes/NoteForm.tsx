@@ -5,27 +5,15 @@ import CustomCheckbox from "../../components/form/CustomCheckBox";
 import CustomInput from "../../components/form/CustomInput";
 import CustomSelect from "../../components/form/CustomSelect";
 import CustomTextArea from "../../components/form/CustomTextArea";
-import { INote, NoteFormData } from "../../utils";
+import { INote, NoteFormData, noteSchema } from "../../utils";
 import { createNote, updateNote } from "../../api";
-import { useCreateItem } from "../../hooks/useCreateItem";
-import { useUpdateItem } from "../../hooks";
+import { useCreateItem, useUpdateItem } from "../../hooks";
 
 type Props = {
   noteData?: INote;
   categoriesList: any;
   isLoadingCategories: boolean;
 };
-
-const schema = z.object({
-  title: z
-    .string()
-    .min(3, { message: "Title must have at least 3 words" })
-    .max(50, { message: "Title must not exceed 50 words" }),
-  content: z.string().min(20),
-  tags: z
-    .array(z.string())
-    .nonempty({ message: "Tags must be an array of strings" }),
-});
 
 export default function NoteForm({
   noteData,
@@ -75,7 +63,7 @@ export default function NoteForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      schema.parse(formData);
+      noteSchema.parse(formData);
       if (isCreateForm) addNoteMutation(formData);
       else if (id) {
         updateNoteMutation({ id, formdata: formData });

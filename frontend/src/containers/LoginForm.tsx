@@ -8,6 +8,7 @@ import {
   ApiResponse,
   errorAlert,
   LoginFromData,
+  loginSchema,
   setTokens,
   setUserData,
   successAlert,
@@ -15,11 +16,6 @@ import {
 import { setCurrentUser } from "../state";
 import CustomInput from "../components/form/CustomInput";
 import Button from "../components/buttons/Button";
-
-const schema = z.object({
-  email: z.string().email("Invalid email format"),
-  password: z.string().min(4, "Password must be at least 6 characters"),
-});
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -61,7 +57,7 @@ export default function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      schema.parse(formData);
+      loginSchema.parse(formData);
       setErrors({});
       mutation.mutate(formData);
     } catch (err) {

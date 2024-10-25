@@ -4,7 +4,7 @@ import { ApiResponse, errorAlert, NoteFormData, successAlert } from "../utils";
 
 export const useUpdateItem = (
   updateFn: (id: string, formdata: NoteFormData) => Promise<ApiResponse>,
-  queryKey: string[],
+  queryKey?: string[],
   isNavigation: boolean = false
 ) => {
   const queryClient = useQueryClient();

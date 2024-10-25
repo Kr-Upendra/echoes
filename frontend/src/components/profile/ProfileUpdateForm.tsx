@@ -1,36 +1,17 @@
+import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { RootState } from "../../state";
 import CustomInput from "../form/CustomInput";
 import CustomTextArea from "../form/CustomTextArea";
-import { z } from "zod";
 import { updateProfile } from "../../api";
-import { ApiResponse, errorAlert, successAlert } from "../../utils";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-
-const addressSchema = z.object({
-  street: z.string().optional(),
-  city: z.string().optional(),
-  country: z.string().optional(),
-  zipcode: z.string().optional(),
-});
-
-// Going to add this lator
-// const socialMediaSchema = z.object({
-//   facebook: z.string().optional(),
-//   thread: z.string().optional(),
-//   twitter: z.string().optional(),
-//   instagram: z.string().optional(),
-//   website: z.string().optional(),
-// });
-
-const schema = z.object({
-  firstName: z.string().min(2).optional(),
-  lastName: z.string().min(1).optional(),
-  about: z.string().optional(),
-  address: addressSchema,
-  // socialMedia: socialMediaSchema,
-});
+import {
+  ApiResponse,
+  errorAlert,
+  successAlert,
+  updateProfileSchema,
+} from "../../utils";
 
 export default function ProfileUpdateForm() {
   const userProfile = useSelector(
@@ -104,7 +85,7 @@ export default function ProfileUpdateForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      schema.parse(formData);
+      updateProfileSchema.parse(formData);
       setErrors({});
       mutation.mutate(formData);
     } catch (err) {

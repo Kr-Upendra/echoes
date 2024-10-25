@@ -1,19 +1,15 @@
 import { useState } from "react";
-import CustomInput from "../form/CustomInput";
+import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
+import CustomInput from "../form/CustomInput";
+import { updatePassword } from "../../api";
 import {
   ApiResponse,
   errorAlert,
   successAlert,
   UpdatePasswordFromData,
+  updatePasswordSchema,
 } from "../../utils";
-import { useMutation } from "@tanstack/react-query";
-import { updatePassword } from "../../api";
-
-const schema = z.object({
-  currentPassword: z.string().min(4, "Password must be at least 6 characters"),
-  newPassword: z.string().min(4, "Password must be at least 6 characters"),
-});
 
 export default function UpdatePasswordForm() {
   const [errors, setErrors] = useState<any>({});
@@ -36,7 +32,6 @@ export default function UpdatePasswordForm() {
           newPassword: "",
         });
         successAlert(response?.message);
-        console.log(response?.data);
       }
     },
     onError: (error: any) => {
@@ -47,7 +42,7 @@ export default function UpdatePasswordForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      schema.parse(formData);
+      updatePasswordSchema.parse(formData);
       setErrors({});
       mutation.mutate(formData);
     } catch (err) {

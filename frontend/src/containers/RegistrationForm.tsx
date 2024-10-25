@@ -4,20 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { registerUser } from "../api";
 import CustomInput from "../components/form/CustomInput";
+import Button from "../components/buttons/Button";
 import {
   ApiResponse,
   errorAlert,
   RegisterFromData,
+  registrationSchema,
   successAlert,
 } from "../utils";
-import Button from "../components/buttons/Button";
-
-const schema = z.object({
-  firstname: z.string().min(1, "First name is required"),
-  lastname: z.string().min(1, "Last name is required"),
-  email: z.string().email("Invalid email format"),
-  password: z.string().min(4, "Password must be at least 6 characters"),
-});
 
 export default function RegistrationForm() {
   const navigate = useNavigate();
@@ -58,7 +52,7 @@ export default function RegistrationForm() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     try {
-      schema.parse(formData);
+      registrationSchema.parse(formData);
       setErrors({});
       mutation.mutate(formData);
     } catch (err) {
