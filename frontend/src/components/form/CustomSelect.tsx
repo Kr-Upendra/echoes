@@ -46,7 +46,7 @@ export default function CustomSelect({
           </option>
         ))}
       </select>
-      {error && <p className="mt-1 text-sm text-orange-900">{error}</p>}
+      {/* {error && <p className="mt-1 text-sm text-orange-900">{error}</p>} */}
     </div>
   );
 }

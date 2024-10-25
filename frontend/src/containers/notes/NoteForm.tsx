@@ -1,13 +1,17 @@
+import { z } from "zod";
 import { useState } from "react";
 import CustomCheckbox from "../../components/form/CustomCheckBox";
 import CustomInput from "../../components/form/CustomInput";
 import CustomSelect from "../../components/form/CustomSelect";
 import CustomTextArea from "../../components/form/CustomTextArea";
-import { z } from "zod";
-import { NoteFormData } from "../../utils";
-import { categories, createNote } from "../../api";
+import { INote, NoteFormData } from "../../utils";
+import { createNote } from "../../api";
 import { useCreateItem } from "../../hooks/useCreateItem";
-import { useQuery } from "@tanstack/react-query";
+type Props = {
+  noteData?: INote;
+  categoriesList: any;
+  isLoadingCategories: boolean;
+};
 
 const schema = z.object({
   title: z
@@ -20,23 +24,22 @@ const schema = z.object({
     .nonempty({ message: "Tags must be an array of strings" }),
 });
 
-export default function NoteForm() {
-  const { data: categoryData, isLoading: isLoadingCategories } = useQuery({
-    queryKey: ["allCategories"],
-    queryFn: categories,
-  });
-  const categoriesList = categoryData?.data?.categories;
+export default function NoteForm({
+  noteData,
+  categoriesList,
+  isLoadingCategories,
+}: Props) {
   const { mutate: addNoteMutation, isPending } = useCreateItem(createNote, [
     "allNotes",
   ]);
 
   const [errors, setErrors] = useState<any | null>(null);
   const [formData, setFormData] = useState<NoteFormData>({
-    title: "",
-    category: "671866df6e63c7a251b33bb0",
-    content: "",
-    tags: [],
-    isFavorite: false,
+    title: noteData?.title || "",
+    category: noteData?.category?._id || "",
+    content: noteData?.content || "",
+    tags: noteData?.tags || [],
+    isFavorite: noteData?.isFavorite || false,
   });
 
   const handleChange = (

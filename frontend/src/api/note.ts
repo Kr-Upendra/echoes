@@ -11,6 +11,16 @@ export const allNotes = async () => {
   );
 };
 
+export const note = async (id: string) => {
+  return apiFetch(
+    `/notes/${id}`,
+    {
+      method: "GET",
+    },
+    true
+  );
+};
+
 export const createNote = async (
   formdata: NoteFormData
 ): Promise<ApiResponse> => {
