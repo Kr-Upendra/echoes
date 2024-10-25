@@ -1,9 +1,13 @@
-import { ApiResponse, NoteFormData } from "../utils";
+import { ApiResponse, IFilterArgs, NoteFormData } from "../utils";
 import { apiFetch } from "./api";
 
-export const allNotes = async () => {
+export const allNotes = async ({
+  search,
+  page = 1,
+  limit = 12,
+}: IFilterArgs) => {
   return apiFetch(
-    "/notes",
+    `/notes?page=${page}&limit=${limit}&search=${search}`,
     {
       method: "GET",
     },

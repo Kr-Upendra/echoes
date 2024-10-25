@@ -19,3 +19,10 @@ export interface INote {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IFilterArgs {
+  search?: string;
+  page?: number;
+  limit?: number;
+  c?: string;
+}
