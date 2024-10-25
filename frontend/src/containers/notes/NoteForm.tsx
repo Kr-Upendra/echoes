@@ -1,12 +1,15 @@
 import { z } from "zod";
 import { useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import CustomCheckbox from "../../components/form/CustomCheckBox";
 import CustomInput from "../../components/form/CustomInput";
 import CustomSelect from "../../components/form/CustomSelect";
 import CustomTextArea from "../../components/form/CustomTextArea";
 import { INote, NoteFormData } from "../../utils";
-import { createNote } from "../../api";
+import { createNote, updateNote } from "../../api";
 import { useCreateItem } from "../../hooks/useCreateItem";
+import { useUpdateItem } from "../../hooks";
+
 type Props = {
   noteData?: INote;
   categoriesList: any;
@@ -29,9 +32,16 @@ export default function NoteForm({
   categoriesList,
   isLoadingCategories,
 }: Props) {
-  const { mutate: addNoteMutation, isPending } = useCreateItem(createNote, [
-    "allNotes",
-  ]);
+  const { mutate: addNoteMutation, isPending: isAddPending } = useCreateItem(
+    createNote,
+    ["allNotes"]
+  );
+  const { mutate: updateNoteMutation, isPending: isUpdatePending } =
+    useUpdateItem(updateNote, ["allNotes"], true);
+  const { pathname } = useLocation();
+
+  const { id } = useParams();
+  const isCreateForm = pathname === "/notes/create";
 
   const [errors, setErrors] = useState<any | null>(null);
   const [formData, setFormData] = useState<NoteFormData>({
@@ -66,7 +76,10 @@ export default function NoteForm({
     e.preventDefault();
     try {
       schema.parse(formData);
-      addNoteMutation(formData);
+      if (isCreateForm) addNoteMutation(formData);
+      else if (id) {
+        updateNoteMutation({ id, formdata: formData });
+      }
       setErrors({});
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -90,7 +103,6 @@ export default function NoteForm({
             type="text"
             placeHolder="I have attend meeting."
             value={formData?.title}
-            isDisabled={false}
             onchange={handleChange}
             error={errors?.title}
           />
@@ -99,7 +111,6 @@ export default function NoteForm({
             label="Category"
             name="category"
             value={formData?.category}
-            isDisabled={false}
             onChange={handleChange}
             options={
               isLoadingCategories
@@ -117,7 +128,7 @@ export default function NoteForm({
             id="noteContent"
             label="Content"
             name="content"
-            placeHolder="There is a meeting in my that I need to attend at any cost."
+            placeHolder="There is a meeting in my office that I need to attend at any cost."
             value={formData?.content}
             onChange={handleChange}
             error={errors?.content}
@@ -130,8 +141,7 @@ export default function NoteForm({
             name="tags"
             type="text"
             placeHolder="Comma separated values"
-            value={formData?.tags && formData?.tags.join(",")}
-            isDisabled={false}
+            value={formData?.tags && formData?.tags.join(", ")}
             onchange={handleChange}
             error={errors?.tags}
           />
@@ -140,18 +150,26 @@ export default function NoteForm({
             label="Is Favorite?"
             name="isFavorite"
             checked={formData?.isFavorite}
-            isDisabled={false}
             onChange={handleChange}
             error={errors?.isFavorite}
           />
         </div>
         <div className="mt-6">
-          <button
-            disabled={isPending}
-            className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
-          >
-            {isPending ? "Adding" : "Add Note"}
-          </button>
+          {isCreateForm ? (
+            <button
+              disabled={isAddPending}
+              className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
+            >
+              {isAddPending ? "Adding" : "Add Note"}
+            </button>
+          ) : (
+            <button
+              disabled={isUpdatePending}
+              className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
+            >
+              {isUpdatePending ? "Updating" : "Update Note"}
+            </button>
+          )}
         </div>
       </form>
     </div>
