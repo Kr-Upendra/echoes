@@ -24,5 +24,5 @@ export interface IFilterArgs {
   search?: string;
   page?: number;
   limit?: number;
-  c?: string;
+  category?: string;
 }

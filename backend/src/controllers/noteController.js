@@ -1,3 +1,4 @@
+import { categoryModel } from "../models/categoryModel.js";
 import { noteModel } from "../models/noteModel.js";
 import {
   API_RESPONSE_MESSAGE,
@@ -5,69 +6,29 @@ import {
   STATUS_CODES,
 } from "../utils/index.js";
 
-// export const notes = async (req, res) => {
-//   const page = Number(req.query.page) || 1;
-//   const limit = Number(req.query.limit) || 10;
-//   const search = req.query.search || "";
-//   const offset = (page - 1) * limit;
-//   const userId = req.user.id;
-//   console.log("userId", userId);
-//   try {
-//     const searchQuery = { author: userId };
-
-//     if (search) searchQuery["title"] = { $regex: search, $options: "i" };
-
-//     const count = await noteModel.countDocuments(searchQuery);
-//     const totalPages = Math.ceil(count / limit);
-//     const hasNextPage = page < totalPages;
-
-//     const notes = await noteModel
-//       .find(searchQuery)
-//       .sort({ createdAt: -1 })
-//       .skip(offset)
-//       .limit(limit)
-//       .populate("author", "firstName lastName email")
-//       .populate("category", "title slug");
-
-//     console.log(notes);
-
-//     const pagination = {
-//       totalRecords: count,
-//       pageSize: limit,
-//       totalPages,
-//       currentPage: page,
-//       hasNextPage,
-//     };
-
-//     return res.status(STATUS_CODES.SUCCESS).json({
-//       status: "success",
-//       message: API_RESPONSE_MESSAGE.RECORD_LIST,
-//       data: { notes, pagination },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-//       status: "failed",
-//       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
-//     });
-//   }
-// };
-//
-
 export const notes = async (req, res) => {
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
   const search = req.query.search || "";
+  const category = req.query.category || "";
   const offset = (page - 1) * limit;
   const userId = req.user.id;
 
   try {
     const searchQuery = { author: userId };
-
     if (search) searchQuery["title"] = { $regex: search, $options: "i" };
 
-    const count = await noteModel.countDocuments(searchQuery);
+    if (category && (category !== "All" || category !== "all")) {
+      const categoryRes = await categoryModel.findOne({
+        slug: category.toLowerCase(),
+      });
 
+      if (categoryRes) {
+        searchQuery["category"] = categoryRes._id; // Use the ObjectId in the search
+      }
+    }
+
+    const count = await noteModel.countDocuments(searchQuery);
     const totalPages = Math.ceil(count / limit);
     const hasNextPage = page < totalPages;
 

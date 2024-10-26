@@ -28,52 +28,57 @@ export default function Note() {
   const [searchParams, setSearchParams] = useSearchParams();
   const initialPage = Number(searchParams.get("page")) || 1;
   const initialSearchQuery = searchParams.get("search") || "";
+  const initialCategory = searchParams.get("category") || "All";
 
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [debouncedSearchQuery] = useDebounce(searchQuery, 800);
-  const [category, setCategory] = useState<string>("All");
-
-  const handleSelectedCategory = (newFilter: string) => {
-    setCategory(newFilter);
-  };
+  const [category, setCategory] = useState<string>(initialCategory);
 
   useEffect(() => {
     setCurrentPage(initialPage);
     setSearchQuery(initialSearchQuery);
+    setCategory(initialCategory);
   }, [searchParams]);
 
   useEffect(() => {
-    if (debouncedSearchQuery.length >= 3) {
-      setCurrentPage(1);
-      setSearchParams({ search: debouncedSearchQuery });
-    } else {
-      setSearchQuery("");
-      setCurrentPage(1);
-      setSearchParams({});
-    }
-  }, [debouncedSearchQuery]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-
-    const newParams: { [key: string]: string } = { page: `${page}` };
+    const newParams: { [key: string]: string } = {};
 
     if (debouncedSearchQuery.length >= 3) {
       newParams.search = debouncedSearchQuery;
     }
 
+    if (category && category !== "All") {
+      newParams.category = category.toLowerCase();
+    }
+
+    if (currentPage > 1) {
+      newParams.page = `${currentPage}`;
+    }
+
     setSearchParams(newParams);
+  }, [debouncedSearchQuery, currentPage, category]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+  const handleSelectedCategory = (newFilter: string) => {
+    setCategory(newFilter);
+    setCurrentPage(1);
   };
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ["allNotes", currentPage, debouncedSearchQuery],
+    queryKey: ["allNotes", currentPage, debouncedSearchQuery, category],
     queryFn: () =>
-      allNotes({ page: currentPage, limit: 2, search: debouncedSearchQuery }),
+      allNotes({
+        page: currentPage,
+        limit: 2,
+        search: debouncedSearchQuery,
+        category: category !== "All" ? category : undefined,
+      }),
     enabled:
       debouncedSearchQuery.length >= 3 || debouncedSearchQuery.length === 0, // Only run when search is valid
   });

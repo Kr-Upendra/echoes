@@ -5,9 +5,12 @@ export const allNotes = async ({
   search,
   page = 1,
   limit = 12,
+  category,
 }: IFilterArgs) => {
+  const categoryQuery = category?.toLowerCase();
+  const searchQuery = search?.toLowerCase();
   return apiFetch(
-    `/notes?page=${page}&limit=${limit}&search=${search}`,
+    `/notes?page=${page}&limit=${limit}&search=${searchQuery}&category=${categoryQuery}`,
     {
       method: "GET",
     },
