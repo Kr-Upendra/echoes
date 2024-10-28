@@ -54,7 +54,6 @@ export const notes = async (req, res) => {
       data: { notes, pagination },
     });
   } catch (error) {
-    console.error("Error fetching notes:", error);
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       status: "failed",
       message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
@@ -117,8 +116,6 @@ export const createNote = async (req, res) => {
       category,
       author,
     });
-
-    console.log(note);
 
     await note.save();
 

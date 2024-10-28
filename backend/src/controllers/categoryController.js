@@ -14,8 +14,8 @@ export const createCategory = async (req, res) => {
 
     const slug = slugify(title, { trim: true, lower: true, replacement: "-" });
 
-    const isExist = await categoryModel.findOne({slug});
-    if (isExist)  return res.status(STATUS_CODES.BAD_REQUEST).json({
+    const doesExist = await categoryModel.findOne({slug});
+    if (doesExist)  return res.status(STATUS_CODES.BAD_REQUEST).json({
       status: "failed",
       messag: "Category already exist.",
     });
