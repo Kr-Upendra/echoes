@@ -18,6 +18,8 @@ import {
   VoiceNotePage,
 } from "./pages";
 import NotFound from "./pages/Error/NotFound";
+import AddVoiceNote from "./pages/Voice/AddVoiceNote";
+import EditVoiceNote from "./pages/Voice/EditVoiceNote";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,8 +37,8 @@ const router = createBrowserRouter(
         </Route>
         <Route path="voice-notes" element={<PageLayout />}>
           <Route index element={<VoiceNotePage />} />
-          <Route path="create" element={<AddNote />} />
-          <Route path=":id" element={<EditNote />} />
+          <Route path="create" element={<AddVoiceNote />} />
+          <Route path=":id" element={<EditVoiceNote />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
