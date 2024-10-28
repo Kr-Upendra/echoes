@@ -15,8 +15,7 @@ import {
   Note,
   Profile,
   Register,
-  Reminder,
-  Setting,
+  VoiceNotePage,
 } from "./pages";
 import NotFound from "./pages/Error/NotFound";
 
@@ -28,14 +27,17 @@ const router = createBrowserRouter(
       <Route path="register" element={<Register />} />
       <Route element={<ProtectedLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="settings" element={<Setting />} />
         <Route path="profile" element={<Profile />} />
         <Route path="notes" element={<PageLayout />}>
           <Route index element={<Note />} />
           <Route path="create" element={<AddNote />} />
           <Route path=":id" element={<EditNote />} />
         </Route>
-        <Route path="reminders" element={<Reminder />} />
+        <Route path="voice-notes" element={<PageLayout />}>
+          <Route index element={<VoiceNotePage />} />
+          <Route path="create" element={<AddNote />} />
+          <Route path=":id" element={<EditNote />} />
+        </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

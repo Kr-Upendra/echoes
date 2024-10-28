@@ -60,7 +60,7 @@ export default function Header() {
             />
             <NavItem
               title="Voice"
-              hrefValue="/voices"
+              hrefValue="/voice-notes"
               handleClick={closeUserMenu}
             />
             <NavLink to="/profile" className="mx-2">
