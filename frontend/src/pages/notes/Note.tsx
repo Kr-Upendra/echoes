@@ -75,7 +75,6 @@ export default function Note() {
     queryFn: () =>
       allNotes({
         page: currentPage,
-        limit: 2,
         search: debouncedSearchQuery,
         category: category !== "All" ? category : undefined,
       }),

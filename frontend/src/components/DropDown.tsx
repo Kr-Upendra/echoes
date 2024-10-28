@@ -33,7 +33,7 @@ export default function DropDown({
           className="font-display border py-1 px-4 rounded-full border-green-500 text-green-500 hover:text-white hover:bg-green-500 cursor-pointer duration-300 transition-colors flex items-center justify-between w-36"
           onClick={toggleDropdown}
         >
-          <span>{selectedOption}</span>
+          <span className="capitalize">{selectedOption}</span>
           <svg
             className={`w-4 h-4 transition-transform ${
               isOpen ? "rotate-180" : "rotate-0"

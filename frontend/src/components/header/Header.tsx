@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import { FaXmark } from "react-icons/fa6";
 import NavItem from "../common/NavItem";
@@ -8,12 +8,12 @@ import { RootState } from "../../state";
 import { clearUserData, removeTokens, successAlert } from "../../utils";
 import { clearCurrentUser } from "../../state";
 import default_user from "../../assets/icons/default_user.png";
+import { IoIosLogOut } from "react-icons/io";
 
 export default function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showNavbar, setShowNavbar] = useState<boolean>(true);
-  const [userMenu, setUserMenu] = useState<boolean>(false);
   const currentUser = useSelector(
     (state: RootState) => state.currentUser.currentUserInfo
   );
@@ -34,11 +34,10 @@ export default function Header() {
 
   function closeUserMenu() {
     setShowNavbar(true);
-    setUserMenu(false);
   }
 
   return (
-    <header className="flex items-center base-paddings pt-3 pb-6 fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-green-500/20 to-[#0000000c]">
+    <header className="flex items-center base-paddings backdrop-blur-[2px] pt-3 pb-6 fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-green-500/20 to-[#0000000c]">
       <h1 className="text-xl mr-auto tracking-wide font-display text-white">
         <Link to="/">Memories</Link>
       </h1>
@@ -60,15 +59,11 @@ export default function Header() {
               handleClick={closeUserMenu}
             />
             <NavItem
-              title="Reminders"
-              hrefValue="/reminders"
+              title="Voice"
+              hrefValue="/voices"
               handleClick={closeUserMenu}
             />
-
-            <button
-              onClick={() => setUserMenu((prev) => !prev)}
-              className="ml-2 font-display hover:text-green-500 transition-color text-base"
-            >
+            <NavLink to="/profile" className="mx-2">
               <img
                 className={`w-8 h-8 border-2 border-green-500 rounded-full ${
                   currentUser?.profilePicture || userProfile?.profilePicture
@@ -82,30 +77,13 @@ export default function Header() {
                 }
                 alt={currentUser?.firstName || "Default User"}
               />
-            </button>
-
-            <div
-              className={`rounded-xl transition-all duration-500 py-4 absolute top-12 -right-16 sm:top-32 sm:left-24 flex-col justify-center items-center gap-y-3 w-40 shadow-2xl shadow-black/20 bg-green-900/80 ${
-                userMenu ? "flex" : "hidden"
-              }`}
+            </NavLink>
+            <button
+              onClick={currentUser && handleClick}
+              className="ml-2 sm:ml-0 border-2 border-red-500 w-8 h-8 rounded-md flex justify-center items-center"
             >
-              <NavItem
-                handleClick={closeUserMenu}
-                title="Profile"
-                hrefValue="/profile"
-              />
-              <NavItem
-                handleClick={closeUserMenu}
-                title="Settings"
-                hrefValue="/settings"
-              />
-              <button
-                onClick={currentUser && handleClick}
-                className="ml-0 sm:ml-0 font-display hover:text-green-500 transition-color text-base"
-              >
-                Logout
-              </button>
-            </div>
+              <IoIosLogOut className="text-2xl font-extrabold text-red-500 " />
+            </button>
           </div>
         ) : (
           <div className="flex items-center sm:flex-col gap-3 sm:gap-y-5">
@@ -118,11 +96,6 @@ export default function Header() {
             <NavItem
               title="Login"
               hrefValue="/login"
-              handleClick={closeUserMenu}
-            />
-            <NavItem
-              title="Register"
-              hrefValue="/register"
               handleClick={closeUserMenu}
             />
           </div>
@@ -141,3 +114,4 @@ export default function Header() {
     </header>
   );
 }
+
