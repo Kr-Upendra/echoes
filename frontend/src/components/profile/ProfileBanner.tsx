@@ -26,7 +26,7 @@ export default function ProfileBanner() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
-      className="h-80 md:h-64 sm:h-48 xs:h-40 rounded-lg shadow-2xl shadow-black/20 text-end p-2"
+      className="h-80 md:h-64 sm:h-48 xs:h-40 rounded-lg shadow-2xl shadow-black/20 text-end p-2 mt-5"
     >
       <button
         onClick={handleUploadClick}
