@@ -94,7 +94,7 @@ export default function Header() {
               handleClick={closeUserMenu}
             />
             <NavItem
-              title="Login"
+              title="Get Started"
               hrefValue="/login"
               handleClick={closeUserMenu}
             />
@@ -114,4 +114,3 @@ export default function Header() {
     </header>
   );
 }
-
