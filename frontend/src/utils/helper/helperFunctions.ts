@@ -1,4 +1,6 @@
+import slugify from "slugify";
 import { getAccessToken } from "./handleCookie";
+import { getUserData } from "./localstorageHandler";
 
 export const getFileExt = (file: File) => {
   const parts = file.name.split(".");
@@ -14,4 +16,32 @@ export const formatTime = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
   const secs = seconds % 60;
   return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+};
+
+export const convertToVoiceFile = async (audioUrl: string) => {
+  const audioBlob = await fetch(audioUrl).then((res) => res.blob());
+  const audioFile = new File([audioBlob], "voice_note.wav", {
+    type: "audio/wav",
+  });
+  return audioFile;
+};
+
+export const slugifyString = (str: string) => {
+  const res = slugify(str, { replacement: "_", trim: true, lower: true });
+  return res;
+};
+
+export const generateFileName = (
+  file: File,
+  folderName: string,
+  uploadFor: string,
+  title: string
+) => {
+  const { userId } = getUserData();
+  const timeStamp = Date.now();
+  const fileExt = getFileExt(file);
+  const fileName = `${folderName}/${uploadFor}_${slugifyString(
+    title
+  )}_${userId}_${timeStamp}.${fileExt}`;
+  return fileName;
 };

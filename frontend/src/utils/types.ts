@@ -39,6 +39,14 @@ export type SocialMedia = {
   website?: string;
 };
 
+export type VoiceNoteFormData = {
+  title: string;
+  voiceNote?: string;
+  description?: string;
+  tags?: string[];
+  isFavorite?: boolean;
+};
+
 export type ApiResponse = {
   message: string;
   status?: string;
@@ -60,8 +68,10 @@ export interface ImageProperties {
   fileSize: FileSizeRange;
   dimension: DimensionRange;
   bucketName: string;
+  formValue: string;
   keyName: string;
   dirName: string;
+  preTitle: string;
 }
 
 export interface UpdateProfileFormData {

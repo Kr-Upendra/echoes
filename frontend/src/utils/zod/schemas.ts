@@ -51,3 +51,17 @@ export const updateProfileSchema = z.object({
   address: addressSchema,
   // socialMedia: socialMediaSchema,
 });
+
+export const voiceNoteSchema = z.object({
+  title: z
+    .string()
+    .min(3, { message: "Title must have at least 3 words" })
+    .max(255, { message: "Title must not exceed 255 words" }),
+  voiceNote: z.string({ message: "Voice note is required." }),
+  description: z.string().optional(),
+  tags: z
+    .array(z.string())
+    .nonempty({ message: "Tags must be an array of strings" })
+    .optional(),
+  isFavorite: z.boolean().default(false),
+});

@@ -3,72 +3,109 @@ import CustomCheckbox from "../../components/form/CustomCheckBox";
 import CustomInput from "../../components/form/CustomInput";
 import CustomTextArea from "../../components/form/CustomTextArea";
 import AudioRecorder from "../../components/form/AudioRecorderInput";
-// import { INote } from "../../utils";
-
-// type Props = {
-//   noteData?: INote;
-//   categoriesList: any;
-//   isLoadingCategories: boolean;
-// };
+import {
+  convertToVoiceFile,
+  generateFileName,
+  getUserData,
+  supabaseNotesBucket,
+  VoiceNoteFormData,
+  voiceNoteSchema,
+} from "../../utils";
+import { z } from "zod";
+import { uploadAudio } from "../../api";
+import { createVoiceNote, updateVoiceNote } from "../../api/voiceNote";
+import { useCreateItem, useUpdateItem } from "../../hooks";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function VoiceNoteForm() {
-  //   const { mutate: addNoteMutation, isPending: isAddPending } =
-  //     useCreateItem<NoteFormData>(createNote, ["allNotes"]);
-  //   const { mutate: updateNoteMutation, isPending: isUpdatePending } =
-  //     useUpdateItem<NoteFormData>(updateNote, ["allNotes"], true);
-  //   const { pathname } = useLocation();
+  const { mutate: addVoiceNoteMutation, isPending: isAddPending } =
+    useCreateItem<VoiceNoteFormData>(createVoiceNote, [""]);
+  const { mutate: updateVoiceNoteMutation, isPending: isUpdatePending } =
+    useUpdateItem<VoiceNoteFormData>(updateVoiceNote, ["allNotes"], true);
+  const { userId } = getUserData();
+  const { id } = useParams();
+  const { pathname } = useLocation();
+  const isCreateForm = pathname === "/voice-notes/create";
 
-  //   const { id } = useParams();
-  //   const isCreateForm = pathname === "/notes/create";
-
-  // const [formData, setFormData] = useState<NoteFormData>({
-  //   title: noteData?.title || "",
-  //   category: noteData?.category?._id || "",
-  //   content: noteData?.content || "",
-  //   tags: noteData?.tags || [],
-  //   isFavorite: noteData?.isFavorite || false,
-  // });
-
-  const [formData, setFormData] = useState<any | null>(null);
+  const [audioUrl, setAudioUrl] = useState("");
+  const [formData, setFormData] = useState<VoiceNoteFormData>({
+    title: "",
+    description: "",
+    tags: [""],
+    isFavorite: false,
+  });
   const [errors, setErrors] = useState<any | null>(null);
   const handleChange = (
     e: React.ChangeEvent<
       HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
     >
   ) => {
-    // const { name, value, type } = e.target;
-    // if (name === "tags") {
-    //   const tagsArray = value
-    //     .split(",")
-    //     .map((tag) => tag.trim())
-    //     .filter((tag) => tag !== "");
-    //   setFormData((prev) => ({ ...prev, [name]: tagsArray }));
-    // } else if (type === "checkbox") {
-    //   const checked = (e.target as HTMLInputElement).checked;
-    //   setFormData((prev) => ({ ...prev, [name]: checked }));
-    // } else {
-    //   setFormData((prev) => ({ ...prev, [name]: value }));
-    // }
+    const { name, value, type } = e.target;
+
+    if (name === "tags") {
+      const tagsArray = value
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter((tag) => tag !== "");
+      setFormData((prev) => ({ ...prev, [name]: tagsArray }));
+    } else if (type === "checkbox") {
+      const checked = (e.target as HTMLInputElement).checked;
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    // e.preventDefault();
-    // try {
-    //   noteSchema.parse(formData);
-    //   if (isCreateForm) addNoteMutation(formData);
-    //   else if (id) {
-    //     updateNoteMutation({ id, formdata: formData });
-    //   }
-    //   setErrors({});
-    // } catch (err) {
-    //   if (err instanceof z.ZodError) {
-    //     const formattedErrors: any = {};
-    //     err.errors.forEach((error) => {
-    //       formattedErrors[error.path[0]] = error.message;
-    //     });
-    //     setErrors(formattedErrors);
-    //   }
-    // }
+    e.preventDefault();
+    setErrors({});
+
+    if (!audioUrl) {
+      setErrors({ voiceNote: "Audio file is required." });
+      return;
+    }
+
+    try {
+      const formDataWithAudio = { ...formData, voiceNote: audioUrl };
+      voiceNoteSchema.parse(formDataWithAudio);
+      const audioNoteFile = await convertToVoiceFile(
+        formDataWithAudio?.voiceNote
+      );
+
+      const filename = generateFileName(
+        audioNoteFile,
+        userId,
+        "note",
+        formDataWithAudio?.title
+      );
+
+      const publicUrl = await uploadAudio(
+        audioNoteFile,
+        supabaseNotesBucket,
+        filename
+      );
+
+      if (isCreateForm)
+        addVoiceNoteMutation({ ...formDataWithAudio, voiceNote: publicUrl });
+      else if (id) {
+        updateVoiceNoteMutation({
+          id,
+          formdata: {
+            ...formData,
+            voiceNote: publicUrl,
+          },
+        });
+      }
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        const formattedErrors: any = {};
+        err.errors.forEach((error) => {
+          formattedErrors[error.path[0]] = error.message;
+        });
+        setErrors(formattedErrors);
+      }
+      console.log(errors);
+    }
   };
 
   return (
@@ -76,7 +113,7 @@ export default function VoiceNoteForm() {
       <form onSubmit={handleSubmit}>
         <div className="flex gap-x-5 lg:flex-col">
           <CustomInput
-            id="noteTitle"
+            id="voiceNoteTitle"
             label="Title"
             name="title"
             type="text"
@@ -87,20 +124,24 @@ export default function VoiceNoteForm() {
           />
         </div>
         <div className="flex gap-x-5 lg:flex-col">
-          <AudioRecorder />
+          <AudioRecorder
+            error={errors?.voiceNote}
+            audioUrl={audioUrl}
+            setAudioUrl={setAudioUrl}
+          />
           <CustomTextArea
-            id="noteContent"
-            label="Content"
-            name="content"
+            id="voiceNoteDescription"
+            label="Description"
+            name="description"
             placeHolder="There is a meeting in my office that I need to attend at any cost."
-            value={formData?.content}
+            value={formData?.description}
             onChange={handleChange}
             error={errors?.content}
           />
         </div>
         <div className="flex gap-x-5 lg:flex-col">
           <CustomInput
-            id="noteTags"
+            id="voiceNoteTags"
             label="Tags"
             name="tags"
             type="text"
@@ -110,7 +151,7 @@ export default function VoiceNoteForm() {
             error={errors?.tags}
           />
           <CustomCheckbox
-            id="noteFavorite"
+            id="voiceNoteFavorite"
             label="Is Favorite?"
             name="isFavorite"
             checked={formData?.isFavorite}
@@ -118,15 +159,8 @@ export default function VoiceNoteForm() {
             error={errors?.isFavorite}
           />
         </div>
+
         <div className="mt-6">
-          <button
-            disabled={false}
-            className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
-          >
-            Add Note
-          </button>
-        </div>
-        {/* <div className="mt-6">
           {isCreateForm ? (
             <button
               disabled={isAddPending}
@@ -142,29 +176,8 @@ export default function VoiceNoteForm() {
               {isUpdatePending ? "Updating" : "Update Note"}
             </button>
           )}
-        </div> */}
+        </div>
       </form>
     </div>
   );
 }
-
-/*
-
-userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-    title: { type: String, required: true, trim: true },
-    audioUrl: { type: String, required: true, unique: true },
-    duration: { type: Number, required: true },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now },
-    description: { type: String, trim: true },
-    tags: { type: [String], default: [] },
-    transcription: { type: String, trim: true },
-    isFavorite: { type: Boolean, default: false },
-    visibility: { type: String, enum: ['public', 'private', 'shared'], default: 'private' },
-    sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    location: { type: String },
-    originalFileName: { type: String, trim: true },
-    playCount: { type: Number, default: 0 },
-});
-
-*/

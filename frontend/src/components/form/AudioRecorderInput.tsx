@@ -3,12 +3,14 @@ import { FaMicrophone } from "react-icons/fa";
 import { FaCircleStop, FaPause, FaPlay } from "react-icons/fa6";
 import ProgressBar from "../audio/ProgressBar";
 import AudioButton from "../audio/AudioButton";
-import { formatTime } from "../../utils";
+import { formatTime, warnAlert } from "../../utils";
+import Waveform from "../WaveForm";
 
-export default function AudioRecorder() {
+type Props = { error?: string; audioUrl: string; setAudioUrl: any };
+
+export default function AudioRecorder({ error, audioUrl, setAudioUrl }: Props) {
   const [recording, setRecording] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [audioURL, setAudioURL] = useState("");
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
@@ -19,20 +21,25 @@ export default function AudioRecorder() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const startRecording = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const recorder = new MediaRecorder(stream);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
 
-    recorder.ondataavailable = (event) => {
-      const url = URL.createObjectURL(event.data);
-      setAudioURL(url);
-    };
-
-    recorder.start();
-    setMediaRecorder(recorder);
-    setRecording(true);
-    setPaused(false);
-    setElapsedTime(0);
-    startTimer();
+      recorder.ondataavailable = (event) => {
+        const url = URL.createObjectURL(event.data);
+        setAudioUrl(url);
+      };
+      setAudioStream(stream);
+      recorder.start();
+      setMediaRecorder(recorder);
+      setRecording(true);
+      setPaused(false);
+      setElapsedTime(0);
+      startTimer();
+    } catch (error) {
+      warnAlert("Error accessing microphone.");
+      console.error("Error accessing microphone:", error);
+    }
   };
 
   const stopRecording = () => {
@@ -78,7 +85,7 @@ export default function AudioRecorder() {
   }, []);
 
   const handleNewRecording = () => {
-    setAudioURL("");
+    setAudioUrl("");
     setElapsedTime(0);
     startRecording();
   };
@@ -123,20 +130,37 @@ export default function AudioRecorder() {
     }
   };
 
+  const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
+
+  // useEffect(() => {
+  //   return () => {
+  //     stopTimer();
+  //     mediaRecorder?.stream.getTracks().forEach((track) => track.stop());
+  //   };
+  // }, [mediaRecorder]);
+
   return (
     <div className="mt-2 mb-3.5 w-full">
       <label className="block mb-1 text-sm font-medium text-gray-200 capitalize">
         Record Note
       </label>
-      <div className="bg-black border rounded-md border-green-500/15 px-2 py-3">
+      <div
+        className={`bg-black border rounded-md px-3 py-3 ${
+          error ? "border-orange-900" : "border-green-500/15"
+        }`}
+      >
         <div className="rounded-md mb-3 flex items-center justify-center h-16">
-          <span className="text-sm font-display text-green-700">
-            {recording
-              ? "Recording..."
-              : audioURL
-              ? "Audio recorded. Play below."
-              : "Click the button to start recording..."}
-          </span>
+          {recording ? (
+            <Waveform audioStream={audioStream} recording={recording} />
+          ) : audioUrl ? (
+            <span className="text-sm font-display text-green-700">
+              Audio recorded. Play below.
+            </span>
+          ) : (
+            <span className="text-sm font-display text-green-700">
+              Audio recorded. Play below.
+            </span>
+          )}
         </div>
         <div className="text-center">
           {recording ? (
@@ -152,12 +176,12 @@ export default function AudioRecorder() {
                 Icon={paused ? FaPlay : FaPause}
               />
             </div>
-          ) : audioURL ? (
+          ) : audioUrl ? (
             <div className="flex items-center gap-x-2">
               <audio
                 controls
                 ref={audioRef}
-                src={audioURL}
+                src={audioUrl}
                 className="hidden"
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={handleLoadedMetadata}

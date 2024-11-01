@@ -4,12 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ApiResponse,
   errorAlert,
+  generateFileName,
   ImageProperties,
   successAlert,
   UpdateProfileFormData,
   warnAlert,
 } from "../../utils";
-import { uploadFileToSupabase } from "../../api";
+import { uploadImage } from "../../api";
 
 type UpdateProfileMutationFunction = (
   formdata: UpdateProfileFormData
@@ -121,14 +122,21 @@ export default function ImageUploader({
     }
 
     try {
-      const publicUrl = await uploadFileToSupabase(
+      const filename = generateFileName(
+        file,
+        imageProperties?.dirName,
+        imageProperties?.preTitle,
+        imageProperties?.keyName
+      );
+
+      const publicUrl = await uploadImage(
         file,
         imageProperties?.bucketName,
-        imageProperties?.dirName,
+        filename,
         oldImagePath
       );
       if (publicUrl) {
-        const formData = { [imageProperties?.keyName]: publicUrl };
+        const formData = { [imageProperties?.formValue]: publicUrl };
         mutation.mutate(formData);
       } else {
         errorAlert("Failed to retrieve the uploaded file URL.");
@@ -181,11 +189,13 @@ export default function ImageUploader({
         <div className="mt-4 text-center flex gap-3">
           <button
             onClick={onClose}
+            disabled={mutation?.isPending}
             className="font-display text-white bg-[#DC3545] w-full py-1.5 rounded-full"
           >
             Cancel
           </button>
           <button
+            disabled={mutation?.isPending}
             onClick={handleUpload}
             className="font-display text-white bg-green-600 w-full py-1.5 rounded-full"
           >
