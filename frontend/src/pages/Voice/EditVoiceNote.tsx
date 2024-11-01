@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { note } from "../../api";
+import { voiceNote } from "../../api";
 import PageTitle from "../../components/PageTitle";
 import Loading from "../../components/Loading";
 import Error from "../../components/Error";
@@ -8,12 +8,14 @@ import VoiceNoteForm from "../../containers/VoiceNotes/VoiceNoteForm";
 
 export default function EditVoiceNote() {
   const params = useParams();
-  const noteId = params.id || "";
-  const { isLoading, error } = useQuery({
-    queryKey: ["note", noteId],
-    queryFn: () => note(noteId),
-    enabled: !!noteId,
+  const voiceNoteId = params.id || "";
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["voiceNote", voiceNoteId],
+    queryFn: () => voiceNote(voiceNoteId),
+    enabled: !!voiceNoteId,
   });
+
+  const voiceNoteData = data?.data?.voiceNote;
 
   return (
     <>
@@ -23,7 +25,7 @@ export default function EditVoiceNote() {
       ) : error ? (
         <Error error={error} />
       ) : (
-        <VoiceNoteForm />
+        <VoiceNoteForm voiceNoteData={voiceNoteData} />
       )}
     </>
   );

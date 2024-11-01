@@ -90,6 +90,7 @@ export default function Note() {
       <PageTitle title="My Notes" buttonTitle="New Note" hrefValue="create" />
       <PageFilter
         handleQueryChange={handleChange}
+        hasCategoryFilter={true}
         options={options}
         selectedCategory={category}
         handleSelectCategory={handleSelectedCategory}

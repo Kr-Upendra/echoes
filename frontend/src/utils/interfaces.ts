@@ -20,6 +20,24 @@ export interface INote {
   updatedAt?: string;
 }
 
+export interface IVoiceNote {
+  _id: string;
+  title: string;
+  description: string;
+  voiceNote: string;
+  tags: string[];
+  slug?: string;
+  isFavorite: boolean;
+  author?: {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+  };
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface IFilterArgs {
   search?: string;
   page?: number;

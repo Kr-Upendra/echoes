@@ -2,7 +2,19 @@ import { BsPlayCircleFill } from "react-icons/bs";
 import ActionButtons from "../buttons/ActionButtons";
 import { FaMicrophone } from "react-icons/fa6";
 
-export default function VoiceNoteCard() {
+type Props = {
+  title: string;
+  voiceNoteUrl: string;
+  isFavorite: boolean;
+  voiceNoteId: string;
+};
+
+export default function VoiceNoteCard({
+  title,
+  voiceNoteUrl,
+  voiceNoteId,
+  isFavorite,
+}: Props) {
   return (
     <div className="group rounded-lg group relative">
       <div className="bg-green-900 py-2 rounded-t-lg"></div>
@@ -12,7 +24,7 @@ export default function VoiceNoteCard() {
         </div>
         <div className="mb-2">
           <h2 className="text-white font-display line-clamp-1 sm:text-sm">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            {title}
           </h2>
         </div>
         <div className="flex items-center gap-x-2">
@@ -25,7 +37,7 @@ export default function VoiceNoteCard() {
           </button>
         </div>
       </div>
-      <ActionButtons id="lkjsf" isFavorite={true} />
+      <ActionButtons id={voiceNoteId} isFavorite={isFavorite} />
     </div>
   );
 }

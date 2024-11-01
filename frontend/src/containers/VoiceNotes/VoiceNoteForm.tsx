@@ -7,6 +7,7 @@ import {
   convertToVoiceFile,
   generateFileName,
   getUserData,
+  IVoiceNote,
   supabaseNotesBucket,
   VoiceNoteFormData,
   voiceNoteSchema,
@@ -16,8 +17,11 @@ import { uploadAudio } from "../../api";
 import { createVoiceNote, updateVoiceNote } from "../../api/voiceNote";
 import { useCreateItem, useUpdateItem } from "../../hooks";
 import { useLocation, useParams } from "react-router-dom";
+type Props = {
+  voiceNoteData?: IVoiceNote;
+};
 
-export default function VoiceNoteForm() {
+export default function VoiceNoteForm({ voiceNoteData }: Props) {
   const { mutate: addVoiceNoteMutation, isPending: isAddPending } =
     useCreateItem<VoiceNoteFormData>(createVoiceNote, [""]);
   const { mutate: updateVoiceNoteMutation, isPending: isUpdatePending } =
@@ -27,12 +31,12 @@ export default function VoiceNoteForm() {
   const { pathname } = useLocation();
   const isCreateForm = pathname === "/voice-notes/create";
 
-  const [audioUrl, setAudioUrl] = useState("");
+  const [audioUrl, setAudioUrl] = useState(voiceNoteData?.voiceNote || "");
   const [formData, setFormData] = useState<VoiceNoteFormData>({
-    title: "",
-    description: "",
-    tags: [""],
-    isFavorite: false,
+    title: voiceNoteData?.title || "",
+    description: voiceNoteData?.description || "",
+    tags: voiceNoteData?.tags || [""],
+    isFavorite: voiceNoteData?.isFavorite || false,
   });
   const [errors, setErrors] = useState<any | null>(null);
   const handleChange = (
@@ -85,9 +89,10 @@ export default function VoiceNoteForm() {
         filename
       );
 
-      if (isCreateForm)
+      if (isCreateForm) {
         addVoiceNoteMutation({ ...formDataWithAudio, voiceNote: publicUrl });
-      else if (id) {
+        setAudioUrl("");
+      } else if (id) {
         updateVoiceNoteMutation({
           id,
           formdata: {
@@ -95,6 +100,7 @@ export default function VoiceNoteForm() {
             voiceNote: publicUrl,
           },
         });
+        setAudioUrl("");
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -166,14 +172,14 @@ export default function VoiceNoteForm() {
               disabled={isAddPending}
               className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
             >
-              {isAddPending ? "Adding" : "Add Note"}
+              {isAddPending ? "Adding" : "Add"}
             </button>
           ) : (
             <button
               disabled={isUpdatePending}
               className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
             >
-              {isUpdatePending ? "Updating" : "Update Note"}
+              {isUpdatePending ? "Updating" : "Update"}
             </button>
           )}
         </div>

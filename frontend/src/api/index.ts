@@ -3,4 +3,5 @@ export * from "./auth";
 export * from "./user";
 export * from "./uploadFile";
 export * from "./note";
+export * from "./voiceNote";
 export * from "./category";

@@ -64,7 +64,7 @@ export const voiceNote = async (req, res) => {
       status: "success",
       message: "Voice Note found by given ID.",
       data: {
-        note,
+        voiceNote: note,
       },
     });
   } catch (err) {

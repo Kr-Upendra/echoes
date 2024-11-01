@@ -5,10 +5,12 @@ import ProgressBar from "../audio/ProgressBar";
 import AudioButton from "../audio/AudioButton";
 import { formatTime, warnAlert } from "../../utils";
 import Waveform from "../WaveForm";
+import { useLocation } from "react-router-dom";
 
 type Props = { error?: string; audioUrl: string; setAudioUrl: any };
 
 export default function AudioRecorder({ error, audioUrl, setAudioUrl }: Props) {
+  const location = useLocation();
   const [recording, setRecording] = useState(false);
   const [paused, setPaused] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
@@ -132,13 +134,6 @@ export default function AudioRecorder({ error, audioUrl, setAudioUrl }: Props) {
 
   const [audioStream, setAudioStream] = useState<MediaStream | null>(null);
 
-  // useEffect(() => {
-  //   return () => {
-  //     stopTimer();
-  //     mediaRecorder?.stream.getTracks().forEach((track) => track.stop());
-  //   };
-  // }, [mediaRecorder]);
-
   return (
     <div className="mt-2 mb-3.5 w-full">
       <label className="block mb-1 text-sm font-medium text-gray-200 capitalize">
@@ -152,9 +147,9 @@ export default function AudioRecorder({ error, audioUrl, setAudioUrl }: Props) {
         <div className="rounded-md mb-3 flex items-center justify-center h-16">
           {recording ? (
             <Waveform audioStream={audioStream} recording={recording} />
-          ) : audioUrl ? (
+          ) : audioUrl && location?.pathname === "voice-notes/create" ? (
             <span className="text-sm font-display text-green-700">
-              Audio recorded. Play below.
+              Record audio note
             </span>
           ) : (
             <span className="text-sm font-display text-green-700">
