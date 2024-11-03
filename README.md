@@ -71,7 +71,7 @@ Echoes is a personal memories app built using the MERN stack (MongoDB, Express.j
 2. Install Dependencies: Navigate to the root directory and install dependencies for both the frontend and backend.
 
    ```bash
-   cd echoes-app
+   cd echoes
 
    # install dependencies for frontend
    cd frontend
