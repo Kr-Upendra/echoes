@@ -27,7 +27,7 @@ const router = createBrowserRouter(
       <Route path="register" element={<Register />} />
       <Route element={<ProtectedLayout />}>
         <Route path="dashboard" element={<Dashboard />} loader={statLoader} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile" element={<Profile />} loader={statLoader} />
         <Route path="memories" element={<PageLayout />}>
           <Route index element={<Note />} />
           <Route path="create" element={<AddNote />} />

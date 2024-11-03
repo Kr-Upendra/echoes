@@ -105,7 +105,11 @@ export default function ImageUploader({
   const mutation = useMutation({
     mutationFn: mutationFunction,
     onSuccess: () => {
-      successAlert("Image uploaded successfully.");
+      if (title?.includes("profile")) {
+        successAlert("Profile picture updated successfully.");
+      } else {
+        successAlert("Banner updated successfully.");
+      }
       queryClient.invalidateQueries({ queryKey: ["profileData"] });
       setFile(null);
       onClose();

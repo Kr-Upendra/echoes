@@ -6,7 +6,7 @@ import {
   FaThreads,
   FaTwitter,
 } from "react-icons/fa6";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLoaderData, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CountUp from "react-countup";
 import default_user from "../../assets/icons/default_user.png";
@@ -23,6 +23,8 @@ export default function ProfileCard() {
   const userProfile = useSelector(
     (state: RootState) => state.userProfile.userProfile
   );
+
+  const { userStats: userStatsData }: any = useLoaderData();
 
   const handleUploadClick = () => {
     setShowUploader(true);
@@ -50,34 +52,50 @@ export default function ProfileCard() {
         <div className="p-3 py-4 rounded-lg bg-green-200/5 text-center shadow-lg shadow-black/5">
           <div className="my-2">
             <span className="text-4xl sm:text-3xl text-white font-display tracking-wider">
-              <CountUp start={0} end={20} duration={2.5} />
+              <CountUp
+                start={0}
+                end={userStatsData?.totalMemories}
+                duration={2.5}
+              />
             </span>
           </div>
-          <h3 className="text-gray-400 sm:text-sm">Total Notes</h3>
+          <h3 className="text-gray-400 sm:text-sm">Total Memories</h3>
         </div>
         <div className="p-3 py-4 rounded-lg bg-green-200/5 text-center shadow-lg shadow-black/5">
           <div className="my-2">
             <span className="text-4xl sm:text-3xl text-white font-display tracking-wider">
-              <CountUp start={0} end={15} duration={2.5} />
+              <CountUp
+                start={0}
+                end={userStatsData?.favoriteMemories}
+                duration={2.5}
+              />
             </span>
           </div>
-          <h3 className="text-gray-400 sm:text-sm">Total Reminders</h3>
+          <h3 className="text-gray-400 text-sm">Favorite Memories</h3>
         </div>
         <div className="p-3 py-4 rounded-lg bg-green-200/5 text-center shadow-lg shadow-black/5">
           <div className="my-2">
             <span className="text-4xl sm:text-3xl text-white font-display tracking-wider">
-              <CountUp start={0} end={5} duration={2.5} />
+              <CountUp
+                start={0}
+                end={userStatsData?.totalUniqueTags}
+                duration={2.5}
+              />
             </span>
           </div>
-          <h3 className="text-gray-400 sm:text-sm">Voice Notes</h3>
+          <h3 className="text-gray-400 sm:text-sm">Total Tags</h3>
         </div>
         <div className="p-3 py-4 rounded-lg bg-green-200/5 text-center shadow-lg shadow-black/5">
           <div className="my-2">
             <span className="text-4xl sm:text-3xl text-white font-display tracking-wider">
-              <CountUp start={0} end={8} duration={2.5} />
+              <CountUp
+                start={0}
+                end={userStatsData?.totalCategories}
+                duration={2.5}
+              />
             </span>
           </div>
-          <h3 className="text-gray-400 sm:text-sm">Photes Added</h3>
+          <h3 className="text-gray-400 sm:text-sm">Total Categories</h3>
         </div>
       </div>
       <div className="mt-4 flex gap-4 sm:gap-2">
