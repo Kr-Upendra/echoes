@@ -23,6 +23,6 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/notes", noteRouter);
-app.use("/api/v1/voice-notes", voiceNoteRouter);
+// app.use("/api/v1/voice-notes", voiceNoteRouter);
 
 export default app;
