@@ -83,7 +83,7 @@ We’re excited that you want to contribute to Echoes! Your contributions help i
 
 6.  Getting Help
 
-    If you have questions or need assistance, feel free to reach out by opening an issue or contacting us via our [support email]("mailto://kupendra.dev@gmail.com").
+    If you have questions or need assistance, feel free to reach out by opening an issue or contacting us via our [support email]("mailto:kupendra.dev@gmail.com").
 
 ## Thank You!
 

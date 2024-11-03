@@ -102,4 +102,4 @@ Echoes is a personal memories app built using the MERN stack (MongoDB, Express.j
 
 ## Contributing
 
-We welcome contributions! Please refer to our [CONTRIBUTING.md](./contribute.md) for guidelines on how to get involved.
+We welcome contributions! Please refer to our [contribute.md](./contribute.md) for guidelines on how to get involved.
