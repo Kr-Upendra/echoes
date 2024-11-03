@@ -65,7 +65,7 @@ Echoes is a personal memories app built using the MERN stack (MongoDB, Express.j
 1. Clone the Repository:
 
    ```bash
-   git clone https://github.com/Kr-Upendra/keep-memories
+   git clone https://github.com/Kr-Upendra/echoes
    ```
 
 2. Install Dependencies: Navigate to the root directory and install dependencies for both the frontend and backend.
