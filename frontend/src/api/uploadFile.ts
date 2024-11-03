@@ -31,22 +31,22 @@ export const uploadImage = async (
   return data?.publicUrl;
 };
 
-export const uploadAudio = async (
-  file: File,
-  bucket: string,
-  fileName: string,
-  oldFile?: string
-) => {
-  console.log(oldFile);
-  let { error: uploadError } = await supabase.storage
-    .from(bucket)
-    .upload(fileName, file);
+// export const uploadAudio = async (
+//   file: File,
+//   bucket: string,
+//   fileName: string,
+//   oldFile?: string
+// ) => {
+//   console.log(oldFile);
+//   let { error: uploadError } = await supabase.storage
+//     .from(bucket)
+//     .upload(fileName, file);
 
-  if (uploadError) {
-    errorAlert(uploadError?.message || "Failed to upload file.");
-    return;
-  }
+//   if (uploadError) {
+//     errorAlert(uploadError?.message || "Failed to upload file.");
+//     return;
+//   }
 
-  const { data } = supabase.storage.from(bucket).getPublicUrl(fileName);
-  return data?.publicUrl;
-};
+//   const { data } = supabase.storage.from(bucket).getPublicUrl(fileName);
+//   return data?.publicUrl;
+// };

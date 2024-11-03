@@ -6,4 +6,3 @@ export { default as Profile } from "./Profile";
 export { default as Note } from "./notes/Note";
 export { default as AddNote } from "./notes/AddNote";
 export { default as EditNote } from "./notes/EditNote";
-export { default as VoiceNotePage } from "./Voice/Page";

@@ -58,11 +58,11 @@ export default function Header() {
               hrefValue="/notes"
               handleClick={closeUserMenu}
             />
-            <NavItem
+            {/* <NavItem
               title="Voice"
               hrefValue="/voice-notes"
               handleClick={closeUserMenu}
-            />
+            /> */}
             <NavLink to="/profile" className="mx-2">
               <img
                 className={`w-8 h-8 border-2 border-green-500 rounded-full ${

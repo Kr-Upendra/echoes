@@ -5,7 +5,8 @@ import { ApiResponse, errorAlert, successAlert } from "../utils";
 export const useUpdateItem = <T>(
   updateFn: (id: string, formdata: T) => Promise<ApiResponse>,
   queryKey?: string[],
-  isNavigation: boolean = false
+  isNavigation: boolean = false,
+  navigationLocation?: string
 ) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export const useUpdateItem = <T>(
       queryClient.invalidateQueries({ queryKey });
       if (isNavigation) {
         setTimeout(() => {
-          navigate("/notes");
+          navigate(navigationLocation || "/dashboard");
         }, 1000);
       }
     },

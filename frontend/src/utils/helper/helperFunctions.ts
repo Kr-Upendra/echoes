@@ -18,14 +18,6 @@ export const formatTime = (seconds: number) => {
   return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 };
 
-export const convertToVoiceFile = async (audioUrl: string) => {
-  const audioBlob = await fetch(audioUrl).then((res) => res.blob());
-  const audioFile = new File([audioBlob], "voice_note.wav", {
-    type: "audio/wav",
-  });
-  return audioFile;
-};
-
 export const slugifyString = (str: string) => {
   const res = slugify(str, { replacement: "_", trim: true, lower: true });
   return res;

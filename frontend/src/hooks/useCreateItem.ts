@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 export const useCreateItem = <T>(
   updateFn: (formdata: T) => Promise<ApiResponse>,
-  queryKey: string[]
+  queryKey: string[],
+  navigationLocation?: string
 ) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export const useCreateItem = <T>(
       successAlert(response?.message);
       queryClient.invalidateQueries({ queryKey });
       setTimeout(() => {
-        navigate("/notes");
+        navigate(navigationLocation || "/dashboard");
       }, 1000);
     },
     onError: (error) => {
