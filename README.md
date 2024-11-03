@@ -54,8 +54,8 @@ Echoes is a personal memories app built using the MERN stack (MongoDB, Express.j
 
 ## Technologies Used
 
-- Frontend: React, Redux, CSS
-- Backend: Node.js, Express.js
+- Frontend: React, Redux, TailwindCSS, React Query
+- Backend: Node.js, Express.js, Mongoose
 - Database: MongoDB
 - Media Storage: Supabase
 - Authentication: JWT (JSON Web Tokens)
