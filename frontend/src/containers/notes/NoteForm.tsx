@@ -21,13 +21,13 @@ export default function NoteForm({
   isLoadingCategories,
 }: Props) {
   const { mutate: addNoteMutation, isPending: isAddPending } =
-    useCreateItem<NoteFormData>(createNote, ["allNotes"]);
+    useCreateItem<NoteFormData>(createNote, ["allNotes"], "/memories");
   const { mutate: updateNoteMutation, isPending: isUpdatePending } =
-    useUpdateItem<NoteFormData>(updateNote, ["allNotes"], true);
+    useUpdateItem<NoteFormData>(updateNote, ["allNotes"], true, "/memories");
   const { pathname } = useLocation();
 
   const { id } = useParams();
-  const isCreateForm = pathname === "/notes/create";
+  const isCreateForm = pathname === "/memories/create";
 
   const [errors, setErrors] = useState<any | null>(null);
   const [formData, setFormData] = useState<NoteFormData>({
@@ -146,14 +146,14 @@ export default function NoteForm({
               disabled={isAddPending}
               className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
             >
-              {isAddPending ? "Adding" : "Add Note"}
+              {isAddPending ? "Adding" : "Add Memory"}
             </button>
           ) : (
             <button
               disabled={isUpdatePending}
               className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
             >
-              {isUpdatePending ? "Updating" : "Update Note"}
+              {isUpdatePending ? "Updating" : "Update Memory"}
             </button>
           )}
         </div>

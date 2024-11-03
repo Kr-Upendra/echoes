@@ -15,7 +15,6 @@ export const getStat = async (req, res) => {
     const categories = await noteModel.distinct("category", { author: userId });
     const totalCategories = categories.length;
 
-    // Monthly, weekly, and daily counts of notes
     const today = new Date();
     const dailyCount = await noteModel.countDocuments({
       author: userId,
@@ -53,7 +52,7 @@ export const getStat = async (req, res) => {
     return res.status(STATUS_CODES.SUCCESS).json({
       status: "success",
       message: "Your stats",
-      data: responseData,
+      data: { userStats: responseData },
     });
   } catch (err) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({

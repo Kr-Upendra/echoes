@@ -87,7 +87,11 @@ export default function Note() {
 
   return (
     <>
-      <PageTitle title="My Notes" buttonTitle="New Note" hrefValue="create" />
+      <PageTitle
+        title="My Memories"
+        buttonTitle="New Momory"
+        hrefValue="create"
+      />
       <PageFilter
         handleQueryChange={handleChange}
         hasCategoryFilter={true}
@@ -126,7 +130,7 @@ export default function Note() {
               )}
             </>
           ) : (
-            <NoRecord title="You don't have any notes." />
+            <NoRecord title="You have not added any memories yet." />
           )}
         </>
       )}

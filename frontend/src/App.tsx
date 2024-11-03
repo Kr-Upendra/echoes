@@ -17,6 +17,7 @@ import {
   Register,
 } from "./pages";
 import NotFound from "./pages/Error/NotFound";
+import { statLoader } from "./pages/Dashboard";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,9 +26,9 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       <Route element={<ProtectedLayout />}>
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} loader={statLoader} />
         <Route path="profile" element={<Profile />} />
-        <Route path="notes" element={<PageLayout />}>
+        <Route path="memories" element={<PageLayout />}>
           <Route index element={<Note />} />
           <Route path="create" element={<AddNote />} />
           <Route path=":id" element={<EditNote />} />

@@ -15,6 +15,16 @@ export const getProfile = async () => {
   );
 };
 
+export const userStats = async () => {
+  return apiFetch(
+    "/users/stat",
+    {
+      method: "GET",
+    },
+    true
+  );
+};
+
 export const updatePassword = async (
   formdata: UpdatePasswordFromData
 ): Promise<ApiResponse> => {

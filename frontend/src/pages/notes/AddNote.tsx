@@ -11,7 +11,7 @@ export default function AddNote() {
   const categoriesList = categoryData?.data?.categories;
   return (
     <>
-      <PageTitle title="Add new note" buttonTitle="" hrefValue="" />
+      <PageTitle title="Add new memory" buttonTitle="" hrefValue="" />
       <NoteForm
         categoriesList={categoriesList}
         isLoadingCategories={isLoadingCategories}

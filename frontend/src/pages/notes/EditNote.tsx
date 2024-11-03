@@ -23,7 +23,7 @@ export default function EditNote() {
 
   return (
     <>
-      <PageTitle title="Edit note" buttonTitle="" hrefValue="" />
+      <PageTitle title="Edit memory" buttonTitle="" hrefValue="" />
       {isLoading ? (
         <Loading />
       ) : error ? (

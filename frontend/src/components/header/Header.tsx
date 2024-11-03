@@ -54,8 +54,8 @@ export default function Header() {
               handleClick={closeUserMenu}
             />
             <NavItem
-              title="My Notes"
-              hrefValue="/notes"
+              title="My Memories"
+              hrefValue="/memories"
               handleClick={closeUserMenu}
             />
             {/* <NavItem
