@@ -4,7 +4,6 @@ import { apiFetch } from "./api";
 export const registerUser = async (
   formdata: RegisterFromData
 ): Promise<ApiResponse> => {
-  console.log(formdata);
   return apiFetch("/auth/register", {
     method: "POST",
     body: JSON.stringify(formdata),
