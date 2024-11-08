@@ -11,12 +11,13 @@ import {
   Dashboard,
   EditNote,
   Home,
+  Journal,
   Login,
   Note,
+  NotFound,
   Profile,
   Register,
 } from "./pages";
-import NotFound from "./pages/Error/NotFound";
 import { statLoader } from "./pages/Dashboard";
 
 const router = createBrowserRouter(
@@ -30,6 +31,11 @@ const router = createBrowserRouter(
         <Route path="profile" element={<Profile />} loader={statLoader} />
         <Route path="memories" element={<PageLayout />}>
           <Route index element={<Note />} />
+          <Route path="create" element={<AddNote />} />
+          <Route path=":id" element={<EditNote />} />
+        </Route>
+        <Route path="journals" element={<PageLayout />}>
+          <Route index element={<Journal />} />
           <Route path="create" element={<AddNote />} />
           <Route path=":id" element={<EditNote />} />
         </Route>

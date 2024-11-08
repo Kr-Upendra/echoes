@@ -58,6 +58,11 @@ export default function Header() {
               hrefValue="/memories"
               handleClick={closeUserMenu}
             />
+            <NavItem
+              title="Journals"
+              hrefValue="/journals"
+              handleClick={closeUserMenu}
+            />
             {/* <NavItem
               title="Voice"
               hrefValue="/voice-notes"
