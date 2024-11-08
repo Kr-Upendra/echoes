@@ -1,8 +1,8 @@
-# Echoes
+# El Echoes
 
 ## Overview
 
-Echoes is a personal memories app built using the MERN stack (MongoDB, Express.js, React, Node.js). It allows users to capture, organize, and reflect on their thoughts, tasks, and significant life experiences. Echoes aims to create a vibrant platform for users to document their journey and revisit cherished memories.
+El Echoes is a personal memories app built using the MERN stack (MongoDB, Express.js, React, Node.js). It allows users to capture, organize, and reflect on their thoughts, tasks, and significant life experiences. Echoes aims to create a vibrant platform for users to document their journey and revisit cherished memories.
 
 ## Features
 
