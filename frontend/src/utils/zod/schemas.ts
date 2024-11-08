@@ -2,14 +2,14 @@ import { z } from "zod";
 
 export const loginSchema = z.object({
   email: z.string().email("Invalid email format"),
-  password: z.string().min(4, "Password must be at least 6 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const registrationSchema = z.object({
   firstname: z.string().min(1, "First name is required"),
   lastname: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email format"),
-  password: z.string().min(4, "Password must be at least 6 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const noteSchema = z.object({
@@ -36,20 +36,20 @@ const addressSchema = z.object({
 });
 
 // Going to add this lator
-// const socialMediaSchema = z.object({
-//   facebook: z.string().optional(),
-//   thread: z.string().optional(),
-//   twitter: z.string().optional(),
-//   instagram: z.string().optional(),
-//   website: z.string().optional(),
-// });
+const socialMediaSchema = z.object({
+  facebook: z.string().optional(),
+  thread: z.string().optional(),
+  twitter: z.string().optional(),
+  instagram: z.string().optional(),
+  website: z.string().optional(),
+});
 
 export const updateProfileSchema = z.object({
   firstName: z.string().min(2).optional(),
   lastName: z.string().min(1).optional(),
   about: z.string().optional(),
   address: addressSchema,
-  // socialMedia: socialMediaSchema,
+  socialMedia: socialMediaSchema,
 });
 
 export const voiceNoteSchema = z.object({

@@ -48,6 +48,16 @@ export default function ProfileCard() {
       <div className="text-center mt-3">
         <h1 className="text-white font-display">{`${userProfile?.firstName} ${userProfile?.lastName}`}</h1>
       </div>
+      <div className="text-center my-2">
+        {userProfile?.about && userProfile?.about.length > 101 ? (
+          <p className="text-gray-400 text-sm">{`${userProfile?.about.slice(
+            0,
+            100
+          )}...`}</p>
+        ) : (
+          <p className="text-gray-400 text-sm">{`${userProfile?.about}`}</p>
+        )}
+      </div>
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="p-3 py-4 rounded-lg bg-green-200/5 text-center shadow-lg shadow-black/5">
           <div className="my-2">
@@ -114,21 +124,21 @@ export default function ProfileCard() {
           <FaThreads className="mx-auto text-2xl text-green-500" />
         </Link>
         <Link
-          to={userProfile?.socialMedia?.thread || currentPath}
+          to={userProfile?.socialMedia?.instagram || currentPath}
           className="w-full p-2"
           target="_blank"
         >
           <FaInstagram className="mx-auto text-2xl text-green-500" />
         </Link>
         <Link
-          to={userProfile?.socialMedia?.thread || currentPath}
+          to={userProfile?.socialMedia?.twitter || currentPath}
           className="w-full p-2"
           target="_blank"
         >
           <FaTwitter className="mx-auto text-2xl text-green-500" />
         </Link>
         <Link
-          to={userProfile?.socialMedia?.thread || currentPath}
+          to={userProfile?.socialMedia?.website || currentPath}
           className="w-full p-2"
           target="_blank"
         >

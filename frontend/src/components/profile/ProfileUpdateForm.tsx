@@ -31,6 +31,13 @@ export default function ProfileUpdateForm() {
       country: userProfile?.address?.country || "",
       zipcode: userProfile?.address?.zipcode || "",
     },
+    socialMedia: {
+      facebook: userProfile?.socialMedia?.facebook || "",
+      thread: userProfile?.socialMedia?.thread || "",
+      instagram: userProfile?.socialMedia?.instagram || "",
+      twitter: userProfile?.socialMedia?.twitter || "",
+      website: userProfile?.socialMedia?.website || "",
+    },
   });
 
   useEffect(() => {
@@ -47,6 +54,13 @@ export default function ProfileUpdateForm() {
           country: userProfile.address?.country || "",
           zipcode: userProfile.address?.zipcode || "",
         },
+        socialMedia: {
+          facebook: userProfile?.socialMedia?.facebook || "",
+          thread: userProfile?.socialMedia?.thread || "",
+          instagram: userProfile?.socialMedia?.instagram || "",
+          twitter: userProfile?.socialMedia?.twitter || "",
+          website: userProfile?.socialMedia?.website || "",
+        },
       });
     }
   }, [userProfile]);
@@ -61,6 +75,14 @@ export default function ProfileUpdateForm() {
         ...prev,
         address: {
           ...prev.address,
+          [name]: value,
+        },
+      }));
+    } else if (name in formData.socialMedia) {
+      setFormData((prev) => ({
+        ...prev,
+        socialMedia: {
+          ...prev.socialMedia,
           [name]: value,
         },
       }));
@@ -204,6 +226,71 @@ export default function ProfileUpdateForm() {
               value={formData?.address?.zipcode}
               onchange={handleChange}
               error={errors?.zipcode}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* CONTACT INFORMATION */}
+      <div className="rounded-lg shadow-lg shadow-black/5 p-5 bg-green-200/5 mt-6">
+        <h4 className="font-display text-green-500 text-sm uppercase">
+          Social Links
+        </h4>
+        <div className="mt-4">
+          <div className="flex gap-x-5 lg:flex-col">
+            <CustomInput
+              id="facebook"
+              label="Facebook Url"
+              name="facebook"
+              type="url"
+              placeHolder="https://facebook.com/username"
+              value={formData?.socialMedia?.facebook}
+              onchange={handleChange}
+              error={errors?.socialMedia?.facebook}
+            />
+            <CustomInput
+              id="thread"
+              label="Thread Url"
+              name="thread"
+              type="url"
+              placeHolder="https://thread.com/username"
+              value={formData?.socialMedia?.thread}
+              onchange={handleChange}
+              error={errors?.socialMedia?.thread}
+            />
+          </div>
+          <div className="flex gap-x-5 lg:flex-col">
+            <CustomInput
+              id="instagram"
+              label="Instagram Url"
+              name="instagram"
+              type="url"
+              placeHolder="https://instagram.com/username"
+              value={formData?.socialMedia?.instagram}
+              onchange={handleChange}
+              error={errors?.socialMedia?.instagram}
+            />
+            <CustomInput
+              id="twitter"
+              label="Twitter Url"
+              name="twitter"
+              type="url"
+              placeHolder="Your twitter profile url"
+              value={formData?.socialMedia?.twitter}
+              onchange={handleChange}
+              error={errors?.socialMedia?.twitter}
+            />
+          </div>
+          <div className="flex gap-x-5 lg:flex-col">
+            <CustomInput
+              id="website"
+              label="Website Url"
+              name="website"
+              type="url"
+              placeHolder="https://kupendra.dev"
+              value={formData?.socialMedia?.website}
+              onchange={handleChange}
+              error={errors?.socialMedia?.website}
             />
           </div>
         </div>
