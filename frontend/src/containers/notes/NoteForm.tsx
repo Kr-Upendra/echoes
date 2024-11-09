@@ -22,14 +22,18 @@ export default function NoteForm({
   isLoadingCategories,
 }: Props) {
   const { mutate: addNoteMutation, isPending: isAddPending } =
-    useCreateItem<NoteFormData>(createNote, ["allNotes"], "/memories");
+    useCreateItem<NoteFormData>(createNote, ["allNotes", "note"], "/memories");
   const { mutate: updateNoteMutation, isPending: isUpdatePending } =
-    useUpdateItem<NoteFormData>(updateNote, ["allNotes"], true, "/memories");
+    useUpdateItem<NoteFormData>(
+      updateNote,
+      ["allNotes", "note"],
+      true,
+      "/memories"
+    );
   const { pathname } = useLocation();
 
   const { id } = useParams();
   const isCreateForm = pathname === "/memories/create";
-  console.log("noteData", noteData);
 
   const [errors, setErrors] = useState<any | null>(null);
   const [formData, setFormData] = useState<NoteFormData>({
@@ -51,8 +55,6 @@ export default function NoteForm({
       });
     }
   }, [noteData]);
-
-  console.log("formdata tags", formData?.tags);
 
   const handleTagsChange = (updatedTags: string[]) => {
     setFormData((prevData) => ({

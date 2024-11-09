@@ -20,7 +20,7 @@ export default function CustomCheckbox({
   onChange,
 }: CheckboxProps) {
   return (
-    <div className="mb-3.5 w-full flex items-center mt-6 lg:mt-3">
+    <div className="mb-3.5 w-full flex items-end h-11 lg:h-5 lg:items-start mt-6 lg:mt-3">
       <input
         type="checkbox"
         id={id}

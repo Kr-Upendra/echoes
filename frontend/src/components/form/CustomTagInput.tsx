@@ -54,7 +54,7 @@ export default function CustomTagInput({
         className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black border rounded-md border-green-500/15`}
         onKeyUp={handleKeyUp}
       />
-      <div className="mt-1 flex gap-x-2 flex-wrap gap-y-2">
+      <div className="mt-2 flex gap-x-2 flex-wrap gap-y-2">
         {tags.map((tag, index) => (
           <div
             key={index}

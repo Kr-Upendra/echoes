@@ -39,7 +39,7 @@ export default function Card({
           {tags.slice(0, 2).map((tag, index) => (
             <span
               key={index}
-              className="text-xs px-2 py-0.5 bg-white/10 text-gray-100 rounded-full capitalize"
+              className="text-xs px-2 py-1 bg-white/10 text-gray-100 font-monaco rounded-sm capitalize"
             >
               {tag}
             </span>
