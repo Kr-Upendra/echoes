@@ -2,7 +2,7 @@ type Props = {
   id: string;
   placeHolder?: string;
   name: string;
-  type: string;
+  type?: string;
   label: string;
   error: string | null;
   value?: string;
@@ -14,7 +14,7 @@ export default function CustomInput({
   id,
   placeHolder,
   name,
-  type,
+  type = "text",
   label,
   error,
   value,

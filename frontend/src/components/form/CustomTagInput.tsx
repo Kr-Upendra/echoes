@@ -41,7 +41,7 @@ export default function CustomTagInput({
         className="block mb-1 text-sm font-medium text-gray-200 capitalize"
         htmlFor="input-tags"
       >
-        Enter Tags
+        Tags
       </label>
       <input
         id="input-tags"
