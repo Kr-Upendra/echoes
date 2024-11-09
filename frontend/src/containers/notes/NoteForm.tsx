@@ -8,6 +8,7 @@ import CustomTextArea from "../../components/form/CustomTextArea";
 import { INote, NoteFormData, noteSchema } from "../../utils";
 import { createNote, updateNote } from "../../api";
 import { useCreateItem, useUpdateItem } from "../../hooks";
+import CustomTagInput from "../../components/form/CustomTagInput";
 
 type Props = {
   noteData?: INote;
@@ -38,19 +39,20 @@ export default function NoteForm({
     isFavorite: noteData?.isFavorite || false,
   });
 
+  const handleTagsChange = (updatedTags: string[]) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      tags: updatedTags, // Update the tags in formData
+    }));
+  };
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
     >
   ) => {
     const { name, value, type } = e.target;
-    if (name === "tags") {
-      const tagsArray = value
-        .split(",")
-        .map((tag) => tag.trim())
-        .filter((tag) => tag !== "");
-      setFormData((prev) => ({ ...prev, [name]: tagsArray }));
-    } else if (type === "checkbox") {
+    if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData((prev) => ({ ...prev, [name]: checked }));
     } else {
@@ -61,6 +63,7 @@ export default function NoteForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log("formData: ", formData);
       noteSchema.parse(formData);
       if (isCreateForm) addNoteMutation(formData);
       else if (id) {
@@ -121,15 +124,9 @@ export default function NoteForm({
           />
         </div>
         <div className="flex gap-x-5 lg:flex-col">
-          <CustomInput
-            id="noteTags"
-            label="Tags"
-            name="tags"
-            type="text"
-            placeHolder="Comma separated values"
-            value={formData?.tags && formData?.tags.join(", ")}
-            onchange={handleChange}
-            error={errors?.tags}
+          <CustomTagInput
+            onTagsChange={handleTagsChange}
+            initialTags={formData.tags} // This will pre-populate tags for editing
           />
           <CustomCheckbox
             id="noteFavorite"

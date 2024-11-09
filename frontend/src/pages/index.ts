@@ -8,3 +8,5 @@ export { default as AddNote } from "./notes/AddNote";
 export { default as EditNote } from "./notes/EditNote";
 export { default as NotFound } from "./Error/NotFound";
 export { default as Journal } from "./journal/Journal";
+export { default as AddJournal } from "./journal/AddJournal";
+export { default as EditJournal } from "./journal/EditJournal";

@@ -1,7 +1,6 @@
 import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import "@fontsource-variable/open-sans";
-import "@fontsource/fredoka-one";
 import App from "./App.tsx";
 import { ToastContainer } from "react-toastify";
 import { StrictMode } from "react";

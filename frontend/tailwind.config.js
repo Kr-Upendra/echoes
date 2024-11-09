@@ -3,8 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     fontFamily: {
-      display: ["Fredoka One", "system-ui"],
       body: ["Open Sans Variable", "sans-serif"],
+      display: ["fredoka", "system-ui"],
+      monaco: ["monaco", "sans-serif"], // Add your custom font here
     },
     screens: {
       "2xl": { max: "1535px" },

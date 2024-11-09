@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "monaco";
+  src: url("/fonts/Monaco.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "fredoka";
+  src: url("/fonts/fredoka.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .transition-color {
   @apply transition-colors duration-500;
 }

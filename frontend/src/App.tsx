@@ -7,8 +7,10 @@ import {
 import "./App.css";
 import { PageLayout, ProtectedLayout, RootLayout } from "./layouts";
 import {
+  AddJournal,
   AddNote,
   Dashboard,
+  EditJournal,
   EditNote,
   Home,
   Journal,
@@ -36,8 +38,8 @@ const router = createBrowserRouter(
         </Route>
         <Route path="journals" element={<PageLayout />}>
           <Route index element={<Journal />} />
-          <Route path="create" element={<AddNote />} />
-          <Route path=":id" element={<EditNote />} />
+          <Route path="create" element={<AddJournal />} />
+          <Route path=":id" element={<EditJournal />} />
         </Route>
       </Route>
       <Route path="*" element={<NotFound />} />
