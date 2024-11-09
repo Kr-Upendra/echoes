@@ -1,21 +1,8 @@
 import { useEffect, useState } from "react";
 import { FaXmark } from "react-icons/fa6";
 
-// type Props = {
-//   id: string;
-//   placeHolder?: string;
-//   name: string;
-//   type: string;
-//   label: string;
-//   error: string | null;
-//   value?: string;
-//   isDisabled?: boolean;
-//   onchange: React.ChangeEventHandler<HTMLInputElement>;
-//   onKeyUp: React.KeyboardEvent<HTMLInputElement>;
-// };
-
 type CustomTagInputProps = {
-  onTagsChange: (tags: string[]) => void; // New prop to send updated tags to parent
+  onTagsChange: (tags: string[]) => void;
   initialTags?: string[];
 };
 
@@ -71,7 +58,7 @@ export default function CustomTagInput({
         {tags.map((tag, index) => (
           <div
             key={index}
-            className="px-2 py-1 font-monaco text-sm flex justify-center items-center gap-x-1.5 rounded-sm bg-green-200/10 shadow-lg"
+            className="px-2 py-1 font-monaco lowercase text-sm flex justify-center items-center gap-x-1.5 rounded-sm bg-green-200/10 shadow-lg"
           >
             {tag}
             <button

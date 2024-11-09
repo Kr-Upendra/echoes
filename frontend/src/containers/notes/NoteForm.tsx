@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import CustomCheckbox from "../../components/form/CustomCheckBox";
 import CustomInput from "../../components/form/CustomInput";
@@ -29,6 +29,7 @@ export default function NoteForm({
 
   const { id } = useParams();
   const isCreateForm = pathname === "/memories/create";
+  console.log("noteData", noteData);
 
   const [errors, setErrors] = useState<any | null>(null);
   const [formData, setFormData] = useState<NoteFormData>({
@@ -38,6 +39,20 @@ export default function NoteForm({
     tags: noteData?.tags || [],
     isFavorite: noteData?.isFavorite || false,
   });
+
+  useEffect(() => {
+    if (noteData) {
+      setFormData({
+        title: noteData.title || "",
+        category: noteData.category?._id || "",
+        content: noteData.content || "",
+        tags: noteData.tags || [],
+        isFavorite: noteData.isFavorite || false,
+      });
+    }
+  }, [noteData]);
+
+  console.log("formdata tags", formData?.tags);
 
   const handleTagsChange = (updatedTags: string[]) => {
     setFormData((prevData) => ({
