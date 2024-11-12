@@ -136,7 +136,7 @@ export default function NoteForm({
             onTagsChange={(tags: string[]) =>
               handleTagsChange(tags, setFormData)
             }
-            initialTags={formData.tags} // This will pre-populate tags for editing
+            initialTags={formData.tags}
           />
           <CustomCheckbox
             id="noteFavorite"

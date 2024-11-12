@@ -11,6 +11,16 @@ export const allJournals = async () => {
   );
 };
 
+export const singleJournal = async (id: string) => {
+  return apiFetch(
+    `/journals/${id}`,
+    {
+      method: "GET",
+    },
+    true
+  );
+};
+
 export const createJournal = async (
   formdata: JournalFormData
 ): Promise<ApiResponse> => {
@@ -18,6 +28,20 @@ export const createJournal = async (
     `/journals`,
     {
       method: "POST",
+      body: JSON.stringify(formdata),
+    },
+    true
+  );
+};
+
+export const updateJournal = async (
+  id: string,
+  formdata: JournalFormData
+): Promise<ApiResponse> => {
+  return apiFetch(
+    `/journals/${id}`,
+    {
+      method: "PATCH",
       body: JSON.stringify(formdata),
     },
     true

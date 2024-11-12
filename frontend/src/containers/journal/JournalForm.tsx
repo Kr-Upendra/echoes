@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   handleChange,
   handleFilesChange,
@@ -15,17 +16,29 @@ import MoodInput from "../../components/form/MoodInput";
 import FileUploadInput from "../../components/form/FileUploadInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import { z } from "zod";
-import { createJournal } from "../../api";
-import { useCreateItem } from "../../hooks";
+import { createJournal, updateJournal } from "../../api";
+import { useCreateItem, useUpdateItem } from "../../hooks";
 
 type Props = { journalData?: IJournalData };
 
 export default function JournalForm({ journalData }: Props) {
+  const { pathname } = useLocation();
+  const { id } = useParams();
+  const isCreateForm = pathname === "/journals/create";
+
   const [errors, setErrors] = useState<any | null>({});
   const { mutate: addJournalMutation, isPending: isJouranlAdding } =
     useCreateItem<JournalFormData>(
       createJournal,
       ["journals", "journal"],
+      "/journals"
+    );
+
+  const { mutate: updateJournalMutation, isPending: isJouranlUpdating } =
+    useUpdateItem<JournalFormData>(
+      updateJournal,
+      ["journals", "journal"],
+      true,
       "/journals"
     );
 
@@ -37,12 +50,28 @@ export default function JournalForm({ journalData }: Props) {
     images: journalData?.images || [],
   });
 
+  useEffect(() => {
+    if (journalData) {
+      setFormData({
+        title: journalData.title || "",
+        content: journalData?.content || "",
+        tags: journalData?.tags || [],
+        mood: journalData?.mood || "neutral",
+        images: journalData?.images || [],
+      });
+    }
+  }, [journalData]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setErrors({});
       journalNoteSchema.parse(formData);
-      addJournalMutation(formData);
+      if (isCreateForm) {
+        addJournalMutation(formData);
+      } else if (id) {
+        updateJournalMutation({ id, formdata: formData });
+      }
     } catch (err) {
       if (err instanceof z.ZodError) {
         const formattedErrors: any = {};
@@ -103,12 +132,21 @@ export default function JournalForm({ journalData }: Props) {
           />
         </div>
         <div className="mt-6">
-          <SubmitButton
-            title="Add"
-            isDisabled={false}
-            isWorking={isJouranlAdding}
-            workingTitle="Adding..."
-          />
+          {isCreateForm ? (
+            <SubmitButton
+              title="Add"
+              isDisabled={false}
+              isWorking={isJouranlAdding}
+              workingTitle="Adding..."
+            />
+          ) : (
+            <SubmitButton
+              title="Update"
+              isDisabled={false}
+              isWorking={isJouranlUpdating}
+              workingTitle="Updating..."
+            />
+          )}
         </div>
       </form>
     </section>

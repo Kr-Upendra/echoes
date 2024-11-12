@@ -1,19 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../components/PageTitle";
+import Error from "../../components/Error";
+import Loading from "../../components/Loading";
 import { Calender, JournalContainer } from "../../containers";
 import { allJournals } from "../../api";
-import { useLoaderData } from "react-router-dom";
-import Loading from "../../components/Loading";
-import Error from "../../components/Error";
 
 export default function Journal() {
-  const { journals }: any = useLoaderData();
   const { data, isLoading, error } = useQuery({
     queryKey: ["journals"],
     queryFn: allJournals,
   });
-
-  console.log(data, isLoading, error);
 
   return (
     <>
@@ -29,7 +25,7 @@ export default function Journal() {
           <Error error={error} />
         ) : (
           <>
-            <JournalContainer journals={journals} />
+            <JournalContainer journals={data?.data?.journals} />
             <Calender />
           </>
         )}

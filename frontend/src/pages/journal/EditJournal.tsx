@@ -1,22 +1,31 @@
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { singleJournal } from "../../api";
 import PageTitle from "../../components/PageTitle";
 import JournalForm from "../../containers/journal/JournalForm";
-import { IJournalData } from "../../utils";
+import Loading from "../../components/Loading";
+import Error from "../../components/Error";
 
 export default function EditJournal() {
-  const testJournalData: IJournalData = {
-    id: "testId",
-    title: "First journal entry",
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    tags: ["First", "Test", "Journal"],
-    mood: "happy",
-    images: [],
-  };
+  const params = useParams();
+  const journalId = params.id || "";
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["journal", journalId],
+    queryFn: () => singleJournal(journalId),
+  });
+
+  const journal = data?.data?.journal;
 
   return (
     <>
       <PageTitle title="Edit new journal" buttonTitle="" hrefValue="" />
-      <JournalForm journalData={testJournalData} />
+      {isLoading ? (
+        <Loading />
+      ) : error ? (
+        <Error error={error} />
+      ) : (
+        <JournalForm journalData={journal} />
+      )}
     </>
   );
 }
