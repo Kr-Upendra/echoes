@@ -1,10 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import CustomInput from "../../components/form/CustomInput";
 import CustomTagInput from "../../components/form/CustomTagInput";
 import CustomTextArea from "../../components/form/CustomTextArea";
 import MoodInput from "../../components/form/MoodInput";
 import PageTitle from "../../components/PageTitle";
-import { JournalFormData } from "../../utils";
+import {
+  handleChange,
+  handleTagsChange,
+  JournalFormData,
+  setSelectedMood,
+} from "../../utils";
 
 export default function AddJournal() {
   const [formData, setFormData] = useState<JournalFormData>({
@@ -13,27 +18,6 @@ export default function AddJournal() {
     tags: [],
     mood: "neutral",
   });
-
-  const setSelectedMood = (mood: string) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      mood,
-    }));
-  };
-
-  const handleTagsChange = (tags: string[]) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      tags,
-    }));
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +36,9 @@ export default function AddJournal() {
               name="title"
               placeHolder="I have attend meeting."
               value={formData?.title}
-              onchange={handleChange}
+              onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(e, setFormData)
+              }
               error={""}
             />
           </div>
@@ -63,18 +49,22 @@ export default function AddJournal() {
               name="content"
               placeHolder="There is a meeting in my office that I need to attend at any cost."
               value={formData?.content}
-              onChange={handleChange}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                handleChange(e, setFormData)
+              }
               error={""}
             />
           </div>
           <div className="flex gap-x-5 lg:flex-col">
             <CustomTagInput
-              onTagsChange={handleTagsChange}
+              onTagsChange={(tags: string[]) =>
+                handleTagsChange(tags, setFormData)
+              }
               initialTags={formData?.tags}
             />
             <MoodInput
               selectedMood={formData.mood}
-              setSelectedMood={setSelectedMood}
+              setSelectedMood={(mood) => setSelectedMood(mood, setFormData)}
             />
           </div>
           <div className="mt-6">
