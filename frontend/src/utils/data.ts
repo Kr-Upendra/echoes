@@ -116,3 +116,21 @@ export const userStories: UserStory[] = [
     userImage: user_06,
   },
 ];
+
+export const moodOptions = [
+  {
+    title: "😃",
+    idFor: "excited",
+    value: "excited",
+    tooltipTitle: "Excited",
+  },
+  { title: "😊", idFor: "happy", value: "happy", tooltipTitle: "Happy" },
+  {
+    title: "😐",
+    idFor: "neutral",
+    value: "neutral",
+    tooltipTitle: "Neutral",
+  },
+  { title: "😞", idFor: "sad", value: "sad", tooltipTitle: "Sad" },
+  { title: "😡", idFor: "angry", value: "angry", tooltipTitle: "Angry" },
+];

@@ -75,3 +75,14 @@ export interface UpdateProfileFormData {
   address?: Address;
   socialMedia?: SocialMedia;
 }
+
+export type MoodType = {
+  moodType: "excited" | "happy" | "neutral" | "sad" | "angry";
+};
+
+export type JournalFormData = {
+  title: string;
+  content: string;
+  tags?: string[];
+  mood: string;
+};
