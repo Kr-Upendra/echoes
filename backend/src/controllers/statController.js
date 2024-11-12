@@ -1,4 +1,5 @@
 import { noteModel } from "../models/noteModel.js";
+import { journalModel } from "../models/journalModel.js";
 import { API_RESPONSE_MESSAGE, STATUS_CODES } from "../utils/index.js";
 
 export const getStat = async (req, res) => {
@@ -6,6 +7,7 @@ export const getStat = async (req, res) => {
 
   try {
     const totalMemories = await noteModel.countDocuments({ author: userId });
+    const totalJournals = await journalModel.countDocuments({ user: userId });
 
     const favoriteMemories = await noteModel.countDocuments({
       author: userId,
@@ -41,6 +43,7 @@ export const getStat = async (req, res) => {
 
     const responseData = {
       totalMemories,
+      totalJournals,
       favoriteMemories,
       totalCategories,
       monthlyCount,

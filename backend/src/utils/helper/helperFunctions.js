@@ -1,4 +1,5 @@
 import slugify from "slugify";
+import { moodColors } from "./constants.js";
 
 export function capitalizeFirstLetter(str) {
   if (typeof str !== "string" || str.length === 0) return str;
@@ -13,3 +14,7 @@ export function validatePassword(str) {
 export function createSlug(str) {
   return slugify(str, { trim: true, lower: true, replacement: "-" });
 }
+
+export const getMoodColor = (mood) => {
+  return moodColors[mood];
+};

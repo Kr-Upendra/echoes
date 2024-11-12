@@ -10,3 +10,11 @@ export const mongoUriLocal = process.env.MONGODB_URI_LOCAL;
 export const dbPassword = process.env.DB_PASSWORD;
 export const port = Number(process.env.PORT) || 8080;
 export const nodeEnv = process.env.NODE_ENV;
+
+export const moodColors = {
+  excited: "#FF9800",
+  happy: "#4CAF50",
+  neutral: "#F5F5F5",
+  sad: "#673AB7",
+  angry: "#D32F2F",
+};
