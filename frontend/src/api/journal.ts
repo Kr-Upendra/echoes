@@ -14,12 +14,21 @@ export const allJournals = async () => {
 export const createJournal = async (
   formdata: JournalFormData
 ): Promise<ApiResponse> => {
-  console.log("formdata in journal api", formdata);
   return apiFetch(
     `/journals`,
     {
       method: "POST",
       body: JSON.stringify(formdata),
+    },
+    true
+  );
+};
+
+export const deleteJournal = async (id: string) => {
+  return apiFetch(
+    `/journals/${id}`,
+    {
+      method: "DELETE",
     },
     true
   );

@@ -1,12 +1,12 @@
 import { FaEye, FaHeart, FaTrash } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { deleteNote, updateNote } from "../../api";
-import { useDeleteItem } from "../../hooks";
+import { updateNote } from "../../api";
 import { useUpdateItem } from "../../hooks";
 import { NoteFormData } from "../../utils";
 
 type Props = {
   id: string;
+  onDelete?: (id: string) => void;
 } & (
   | {
       hasFavorite: true;
@@ -20,17 +20,20 @@ type Props = {
 
 export default function ActionButtons({
   id,
+  onDelete,
   hasFavorite = false,
   isFavorite,
 }: Props) {
-  const { mutate: deleteNoteMutation } = useDeleteItem(deleteNote, [
-    "allNotes",
-  ]);
-
   const { mutate: updateNoteMutation } = useUpdateItem<NoteFormData>(
     updateNote,
     ["allNotes"]
   );
+
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete(id);
+    }
+  };
 
   const handleNoteUpdate = () => {
     const updatedFormData = { isFavorite: !isFavorite };
@@ -59,7 +62,7 @@ export default function ActionButtons({
 
       <button
         aria-label="Delete"
-        onClick={() => deleteNoteMutation(id)}
+        onClick={handleDelete}
         className="cursor-pointer bg-green-600/20 w-8 h-8 sm:w-6 sm:h-6 flex justify-center items-center rounded-md sm:rounded"
       >
         <FaTrash className="text-lg sm:text-sm text-white" />

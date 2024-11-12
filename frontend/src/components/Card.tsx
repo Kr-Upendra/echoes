@@ -1,3 +1,5 @@
+import { deleteNote } from "../api";
+import { useDeleteItem } from "../hooks";
 import ActionButtons from "./buttons/ActionButtons";
 
 type Props = {
@@ -21,6 +23,14 @@ export default function Card({
   tags,
   isFavorite,
 }: Props) {
+  const { mutate: deleteNoteMutation } = useDeleteItem(deleteNote, [
+    "allNotes",
+  ]);
+
+  const handleDeleteNote = (id: string) => {
+    deleteNoteMutation(id);
+  };
+
   return (
     <div className="card-diff rounded-lg p-3 group relative">
       <div className="mb-2">
@@ -47,7 +57,12 @@ export default function Card({
         </div>
       </div>
 
-      <ActionButtons id={id} hasFavorite={true} isFavorite={isFavorite} />
+      <ActionButtons
+        id={id}
+        hasFavorite={true}
+        isFavorite={isFavorite}
+        onDelete={handleDeleteNote}
+      />
     </div>
   );
 }
