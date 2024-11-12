@@ -48,3 +48,15 @@ export interface IFilterArgs {
 export interface FileWithPreview extends File {
   preview: string;
 }
+
+export interface IJournalData {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  mood: string;
+  images: FileWithPreview[];
+  createdAt?: string;
+  updated?: string;
+  color?: string;
+}

@@ -3,6 +3,7 @@ import {
   handleChange,
   handleFilesChange,
   handleTagsChange,
+  IJournalData,
   JournalFormData,
   setSelectedMood,
 } from "../../utils";
@@ -12,13 +13,15 @@ import CustomTagInput from "../../components/form/CustomTagInput";
 import MoodInput from "../../components/form/MoodInput";
 import FileUploadInput from "../../components/form/FileUploadInput";
 
-export default function JournalForm() {
+type Props = { journalData?: IJournalData };
+
+export default function JournalForm({ journalData }: Props) {
   const [formData, setFormData] = useState<JournalFormData>({
-    title: "",
-    content: "",
-    tags: [],
-    mood: "neutral",
-    images: [],
+    title: journalData?.title || "",
+    content: journalData?.content || "",
+    tags: journalData?.tags || [],
+    mood: journalData?.mood || "neutral",
+    images: journalData?.images || [],
   });
 
   const handleSubmit = (e: React.FormEvent) => {

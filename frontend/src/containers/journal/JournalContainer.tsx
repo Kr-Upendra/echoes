@@ -1,4 +1,5 @@
 import users from "../../assets/users";
+import ActionButtons from "../../components/buttons/ActionButtons";
 
 export default function JournalContainer() {
   const moodColor = "#0000ab";
@@ -8,7 +9,7 @@ export default function JournalContainer() {
         <div
           key={index}
           style={{ borderColor: moodColor }}
-          className={`px-4 border-t-[10px] pt-3 pb-6 rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bg-green-200/5`}
+          className={`px-4 border-t-[10px] pt-3 pb-6 rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bg-green-200/5 group relative`}
         >
           <h1 className="text-green-500 font-display line-clamp-1 sm:text-sm">
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -28,6 +29,7 @@ export default function JournalContainer() {
               />
             </div>
           </div>
+          <ActionButtons id={"checkid"} hasFavorite={false} />
         </div>
       ))}
     </div>

@@ -47,7 +47,7 @@ export default function Card({
         </div>
       </div>
 
-      <ActionButtons id={id} isFavorite={isFavorite} />
+      <ActionButtons id={id} hasFavorite={true} isFavorite={isFavorite} />
     </div>
   );
 }
