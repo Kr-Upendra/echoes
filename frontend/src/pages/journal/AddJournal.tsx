@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import CustomInput from "../../components/form/CustomInput";
 import CustomTagInput from "../../components/form/CustomTagInput";
 import CustomTextArea from "../../components/form/CustomTextArea";
