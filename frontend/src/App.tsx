@@ -20,7 +20,7 @@ import {
   Profile,
   Register,
 } from "./pages";
-import { statLoader } from "./pages/Dashboard";
+import { journalsLoader, statLoader } from "./utils";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,7 +37,7 @@ const router = createBrowserRouter(
           <Route path=":id" element={<EditNote />} />
         </Route>
         <Route path="journals" element={<PageLayout />}>
-          <Route index element={<Journal />} />
+          <Route index element={<Journal />} loader={journalsLoader} />
           <Route path="create" element={<AddJournal />} />
           <Route path=":id" element={<EditJournal />} />
         </Route>

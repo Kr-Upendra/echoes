@@ -2,18 +2,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "../state";
 import Banner from "../components/dashboard/Banner";
 import StatCard from "../components/dashboard/StatCard";
-import { userStats as UserStatApi } from "../api";
 import { UserStat } from "../utils";
 import { useLoaderData } from "react-router-dom";
 import { MdNoteAlt } from "react-icons/md";
 import { FaBook, FaCalendar, FaHeart, FaTags } from "react-icons/fa6";
 import { BiCategory } from "react-icons/bi";
 import { IoToday } from "react-icons/io5";
-
-export const statLoader = async () => {
-  const data = await UserStatApi();
-  return data?.data;
-};
 
 export default function Dashboard() {
   const currentUserInfo = useSelector(

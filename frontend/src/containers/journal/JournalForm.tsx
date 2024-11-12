@@ -15,11 +15,20 @@ import MoodInput from "../../components/form/MoodInput";
 import FileUploadInput from "../../components/form/FileUploadInput";
 import SubmitButton from "../../components/form/SubmitButton";
 import { z } from "zod";
+import { createJournal } from "../../api";
+import { useCreateItem } from "../../hooks";
 
 type Props = { journalData?: IJournalData };
 
 export default function JournalForm({ journalData }: Props) {
   const [errors, setErrors] = useState<any | null>({});
+  const { mutate: addJournalMutation, isPending: isJouranlAdding } =
+    useCreateItem<JournalFormData>(
+      createJournal,
+      ["journals", "journal"],
+      "/journals"
+    );
+
   const [formData, setFormData] = useState<JournalFormData>({
     title: journalData?.title || "",
     content: journalData?.content || "",
@@ -33,6 +42,7 @@ export default function JournalForm({ journalData }: Props) {
     try {
       setErrors({});
       journalNoteSchema.parse(formData);
+      addJournalMutation(formData);
     } catch (err) {
       if (err instanceof z.ZodError) {
         const formattedErrors: any = {};
@@ -88,7 +98,7 @@ export default function JournalForm({ journalData }: Props) {
         <div className="flex gap-x-5 lg:flex-col">
           <FileUploadInput
             maxFiles={10}
-            files={formData.images}
+            files={formData?.images}
             onFilesChange={(images) => handleFilesChange(images, setFormData)}
           />
         </div>
@@ -96,7 +106,7 @@ export default function JournalForm({ journalData }: Props) {
           <SubmitButton
             title="Add"
             isDisabled={false}
-            isWorking={false}
+            isWorking={isJouranlAdding}
             workingTitle="Adding..."
           />
         </div>

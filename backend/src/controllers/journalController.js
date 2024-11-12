@@ -21,7 +21,7 @@ export const createJournal = async (req, res) => {
     if (doesExist)
       return res.status(STATUS_CODES.CONFLICT).json({
         status: "failed",
-        message: API_RESPONSE_MESSAGE.RECORD_ALREADY_EXIST,
+        message: "Title already exists.",
       });
 
     const color = getMoodColor(mood);
@@ -73,7 +73,8 @@ export const getAllJournal = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip(offset)
       .limit(limit)
-      .populate("user", "firstName lastName email");
+      .populate("user", "firstName lastName email")
+      .select("-__v");
 
     const pagination = {
       totalRecords: count,
@@ -100,7 +101,8 @@ export const getJournal = async (req, res) => {
   try {
     const journal = await journalModel
       .findById(req.params.id)
-      .populate("user", "firstName lastName email");
+      .populate("user", "firstName lastName email")
+      .select("-__v");
 
     if (!journal)
       return res.status(STATUS_CODES.NOT_FOUND).json({

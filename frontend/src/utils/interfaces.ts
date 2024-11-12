@@ -50,13 +50,21 @@ export interface FileWithPreview extends File {
 }
 
 export interface IJournalData {
-  id: string;
+  _id: string;
   title: string;
+  slug: string;
   content: string;
   tags: string[];
   mood: string;
-  images: FileWithPreview[];
-  createdAt?: string;
-  updated?: string;
-  color?: string;
+  color: string;
+  images: string[];
+  isPrivate: boolean;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+  };
 }

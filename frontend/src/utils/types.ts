@@ -85,7 +85,7 @@ export type MoodType = {
 export type JournalFormData = {
   title: string;
   content: string;
-  tags?: string[];
   mood: string;
+  tags?: string[];
   images: FileWithPreview[];
 };
