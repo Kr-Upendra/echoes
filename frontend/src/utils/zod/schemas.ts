@@ -65,3 +65,14 @@ export const voiceNoteSchema = z.object({
     .optional(),
   isFavorite: z.boolean().default(false),
 });
+
+export const journalNoteSchema = z.object({
+  title: z
+    .string()
+    .min(3, { message: "Title must have at least 3 words" })
+    .max(255, { message: "Title must not exceed 255 words" }),
+  content: z.string().min(1, { message: "content is required." }),
+  mood: z.string(),
+  tags: z.array(z.string()).optional(),
+  images: z.array(z.string()).optional(),
+});

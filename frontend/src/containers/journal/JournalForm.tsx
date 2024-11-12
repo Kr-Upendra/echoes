@@ -5,6 +5,7 @@ import {
   handleTagsChange,
   IJournalData,
   JournalFormData,
+  journalNoteSchema,
   setSelectedMood,
 } from "../../utils";
 import CustomInput from "../../components/form/CustomInput";
@@ -12,10 +13,13 @@ import CustomTextArea from "../../components/form/CustomTextArea";
 import CustomTagInput from "../../components/form/CustomTagInput";
 import MoodInput from "../../components/form/MoodInput";
 import FileUploadInput from "../../components/form/FileUploadInput";
+import SubmitButton from "../../components/form/SubmitButton";
+import { z } from "zod";
 
 type Props = { journalData?: IJournalData };
 
 export default function JournalForm({ journalData }: Props) {
+  const [errors, setErrors] = useState<any | null>({});
   const [formData, setFormData] = useState<JournalFormData>({
     title: journalData?.title || "",
     content: journalData?.content || "",
@@ -24,9 +28,20 @@ export default function JournalForm({ journalData }: Props) {
     images: journalData?.images || [],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    try {
+      setErrors({});
+      journalNoteSchema.parse(formData);
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        const formattedErrors: any = {};
+        err.errors.forEach((error) => {
+          formattedErrors[error.path[0]] = error.message;
+        });
+        setErrors(formattedErrors);
+      }
+    }
   };
 
   return (
@@ -42,7 +57,7 @@ export default function JournalForm({ journalData }: Props) {
             onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
               handleChange(e, setFormData)
             }
-            error={""}
+            error={errors?.title}
           />
         </div>
         <div className="flex gap-x-5 lg:flex-col">
@@ -55,7 +70,7 @@ export default function JournalForm({ journalData }: Props) {
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               handleChange(e, setFormData)
             }
-            error={""}
+            error={errors?.content}
           />
         </div>
         <div className="flex gap-x-5 lg:flex-col">
@@ -78,13 +93,12 @@ export default function JournalForm({ journalData }: Props) {
           />
         </div>
         <div className="mt-6">
-          <button
-            disabled={false}
-            className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
-            type="submit"
-          >
-            Add
-          </button>
+          <SubmitButton
+            title="Add"
+            isDisabled={false}
+            isWorking={false}
+            workingTitle="Adding..."
+          />
         </div>
       </form>
     </section>
