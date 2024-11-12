@@ -44,3 +44,7 @@ export interface IFilterArgs {
   limit?: number;
   category?: string;
 }
+
+export interface FileWithPreview extends File {
+  preview: string;
+}

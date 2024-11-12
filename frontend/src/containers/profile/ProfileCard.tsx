@@ -48,9 +48,9 @@ export default function ProfileCard() {
       <div className="text-center mt-3">
         <h1 className="text-white font-display">{`${userProfile?.firstName} ${userProfile?.lastName}`}</h1>
       </div>
-      <div className="text-center my-2">
+      <div className="text-center my-3 mb-5">
         {userProfile?.about && userProfile?.about.length > 101 ? (
-          <p className="text-gray-400 text-sm">{`${userProfile?.about.slice(
+          <p className="text-gray-400 text-sm line-clamp-2">{`${userProfile?.about.slice(
             0,
             100
           )}...`}</p>

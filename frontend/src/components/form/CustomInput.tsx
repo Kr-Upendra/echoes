@@ -37,7 +37,7 @@ export default function CustomInput({
         value={value}
         disabled={isDisabled}
         onChange={onchange}
-        className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black border rounded-md ${
+        className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black border rounded-md focus:border-green-500/50 ${
           error ? "border-orange-900" : "border-green-500/15"
         } ${isDisabled && "bg-green-800/5"}`}
       />

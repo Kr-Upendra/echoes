@@ -51,7 +51,7 @@ export default function CustomTagInput({
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setInput(e.target.value)
         }
-        className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black border rounded-md border-green-500/15`}
+        className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black border rounded-md border-green-500/15 focus:border-green-500/30`}
         onKeyUp={handleKeyUp}
       />
       <div className="mt-2 flex gap-x-2 flex-wrap gap-y-2">

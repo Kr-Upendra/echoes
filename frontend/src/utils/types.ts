@@ -1,3 +1,5 @@
+import { FileWithPreview } from "./interfaces";
+
 export type LoginFromData = {
   email: string;
   password: string;
@@ -85,4 +87,5 @@ export type JournalFormData = {
   content: string;
   tags?: string[];
   mood: string;
+  images: FileWithPreview[];
 };

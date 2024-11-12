@@ -1,3 +1,5 @@
+import { FileWithPreview } from "../interfaces";
+
 export const setSelectedMood = <T>(
   mood: string,
   setFormData: React.Dispatch<React.SetStateAction<T>>
@@ -19,9 +21,26 @@ export const handleTagsChange = <T>(
 };
 
 export const handleChange = <T>(
-  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  e: React.ChangeEvent<
+    HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
+  >,
   setFormData: React.Dispatch<React.SetStateAction<T>>
 ) => {
-  const { name, value } = e.target;
-  setFormData((prev) => ({ ...prev, [name]: value }));
+  const { name, value, type } = e.target;
+  if (type === "checkbox") {
+    const checked = (e.target as HTMLInputElement).checked;
+    setFormData((prev) => ({ ...prev, [name]: checked }));
+  } else {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }
+};
+
+export const handleFilesChange = <T>(
+  files: FileWithPreview[],
+  setFormData: React.Dispatch<React.SetStateAction<T>>
+) => {
+  setFormData((prevFormData) => ({
+    ...prevFormData,
+    images: files,
+  }));
 };

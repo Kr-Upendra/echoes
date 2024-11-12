@@ -5,7 +5,13 @@ import CustomCheckbox from "../../components/form/CustomCheckBox";
 import CustomInput from "../../components/form/CustomInput";
 import CustomSelect from "../../components/form/CustomSelect";
 import CustomTextArea from "../../components/form/CustomTextArea";
-import { INote, NoteFormData, noteSchema } from "../../utils";
+import {
+  handleChange,
+  handleTagsChange,
+  INote,
+  NoteFormData,
+  noteSchema,
+} from "../../utils";
 import { createNote, updateNote } from "../../api";
 import { useCreateItem, useUpdateItem } from "../../hooks";
 import CustomTagInput from "../../components/form/CustomTagInput";
@@ -56,27 +62,6 @@ export default function NoteForm({
     }
   }, [noteData]);
 
-  const handleTagsChange = (updatedTags: string[]) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      tags: updatedTags, // Update the tags in formData
-    }));
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<
-      HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement
-    >
-  ) => {
-    const { name, value, type } = e.target;
-    if (type === "checkbox") {
-      const checked = (e.target as HTMLInputElement).checked;
-      setFormData((prev) => ({ ...prev, [name]: checked }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -109,7 +94,9 @@ export default function NoteForm({
             type="text"
             placeHolder="I have attend meeting."
             value={formData?.title}
-            onchange={handleChange}
+            onchange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(e, setFormData)
+            }
             error={errors?.title}
           />
           <CustomSelect
@@ -117,7 +104,9 @@ export default function NoteForm({
             label="Category"
             name="category"
             value={formData?.category}
-            onChange={handleChange}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              handleChange(e, setFormData)
+            }
             options={
               isLoadingCategories
                 ? []
@@ -136,13 +125,17 @@ export default function NoteForm({
             name="content"
             placeHolder="There is a meeting in my office that I need to attend at any cost."
             value={formData?.content}
-            onChange={handleChange}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              handleChange(e, setFormData)
+            }
             error={errors?.content}
           />
         </div>
         <div className="flex gap-x-5 lg:flex-col">
           <CustomTagInput
-            onTagsChange={handleTagsChange}
+            onTagsChange={(tags: string[]) =>
+              handleTagsChange(tags, setFormData)
+            }
             initialTags={formData.tags} // This will pre-populate tags for editing
           />
           <CustomCheckbox
@@ -150,7 +143,9 @@ export default function NoteForm({
             label="Is Favorite?"
             name="isFavorite"
             checked={formData?.isFavorite}
-            onChange={handleChange}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(e, setFormData)
+            }
             error={errors?.isFavorite}
           />
         </div>
