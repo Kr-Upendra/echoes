@@ -74,5 +74,4 @@ export const journalNoteSchema = z.object({
   content: z.string().min(1, { message: "content is required." }),
   mood: z.string(),
   tags: z.array(z.string()).optional(),
-  images: z.array(z.string()).optional(),
 });

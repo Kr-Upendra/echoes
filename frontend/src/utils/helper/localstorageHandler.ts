@@ -2,6 +2,7 @@ const CURRENT_USER_INFO = "currentUser";
 
 interface ICurrentUser {
   email: string;
+  username: string;
   firstName: string;
   lastName: string;
   profilePicture?: string;

@@ -57,8 +57,8 @@ export default function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      loginSchema.parse(formData);
       setErrors({});
+      loginSchema.parse(formData);
       mutation.mutate(formData);
     } catch (err) {
       if (err instanceof z.ZodError) {

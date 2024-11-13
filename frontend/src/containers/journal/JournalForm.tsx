@@ -1,6 +1,10 @@
+import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
+  ApiResponse,
+  errorAlert,
   handleChange,
   handleFilesChange,
   handleTagsChange,
@@ -8,6 +12,8 @@ import {
   JournalFormData,
   journalNoteSchema,
   setSelectedMood,
+  JournalUpdateFormData,
+  successAlert,
 } from "../../utils";
 import CustomInput from "../../components/form/CustomInput";
 import CustomTextArea from "../../components/form/CustomTextArea";
@@ -15,9 +21,8 @@ import CustomTagInput from "../../components/form/CustomTagInput";
 import MoodInput from "../../components/form/MoodInput";
 import FileUploadInput from "../../components/form/FileUploadInput";
 import SubmitButton from "../../components/form/SubmitButton";
-import { z } from "zod";
-import { createJournal, updateJournal } from "../../api";
-import { useCreateItem, useUpdateItem } from "../../hooks";
+import { createJournal, updateJournal, uploadMultipleFiles } from "../../api";
+import { useUpdateItem } from "../../hooks";
 
 type Props = { journalData?: IJournalData };
 
@@ -25,17 +30,9 @@ export default function JournalForm({ journalData }: Props) {
   const { pathname } = useLocation();
   const { id } = useParams();
   const isCreateForm = pathname === "/journals/create";
-
   const [errors, setErrors] = useState<any | null>({});
-  const { mutate: addJournalMutation, isPending: isJouranlAdding } =
-    useCreateItem<JournalFormData>(
-      createJournal,
-      ["journals", "journal"],
-      "/journals"
-    );
-
   const { mutate: updateJournalMutation, isPending: isJouranlUpdating } =
-    useUpdateItem<JournalFormData>(
+    useUpdateItem<JournalUpdateFormData>(
       updateJournal,
       ["journals", "journal"],
       true,
@@ -60,7 +57,35 @@ export default function JournalForm({ journalData }: Props) {
         images: journalData?.images || [],
       });
     }
-  }, [journalData]);
+  }, [journalData, formData]);
+
+  const { mutate: addJournalMutation, isPending: isJouranlAdding } =
+    useMutation({
+      mutationFn: createJournal,
+      onSuccess: (response: ApiResponse) => {
+        if (response.status === "success") {
+          const createdJournalId = response?.data.journalId;
+          console.log("createdJournalId", createdJournalId);
+          console.log("formdataimages", formData?.images);
+          if (formData?.images.length > 0 && createdJournalId) {
+            const supabaseImageUrls = uploadMultipleFiles(
+              formData?.images,
+              createdJournalId
+            );
+            console.log(supabaseImageUrls);
+          } else {
+            console.log("above function didn't run");
+          }
+
+          successAlert("New journal created.");
+
+          // updateJournalMutation({ id: createdJournalId, formdata: { images } });
+        }
+      },
+      onError: (error: any) => {
+        errorAlert(error?.message);
+      },
+    });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,12 +93,14 @@ export default function JournalForm({ journalData }: Props) {
       setErrors({});
       journalNoteSchema.parse(formData);
       if (isCreateForm) {
+        // formData.images = [];
         addJournalMutation(formData);
       } else if (id) {
         updateJournalMutation({ id, formdata: formData });
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
+        console.log("errer", err);
         const formattedErrors: any = {};
         err.errors.forEach((error) => {
           formattedErrors[error.path[0]] = error.message;

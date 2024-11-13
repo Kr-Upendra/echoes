@@ -1,4 +1,4 @@
-import { ApiResponse, JournalFormData } from "../utils";
+import { ApiResponse, JournalFormData, JournalUpdateFormData } from "../utils";
 import { apiFetch } from "./api";
 
 export const allJournals = async () => {
@@ -24,6 +24,9 @@ export const singleJournal = async (id: string) => {
 export const createJournal = async (
   formdata: JournalFormData
 ): Promise<ApiResponse> => {
+  console.log("formdata api before", formdata);
+  formdata.images = [];
+  console.log("formdata api after", formdata);
   return apiFetch(
     `/journals`,
     {
@@ -36,7 +39,7 @@ export const createJournal = async (
 
 export const updateJournal = async (
   id: string,
-  formdata: JournalFormData
+  formdata: JournalUpdateFormData
 ): Promise<ApiResponse> => {
   return apiFetch(
     `/journals/${id}`,

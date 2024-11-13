@@ -1,9 +1,6 @@
 import { useDropzone } from "react-dropzone";
 import { FaXmark } from "react-icons/fa6";
-import { warnAlert } from "../../utils";
-interface FileWithPreview extends File {
-  preview: string;
-}
+import { FileWithPreview, warnAlert } from "../../utils";
 
 interface FileUploadInputProps {
   onFilesChange: (files: FileWithPreview[]) => void;

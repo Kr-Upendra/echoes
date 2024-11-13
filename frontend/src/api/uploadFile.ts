@@ -1,4 +1,10 @@
-import { errorAlert, supabase } from "../utils";
+import {
+  errorAlert,
+  getFileExt,
+  getUserData,
+  supabase,
+  supabaseJournalsBucket,
+} from "../utils";
 
 export const uploadImage = async (
   file: File,
@@ -29,6 +35,47 @@ export const uploadImage = async (
 
   const { data } = supabase.storage.from(bucket).getPublicUrl(filename);
   return data?.publicUrl;
+};
+
+export const uploadMultipleFiles = async (
+  images: File[],
+  journalId: string
+) => {
+  const { userId, username } = getUserData();
+  const dir = `${supabaseJournalsBucket}/${userId}/${journalId}`;
+  const uploadedFiles: string[] = [];
+
+  try {
+    const uploadPromises = images.map(async (image) => {
+      const timestamp = Date.now();
+      const randomString = Math.random().toString(36).substring(2, 15);
+      const fileExt = getFileExt(image);
+      const fileName = `/images/journal_${username}_${timestamp}_${randomString}.${fileExt}`;
+      const fileNameWithDir = dir + fileName;
+      console.log("fileNameWithDir========", fileNameWithDir);
+
+      const { error } = await supabase.storage
+        .from(supabaseJournalsBucket)
+        .upload(fileNameWithDir, image);
+
+      if (error) {
+        throw error;
+      }
+
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from(supabaseJournalsBucket).getPublicUrl(fileName);
+
+      uploadedFiles.push(publicUrl);
+    });
+
+    await Promise.all(uploadPromises);
+
+    return uploadedFiles;
+  } catch (err) {
+    console.error("Error uploading images:", err);
+    throw new Error("There was an error uploading the images.");
+  }
 };
 
 // export const uploadAudio = async (

@@ -42,7 +42,7 @@ export const createJournal = async (req, res) => {
     return res.status(STATUS_CODES.CREATED).json({
       status: "success",
       message: "New journal added.",
-      data: journal,
+      data: { journalId: journal._id },
     });
   } catch (error) {
     console.log(error);

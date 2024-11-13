@@ -89,3 +89,11 @@ export type JournalFormData = {
   tags?: string[];
   images: FileWithPreview[];
 };
+
+export type JournalUpdateFormData = {
+  title?: string;
+  content?: string;
+  mood?: string;
+  tags?: string[];
+  images?: FileWithPreview[];
+};
