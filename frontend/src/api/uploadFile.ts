@@ -42,7 +42,7 @@ export const uploadMultipleFiles = async (
   journalId: string
 ) => {
   const { userId, username } = getUserData();
-  const dir = `${supabaseJournalsBucket}/${userId}/${journalId}`;
+  const dir = `${userId}/${journalId}`;
   const uploadedFiles: string[] = [];
 
   try {
@@ -52,7 +52,6 @@ export const uploadMultipleFiles = async (
       const fileExt = getFileExt(image);
       const fileName = `/images/journal_${username}_${timestamp}_${randomString}.${fileExt}`;
       const fileNameWithDir = dir + fileName;
-      console.log("fileNameWithDir========", fileNameWithDir);
 
       const { error } = await supabase.storage
         .from(supabaseJournalsBucket)

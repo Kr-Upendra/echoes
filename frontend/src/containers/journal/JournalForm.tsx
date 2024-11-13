@@ -13,7 +13,6 @@ import {
   journalNoteSchema,
   setSelectedMood,
   JournalUpdateFormData,
-  successAlert,
 } from "../../utils";
 import CustomInput from "../../components/form/CustomInput";
 import CustomTextArea from "../../components/form/CustomTextArea";
@@ -57,29 +56,29 @@ export default function JournalForm({ journalData }: Props) {
         images: journalData?.images || [],
       });
     }
-  }, [journalData, formData]);
+  }, [journalData]);
 
   const { mutate: addJournalMutation, isPending: isJouranlAdding } =
     useMutation({
       mutationFn: createJournal,
-      onSuccess: (response: ApiResponse) => {
+      onSuccess: async (response: ApiResponse) => {
         if (response.status === "success") {
           const createdJournalId = response?.data.journalId;
-          console.log("createdJournalId", createdJournalId);
-          console.log("formdataimages", formData?.images);
+          console.log("form images", formData?.images);
           if (formData?.images.length > 0 && createdJournalId) {
-            const supabaseImageUrls = uploadMultipleFiles(
+            const supabaseImageUrls = await uploadMultipleFiles(
               formData?.images,
               createdJournalId
             );
-            console.log(supabaseImageUrls);
+            if (supabaseImageUrls) {
+              updateJournalMutation({
+                id: createdJournalId,
+                formdata: { images: supabaseImageUrls },
+              });
+            }
           } else {
             console.log("above function didn't run");
           }
-
-          successAlert("New journal created.");
-
-          // updateJournalMutation({ id: createdJournalId, formdata: { images } });
         }
       },
       onError: (error: any) => {
@@ -93,8 +92,10 @@ export default function JournalForm({ journalData }: Props) {
       setErrors({});
       journalNoteSchema.parse(formData);
       if (isCreateForm) {
-        // formData.images = [];
-        addJournalMutation(formData);
+        addJournalMutation({
+          ...formData,
+          images: [],
+        });
       } else if (id) {
         updateJournalMutation({ id, formdata: formData });
       }

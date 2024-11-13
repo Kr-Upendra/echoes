@@ -57,7 +57,7 @@ export interface IJournalData {
   tags: string[];
   mood: string;
   color: string;
-  images: FileWithPreview[];
+  images: string[];
   isPrivate: boolean;
   createdAt: string;
   updatedAt: string;

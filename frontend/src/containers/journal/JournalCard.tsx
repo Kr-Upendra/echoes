@@ -15,6 +15,7 @@ export function JournalCard({ journals }: Props) {
   const handleDeleteJournal = (id: string) => {
     deleteJournalMutation(id);
   };
+  console.log("journals", journals);
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
@@ -32,20 +33,19 @@ export function JournalCard({ journals }: Props) {
             </p>
             <div className="flex">
               <div className="flex items-center gap-x-3 flex-1">
-                <div className="w-8 h-8 rounded-lg overflow-hidden">
-                  <img
-                    src={users.user01}
-                    alt={"hello user"}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="w-8 h-8 rounded-lg overflow-hidden">
-                  <img
-                    src={users.user01}
-                    alt={"hello user"}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                {journal?.images.length > 0 &&
+                  journal?.images.map((image, index: number) => (
+                    <div
+                      className="w-8 h-8 rounded-lg overflow-hidden"
+                      key={journal._id + index}
+                    >
+                      <img
+                        src={image}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
               </div>
               <MoodIcon mood={journal.mood} />
             </div>

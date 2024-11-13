@@ -24,9 +24,6 @@ export const singleJournal = async (id: string) => {
 export const createJournal = async (
   formdata: JournalFormData
 ): Promise<ApiResponse> => {
-  console.log("formdata api before", formdata);
-  formdata.images = [];
-  console.log("formdata api after", formdata);
   return apiFetch(
     `/journals`,
     {
