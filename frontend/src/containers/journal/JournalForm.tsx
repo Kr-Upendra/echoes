@@ -99,6 +99,7 @@ export default function JournalForm({ journalData }: Props) {
           (image: FileWithPreview | string) => image instanceof File
         );
         const supabaseImageUrls = await uploadMultipleFiles(filesOnly, id);
+        console.log("supabase image urls", supabaseImageUrls);
         updateJournalMutation({
           id,
           formdata: {
@@ -162,7 +163,7 @@ export default function JournalForm({ journalData }: Props) {
         </div>
         <div className="flex gap-x-5 lg:flex-col">
           <FileUploadInput
-            maxFiles={10}
+            maxFiles={5}
             files={formData?.images}
             onFilesChange={(images) => handleFilesChange(images, setFormData)}
           />
