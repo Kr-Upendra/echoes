@@ -13,6 +13,7 @@ import {
   journalNoteSchema,
   setSelectedMood,
   JournalUpdateFormData,
+  FileWithPreview,
 } from "../../utils";
 import CustomInput from "../../components/form/CustomInput";
 import CustomTextArea from "../../components/form/CustomTextArea";
@@ -64,7 +65,6 @@ export default function JournalForm({ journalData }: Props) {
       onSuccess: async (response: ApiResponse) => {
         if (response.status === "success") {
           const createdJournalId = response?.data.journalId;
-          console.log("form images", formData?.images);
           if (formData?.images.length > 0 && createdJournalId) {
             const supabaseImageUrls = await uploadMultipleFiles(
               formData?.images,
@@ -76,8 +76,6 @@ export default function JournalForm({ journalData }: Props) {
                 formdata: { images: supabaseImageUrls },
               });
             }
-          } else {
-            console.log("above function didn't run");
           }
         }
       },
@@ -97,7 +95,17 @@ export default function JournalForm({ journalData }: Props) {
           images: [],
         });
       } else if (id) {
-        updateJournalMutation({ id, formdata: formData });
+        const filesOnly = formData?.images?.filter(
+          (image: FileWithPreview | string) => image instanceof File
+        );
+        const supabaseImageUrls = await uploadMultipleFiles(filesOnly, id);
+        updateJournalMutation({
+          id,
+          formdata: {
+            ...formData,
+            images: supabaseImageUrls,
+          },
+        });
       }
     } catch (err) {
       if (err instanceof z.ZodError) {

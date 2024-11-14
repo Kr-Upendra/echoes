@@ -36,7 +36,7 @@ export const handleChange = <T>(
 };
 
 export const handleFilesChange = <T>(
-  files: FileWithPreview[],
+  files: (FileWithPreview | string)[],
   setFormData: React.Dispatch<React.SetStateAction<T>>
 ) => {
   setFormData((prevFormData) => ({

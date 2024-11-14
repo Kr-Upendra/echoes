@@ -1,5 +1,4 @@
 import { deleteJournal } from "../../api";
-import users from "../../assets/users";
 import ActionButtons from "../../components/buttons/ActionButtons";
 import MoodIcon from "../../components/common/MoodIcon";
 import { useDeleteItem } from "../../hooks";
@@ -15,7 +14,6 @@ export function JournalCard({ journals }: Props) {
   const handleDeleteJournal = (id: string) => {
     deleteJournalMutation(id);
   };
-  console.log("journals", journals);
   return (
     <>
       <div className="grid grid-cols-2 md:grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">

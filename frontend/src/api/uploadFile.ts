@@ -42,7 +42,7 @@ export const uploadMultipleFiles = async (
   journalId: string
 ) => {
   const { userId, username } = getUserData();
-  const dir = `${userId}/${journalId}`;
+  const dir = `${userId}_userid/${journalId}_journalid`;
   const uploadedFiles: string[] = [];
 
   try {
@@ -63,7 +63,9 @@ export const uploadMultipleFiles = async (
 
       const {
         data: { publicUrl },
-      } = supabase.storage.from(supabaseJournalsBucket).getPublicUrl(fileName);
+      } = supabase.storage
+        .from(supabaseJournalsBucket)
+        .getPublicUrl(fileNameWithDir);
 
       uploadedFiles.push(publicUrl);
     });

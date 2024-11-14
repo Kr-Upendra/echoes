@@ -11,6 +11,7 @@ import {
   warnAlert,
 } from "../../utils";
 import { uploadImage } from "../../api";
+import ImagePreview from "../views/ImagePreivew";
 
 type UpdateProfileMutationFunction = (
   formdata: UpdateProfileFormData
@@ -181,13 +182,11 @@ export default function ImageUploader({
         </div>
         <div className="flex flex-wrap justify-center mt-4 gap-4">
           {file && (
-            <div className="w-14 h-14 rounded-lg overflow-hidden">
-              <img
-                src={file?.preview}
-                alt={file?.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <ImagePreview
+              image={file.preview}
+              imageName="Preview"
+              containerStyles="w-14 h-14"
+            />
           )}
         </div>
         <div className="mt-4 text-center flex gap-3">

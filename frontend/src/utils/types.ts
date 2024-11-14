@@ -93,5 +93,5 @@ export type JournalUpdateFormData = {
   content?: string;
   mood?: string;
   tags?: string[];
-  images?: string[];
+  images?: any;
 };
