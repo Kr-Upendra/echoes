@@ -37,3 +37,10 @@ export const generateFileName = (
   )}_${userId}_${timeStamp}.${fileExt}`;
   return fileName;
 };
+
+export const getBucketFilepath = (file: string) => {
+  const regex = /https:\/\/[^/]+\/storage\/v1\/object\/public\/([^/]+)\/(.+)/;
+  const match = file.match(regex);
+  if (match) return { bucketName: match[1], filePath: match[2] };
+  return { bucketName: "", filePath: "" };
+};

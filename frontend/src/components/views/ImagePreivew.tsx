@@ -35,6 +35,7 @@ export default function ImagePreview({
       />
       {hasRemoveFn && handleRemove && (
         <button
+          type="button"
           className="bg-green-500/30 z-10 p-1 rounded-full backdrop-blur-sm absolute -top-2 -right-2 sm:-top-1.5 sm:-right-1.5 sm:p-0.5 shadow-lg"
           onClick={() => handleRemove(image)}
         >

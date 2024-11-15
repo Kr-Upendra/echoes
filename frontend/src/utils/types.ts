@@ -94,4 +94,5 @@ export type JournalUpdateFormData = {
   mood?: string;
   tags?: string[];
   images?: any;
+  imagesToDelete?: string[];
 };

@@ -1,5 +1,6 @@
 import {
   errorAlert,
+  getBucketFilepath,
   getFileExt,
   getUserData,
   supabase,
@@ -13,15 +14,7 @@ export const uploadImage = async (
   oldImagePath?: string
 ) => {
   if (oldImagePath) {
-    const oldImage = oldImagePath.split("/").slice(8).join("/");
-    const { error: deleteError } = await supabase.storage
-      .from(bucket)
-      .remove([oldImage]);
-
-    if (deleteError) {
-      errorAlert(deleteError.message || "Failed to delete old image.");
-      return;
-    }
+    await deleteFiles([oldImagePath]);
   }
 
   let { error: uploadError } = await supabase.storage
@@ -79,22 +72,24 @@ export const uploadMultipleFiles = async (
   }
 };
 
-// export const uploadAudio = async (
-//   file: File,
-//   bucket: string,
-//   fileName: string,
-//   oldFile?: string
-// ) => {
-//   console.log(oldFile);
-//   let { error: uploadError } = await supabase.storage
-//     .from(bucket)
-//     .upload(fileName, file);
+export const deleteFiles = async (files: string[]) => {
+  try {
+    const deletePromises = files.map(async (file: string) => {
+      const { bucketName, filePath } = getBucketFilepath(file);
+      if (bucketName !== "" || filePath !== "") {
+        const { error: deleteError } = await supabase.storage
+          .from(bucketName)
+          .remove([filePath]);
 
-//   if (uploadError) {
-//     errorAlert(uploadError?.message || "Failed to upload file.");
-//     return;
-//   }
+        if (deleteError) {
+          throw deleteError;
+        }
+      }
+    });
 
-//   const { data } = supabase.storage.from(bucket).getPublicUrl(fileName);
-//   return data?.publicUrl;
-// };
+    await Promise.all(deletePromises);
+  } catch (err) {
+    console.error("Error uploading images:", err);
+    throw new Error("There was an error uploading the images.");
+  }
+};

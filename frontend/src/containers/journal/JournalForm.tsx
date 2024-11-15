@@ -21,7 +21,12 @@ import CustomTagInput from "../../components/form/CustomTagInput";
 import MoodInput from "../../components/form/MoodInput";
 import FileUploadInput from "../../components/form/FileUploadInput";
 import SubmitButton from "../../components/form/SubmitButton";
-import { createJournal, updateJournal, uploadMultipleFiles } from "../../api";
+import {
+  createJournal,
+  deleteFiles,
+  updateJournal,
+  uploadMultipleFiles,
+} from "../../api";
 import { useUpdateItem } from "../../hooks";
 
 type Props = { journalData?: IJournalData };
@@ -30,6 +35,7 @@ export default function JournalForm({ journalData }: Props) {
   const { pathname } = useLocation();
   const { id } = useParams();
   const isCreateForm = pathname === "/journals/create";
+  const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
   const [errors, setErrors] = useState<any | null>({});
   const { mutate: updateJournalMutation, isPending: isJouranlUpdating } =
     useUpdateItem<JournalUpdateFormData>(
@@ -98,13 +104,15 @@ export default function JournalForm({ journalData }: Props) {
         const filesOnly = formData?.images?.filter(
           (image: FileWithPreview | string) => image instanceof File
         );
-        const supabaseImageUrls = await uploadMultipleFiles(filesOnly, id);
-        console.log("supabase image urls", supabaseImageUrls);
+
+        const imagesToUpload = await uploadMultipleFiles(filesOnly, id);
+        await deleteFiles(filesToDelete);
         updateJournalMutation({
           id,
           formdata: {
             ...formData,
-            images: supabaseImageUrls,
+            images: imagesToUpload,
+            imagesToDelete: filesToDelete,
           },
         });
       }
@@ -117,6 +125,29 @@ export default function JournalForm({ journalData }: Props) {
         });
         setErrors(formattedErrors);
       }
+    }
+  };
+
+  const handleRemoveFile = (fileToRemove: string) => {
+    const filteredFiles = formData?.images.filter(
+      (file: string | FileWithPreview) =>
+        typeof file === "string"
+          ? file !== fileToRemove
+          : file.preview !== fileToRemove
+    );
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      images: filteredFiles,
+    }));
+
+    if (fileToRemove.startsWith("https")) {
+      setFilesToDelete((prevRemovedFiles) => {
+        if (!prevRemovedFiles.includes(fileToRemove)) {
+          return [...prevRemovedFiles, fileToRemove];
+        }
+        return prevRemovedFiles;
+      });
     }
   };
 
@@ -166,6 +197,7 @@ export default function JournalForm({ journalData }: Props) {
             maxFiles={5}
             files={formData?.images}
             onFilesChange={(images) => handleFilesChange(images, setFormData)}
+            onRemoveFile={handleRemoveFile}
           />
         </div>
         <div className="mt-6">

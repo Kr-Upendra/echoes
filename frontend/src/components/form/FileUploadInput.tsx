@@ -4,12 +4,14 @@ import ImagePreview from "../views/ImagePreivew";
 
 interface FileUploadInputProps {
   onFilesChange: (files: (FileWithPreview | string)[]) => void;
-  files: (FileWithPreview | string)[]; // Allow both File objects and string URLs
+  onRemoveFile: (fileToRemove: string) => void;
+  files: (FileWithPreview | string)[];
   maxFiles: number;
 }
 
 export default function FileUploadInput({
   onFilesChange,
+  onRemoveFile,
   files,
   maxFiles,
 }: FileUploadInputProps) {
@@ -51,15 +53,6 @@ export default function FileUploadInput({
     disabled: maxLimit,
   });
 
-  const handleRemove = (fileToRemove: string) => {
-    const filteredFiles = files.filter((file) =>
-      typeof file === "string"
-        ? file !== fileToRemove
-        : file.preview !== fileToRemove
-    );
-    onFilesChange(filteredFiles);
-  };
-
   return (
     <div className="mt-2 mb-3.5 w-full">
       <label
@@ -94,7 +87,7 @@ export default function FileUploadInput({
             <ImagePreview
               key={index}
               image={previewUrl}
-              handleRemove={handleRemove}
+              handleRemove={() => onRemoveFile(previewUrl)}
               hasRemoveFn={true}
             />
           );

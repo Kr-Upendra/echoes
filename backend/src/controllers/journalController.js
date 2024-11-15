@@ -127,15 +127,19 @@ export const getJournal = async (req, res) => {
 
 export const updateJournal = async (req, res) => {
   const id = req.params.id;
-  const { title, content, tags, mood, images } = req.body;
+  const { title, content, tags, mood, images, imagesToDelete } = req.body;
 
   const updateFields = {};
+
   if (title !== undefined) {
     updateFields.title = title;
     updateFields.slug = createSlug(title);
   }
+
   if (content !== undefined) updateFields.content = content;
+
   if (tags !== undefined) updateFields.tags = tags;
+
   if (mood !== undefined) {
     updateFields.mood = mood;
     const color = getMoodColor(mood);
@@ -143,16 +147,24 @@ export const updateJournal = async (req, res) => {
   }
 
   try {
-    if (images !== undefined) {
-      const existingJournal = await journalModel.findById(id);
-      if (!existingJournal) {
-        return res.status(STATUS_CODES.NOT_FOUND).json({
-          status: "failed",
-          message: "Journal not found with given ID.",
-        });
-      }
+    const existingJournal = await journalModel.findById(id);
+    if (!existingJournal) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({
+        status: "failed",
+        message: "Journal not found with given ID.",
+      });
+    }
 
-      const updatedImages = [...existingJournal.images, ...images];
+    if (imagesToDelete && imagesToDelete.length > 0) {
+      updateFields.images = existingJournal.images.filter(
+        (image) => !imagesToDelete.includes(image)
+      );
+    } else {
+      updateFields.images = [...existingJournal.images];
+    }
+
+    if (images && images.length > 0) {
+      const updatedImages = [...updateFields.images, ...images];
       if (updatedImages.length > 10) {
         updateFields.images = updatedImages.slice(0, 10);
       } else {
