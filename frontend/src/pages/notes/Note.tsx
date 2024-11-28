@@ -99,55 +99,43 @@ export default function Note() {
         selectedCategory={category}
         handleSelectCategory={handleSelectedCategory}
       />
-      {isLoading ? (
-        <Loading />
-      ) : error ? (
-        <Error error={error} />
-      ) : (
-        <>
-          {notes.length > 0 ? (
-            <>
-              <div className="grid grid-cols-4 gap-4 sm:gap-2.5 xs:gap-x-1.5 mt-5 lg:grid-cols-3 md:grid-cols-2">
-                {notes.map((note: INote) => (
-                  <Card
-                    title={note?.title}
-                    content={note?.content}
-                    category={note?.category}
-                    tags={note?.tags}
-                    isFavorite={note?.isFavorite}
-                    id={note?._id}
-                    key={note?._id}
+      <div className="mt-8">
+        {isLoading ? (
+          <Loading />
+        ) : error ? (
+          <Error error={error} />
+        ) : (
+          <>
+            {notes.length > 0 ? (
+              <>
+                <div className="grid grid-cols-4 gap-4 sm:gap-2.5 xs:gap-x-1.5 mt-5 lg:grid-cols-3 md:grid-cols-2">
+                  {notes.map((note: INote) => (
+                    <Card
+                      title={note?.title}
+                      content={note?.content}
+                      category={note?.category}
+                      tags={note?.tags}
+                      isFavorite={note?.isFavorite}
+                      id={note?._id}
+                      key={note?._id}
+                    />
+                  ))}
+                </div>
+                {pagination && pagination?.totalPages > 1 && (
+                  <Pagination
+                    totalPages={pagination?.totalPages}
+                    currentPage={currentPage || 1}
+                    onPageChange={handlePageChange}
+                    hasNextPage={pagination?.hasNextPage}
                   />
-                ))}
-              </div>
-              {pagination && pagination?.totalPages > 1 && (
-                <Pagination
-                  totalPages={pagination?.totalPages}
-                  currentPage={currentPage || 1}
-                  onPageChange={handlePageChange}
-                  hasNextPage={pagination?.hasNextPage}
-                />
-              )}
-            </>
-          ) : (
-            <NoRecord title="You have not added any memories yet." />
-          )}
-        </>
-      )}
+                )}
+              </>
+            ) : (
+              <NoRecord title="You have not added any memories yet." />
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 }
-
-// const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//   const newSearchQuery = e.target.value;
-//   if (newSearchQuery.length > 2) {
-//     setSearchQuery(newSearchQuery);
-//     setCurrentPage(1);
-//     setSearchParams({ search: newSearchQuery });
-//   } else if (newSearchQuery.length === 0) {
-//     // If the input is cleared, reset the search
-//     setSearchQuery("");
-//     setCurrentPage(1);
-//     setSearchParams({});
-//   }
-// };

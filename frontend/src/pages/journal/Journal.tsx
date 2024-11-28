@@ -17,8 +17,9 @@ export default function Journal() {
         title="My Journals"
         buttonTitle="New Journal"
         hrefValue="create"
+        isDisabled={data?.data?.total === 5}
       />
-      <div className="mt-6 flex sm:flex-col gap-6">
+      <div className="mt-8 flex sm:flex-col gap-6">
         {isLoading ? (
           <Loading />
         ) : error ? (

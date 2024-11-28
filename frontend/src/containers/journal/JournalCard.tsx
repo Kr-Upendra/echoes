@@ -15,10 +15,10 @@ export function JournalCard({ journals }: Props) {
     imageToRender = 5;
   } else if (screenWidth > 750) {
     imageToRender = 3;
-  } else if (screenWidth >= 550) {
+  } else if (screenWidth >= 481) {
     imageToRender = 3;
   } else {
-    imageToRender = 2;
+    imageToRender = 5;
   }
   const { mutate: deleteJournalMutation } = useDeleteItem(deleteJournal, [
     "journals",
@@ -62,6 +62,16 @@ export function JournalCard({ journals }: Props) {
                     ))}
               </div>
               <MoodIcon mood={journal.mood} />
+            </div>
+            <div className="mt-4 flex items-center gap-x-1">
+              {journal.tags.slice(0, 2).map((tag, index) => (
+                <span
+                  key={index}
+                  className="text-xs px-2 py-1 bg-white/10 text-gray-100 font-monaco rounded-sm capitalize"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
             <ActionButtons
               id={journal._id}

@@ -21,6 +21,8 @@ export const uploadImage = async (
     .from(bucket)
     .upload(filename, file);
 
+  console.log(uploadError);
+
   if (uploadError) {
     errorAlert(uploadError?.message || "Failed to upload file.");
     return;
@@ -81,6 +83,7 @@ export const deleteFiles = async (files: string[]) => {
           .from(bucketName)
           .remove([filePath]);
 
+        console.log("deleteError", deleteError);
         if (deleteError) {
           throw deleteError;
         }
