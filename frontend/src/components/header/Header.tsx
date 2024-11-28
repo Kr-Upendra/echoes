@@ -8,6 +8,7 @@ import { RootState } from "../../state";
 import { clearUserData, removeTokens, successAlert } from "../../utils";
 import { clearCurrentUser } from "../../state";
 import default_user from "../../assets/icons/default_user.png";
+import appIcon from "../../assets/icons/app_icon.png";
 import { IoIosLogOut } from "react-icons/io";
 
 export default function Header() {
@@ -38,9 +39,11 @@ export default function Header() {
 
   return (
     <header className="flex items-center base-paddings backdrop-blur-[2px] pt-3 pb-6 fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-green-500/20 to-[#0000000c]">
-      <h1 className="text-xl mr-auto tracking-wide font-display text-white">
-        <Link to="/">El Echoes</Link>
-      </h1>
+      <div className="mr-auto">
+        <Link to="/">
+          <img className="w-32" src={appIcon} />
+        </Link>
+      </div>
       <nav
         className={`sm:flex sm:items-center sm:justify-center sm:absolute sm:top-0 sm:rounded-tr-md sm:rounded-br-md sm:w-[75%] sm:h-screen sm:bg-[#00000069] sm:backdrop-blur-md transition-all duration-500 ${
           showNavbar ? "sm:-left-full" : "sm:left-0"
@@ -92,12 +95,12 @@ export default function Header() {
           </div>
         ) : (
           <div className="flex items-center sm:flex-col gap-3 sm:gap-y-5">
-            <NavItem title="Home" hrefValue="/" handleClick={closeUserMenu} />
-            <NavItem
+            {/* <NavItem title="Home" hrefValue="/" handleClick={closeUserMenu} /> */}
+            {/* <NavItem
               title="About"
               hrefValue="/about"
               handleClick={closeUserMenu}
-            />
+            /> */}
             <NavItem
               title="Get Started"
               hrefValue="/login"
