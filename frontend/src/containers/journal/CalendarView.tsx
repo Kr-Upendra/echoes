@@ -1,12 +1,14 @@
 import CountUp from "react-countup";
 import Calendar from "../../components/Calendar";
 
-export default function CalendarView() {
+type Props = { onDateChange: (date: Date) => void };
+
+export default function CalendarView({ onDateChange }: Props) {
   return (
     <>
       <div className="w-1/3 sm:w-full md:w-1/2 h-full ">
         <div className="mb-6 p-4 xs:px-2 py-6 rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bg-green-200/5">
-          <Calendar />
+          <Calendar onDateChange={onDateChange} />
         </div>
 
         <div className="mt-4 p-4 rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bg-green-200/5">

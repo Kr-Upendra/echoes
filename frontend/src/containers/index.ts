@@ -7,3 +7,4 @@ export { default as ProfileContainer } from "./Profile";
 export { default as UserStories } from "./UserStories";
 export { default as CalendarView } from "./journal/CalendarView";
 export { default as JournalContainer } from "./journal/JournalContainer";
+export { default as ModelContainer } from "./models/ModelContainer";

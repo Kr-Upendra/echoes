@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import IconButton from "./buttons/IconButton";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
-const Calendar: React.FC = () => {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date()); // Stores the current date
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null); // Stores the selected date
+type Props = { onDateChange: (date: Date) => void };
 
-  // Get the start and end of the month
+const Calendar: React.FC<Props> = ({ onDateChange }: Props) => {
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
   const getMonthDays = (date: Date): (number | null)[] => {
     const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
     const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    const startDay = startOfMonth.getDay(); // Get the starting day of the month
-    const numberOfDaysInMonth = endOfMonth.getDate(); // Number of days in the month
+    const startDay = startOfMonth.getDay();
+    const numberOfDaysInMonth = endOfMonth.getDate();
 
-    // Create an array of days to display (fill empty days at the start of the month)
     const days: (number | null)[] = [];
     for (let i = 0; i < startDay; i++) {
-      days.push(null); // Empty cells for the beginning of the month
+      days.push(null);
     }
     for (let day = 1; day <= numberOfDaysInMonth; day++) {
       days.push(day);
@@ -26,15 +26,19 @@ const Calendar: React.FC = () => {
 
   const changeMonth = (direction: number): void => {
     const newDate = new Date(currentDate);
-    newDate.setMonth(currentDate.getMonth() + direction); // Navigate to previous/next month
+    newDate.setMonth(currentDate.getMonth() + direction);
     setCurrentDate(newDate);
   };
 
   const handleDateClick = (day: number | null): void => {
     if (day) {
-      setSelectedDate(
-        new Date(currentDate.getFullYear(), currentDate.getMonth(), day)
+      const newSelectedDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        day
       );
+      setSelectedDate(newSelectedDate);
+      onDateChange(newSelectedDate);
     }
   };
 

@@ -43,6 +43,7 @@ export interface IFilterArgs {
   page?: number;
   limit?: number;
   category?: string;
+  date?: Date;
 }
 
 export interface FileWithPreview extends File {
