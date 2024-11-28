@@ -9,6 +9,7 @@ import {
   API_RESPONSE_MESSAGE,
   generateAccessToken,
   generateRefreshToken,
+  checkPasswordStrength,
 } from "../utils/index.js";
 
 export const register = async (req, res) => {
@@ -19,6 +20,14 @@ export const register = async (req, res) => {
       status: "failed",
       message: API_RESPONSE_MESSAGE.BAD_REQUEST,
     });
+
+  const { isValid, message } = checkPasswordStrength(password);
+  if (!isValid)
+    return res.status(STATUS_CODES.BAD_REQUEST).json({
+      status: "failed",
+      message: message,
+    });
+
   try {
     const user = await userModel.findOne({ email });
     if (user)

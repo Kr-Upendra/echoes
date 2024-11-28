@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
-import InstallPrompt from "../components/InstallPrompt";
 
 export default function RootLayout() {
   return (
@@ -11,7 +10,6 @@ export default function RootLayout() {
         <Outlet />
       </main>
       <Footer />
-      <InstallPrompt />
     </div>
   );
 }

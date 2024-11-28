@@ -3,6 +3,7 @@ import {
   API_RESPONSE_MESSAGE,
   createSlug,
   getMoodColor,
+  getStartAndEndDate,
   STATUS_CODES,
 } from "../utils/index.js";
 
@@ -17,6 +18,23 @@ export const createJournal = async (req, res) => {
 
   const slug = createSlug(title);
   try {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const journalsToday = await journalModel.countDocuments({
+      user,
+      createdAt: { $gte: startOfDay, $lt: endOfDay },
+    });
+
+    if (journalsToday >= 5) {
+      return res.status(STATUS_CODES.FORBIDDEN).json({
+        status: "failed",
+        message: "You can only create 5 journals per day.",
+      });
+    }
+
     const doesExist = await journalModel.findOne({ slug, user });
     if (doesExist)
       return res.status(STATUS_CODES.CONFLICT).json({
@@ -54,40 +72,40 @@ export const createJournal = async (req, res) => {
 };
 
 export const getAllJournal = async (req, res) => {
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
   const search = req.query.search || "";
-  const offset = (page - 1) * limit;
   const userId = req.user.id;
+  const queryDate = req.query.date;
+
+  const currentDate = new Date();
+  const requestedDate = new Date(queryDate);
+
+  if (requestedDate > currentDate) {
+    return res.status(STATUS_CODES.BAD_REQUEST).json({
+      status: "failed",
+      message: "Cannot query journals for a future date.",
+    });
+  }
 
   try {
     const searchQuery = { user: userId };
     if (search) searchQuery["title"] = { $regex: search, $options: "i" };
 
+    const { startOfDay, endOfDay } = getStartAndEndDate(queryDate);
+
+    searchQuery["createdAt"] = { $gte: startOfDay, $lt: endOfDay };
+
     const count = await journalModel.countDocuments(searchQuery);
-    const totalPages = Math.ceil(count / limit);
-    const hasNextPage = page < totalPages;
 
     const journals = await journalModel
       .find(searchQuery)
       .sort({ createdAt: -1 })
-      .skip(offset)
-      .limit(limit)
       .populate("user", "firstName lastName email")
       .select("-__v");
-
-    const pagination = {
-      totalRecords: count,
-      pageSize: limit,
-      totalPages,
-      currentPage: page,
-      hasNextPage,
-    };
 
     return res.status(STATUS_CODES.SUCCESS).json({
       status: "success",
       message: API_RESPONSE_MESSAGE.RECORD_LIST,
-      data: { journals, pagination },
+      data: { total: count, journals, date: queryDate },
     });
   } catch (error) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
@@ -219,3 +237,26 @@ export const deleteJournal = async (req, res) => {
     });
   }
 };
+
+/*
+
+    const hasNextPage = page < totalPages;
+    const hasNextPage = page < totalPages;
+
+    // const pagination = {
+    //   totalRecords: count,
+    //   pageSize: limit,
+    //   totalPages,
+    //   currentPage: page,
+    //   hasNextPage,
+    // };
+
+    // .skip(offset)
+      // .limit(limit)
+
+     const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+ 
+
+      */
