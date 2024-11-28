@@ -47,11 +47,11 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
-        clientsClaim: true,
-        skipWaiting: true,
-      },
-      devOptions: { enabled: true },
+      // workbox: {
+      //   clientsClaim: true,
+      //   skipWaiting: true,
+      // },
+      // devOptions: { enabled: true },
     }),
   ],
   build: {

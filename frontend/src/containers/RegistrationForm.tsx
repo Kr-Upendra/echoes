@@ -12,6 +12,7 @@ import {
   registrationSchema,
   successAlert,
 } from "../utils";
+import PasswordInput from "../components/form/PasswordInput";
 
 export default function RegistrationForm() {
   const navigate = useNavigate();
@@ -97,7 +98,16 @@ export default function RegistrationForm() {
             error={errors.email}
             onchange={handleChange}
           />
-          <CustomInput
+          {/* <CustomInput
+            id="password"
+            placeHolder="•••••••"
+            type="password"
+            name="password"
+            label="Create strong password"
+            error={errors.password}
+            onchange={handleChange}
+          /> */}
+          <PasswordInput
             id="password"
             placeHolder="•••••••"
             type="password"

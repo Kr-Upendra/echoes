@@ -11,15 +11,14 @@ export function JournalCard({ journals }: Props) {
   const screenWidth = useScreenWidth();
   let imageToRender;
 
-  // Conditional logic based on screenWidth
   if (screenWidth > 1050) {
-    imageToRender = 5; // For screens greater than 1050px
+    imageToRender = 5;
   } else if (screenWidth > 750) {
-    imageToRender = 3; // For screens between 750px and 1050px
+    imageToRender = 3;
   } else if (screenWidth >= 550) {
-    imageToRender = 3; // For screens between 550px and 750px
+    imageToRender = 3;
   } else {
-    imageToRender = 2; // For screens less than 550px
+    imageToRender = 2;
   }
   const { mutate: deleteJournalMutation } = useDeleteItem(deleteJournal, [
     "journals",
@@ -31,7 +30,7 @@ export function JournalCard({ journals }: Props) {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-1 sm:grid-cols-2 xs:grid-cols-1 gap-4 sm:gap-3">
         {journals.map((journal: IJournalData) => (
           <div
             key={journal._id}

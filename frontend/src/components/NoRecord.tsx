@@ -27,10 +27,12 @@ export default function NoRecord({
 }: Props) {
   return (
     <div
-      className={`mt-10 border border-green-500/10 shadow-2xl shadow-green-500/20 bg-black/80 w-full px-4 py-16 rounded-lg ${containerStyle}`}
+      className={`border border-green-500/10 shadow-2xl shadow-green-500/20 bg-black/80 w-full px-4 py-16 rounded-lg ${containerStyle}`}
     >
       <div className="flex justify-center items-center">
-        <h1 className="font-display text-lg">{title || "No records found."}</h1>
+        <h1 className="font-display text-center text-lg">
+          {title || "No records found."}
+        </h1>
         <p>{message}</p>
       </div>
       <div className="mt-4 text-center">

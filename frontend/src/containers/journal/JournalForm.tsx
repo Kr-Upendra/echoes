@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   ApiResponse,
@@ -34,6 +34,7 @@ type Props = { journalData?: IJournalData };
 export default function JournalForm({ journalData }: Props) {
   const { pathname } = useLocation();
   const { id } = useParams();
+  const navigate = useNavigate();
   const isCreateForm = pathname === "/journals/create";
   const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
   const [errors, setErrors] = useState<any | null>({});
@@ -83,6 +84,10 @@ export default function JournalForm({ journalData }: Props) {
               });
             }
           }
+
+          setTimeout(() => {
+            navigate("/journals");
+          }, 1000);
         }
       },
       onError: (error: any) => {

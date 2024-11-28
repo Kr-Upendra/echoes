@@ -16,6 +16,7 @@ import {
 import { setCurrentUser } from "../state";
 import CustomInput from "../components/form/CustomInput";
 import Button from "../components/buttons/Button";
+import PasswordInput from "../components/form/PasswordInput";
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ export default function LoginForm() {
             error={errors?.email}
             onchange={handleChange}
           />
-          <CustomInput
+          <PasswordInput
             id="password"
             placeHolder="•••••••"
             type="password"

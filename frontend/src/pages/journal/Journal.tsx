@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../components/PageTitle";
 import Error from "../../components/Error";
 import Loading from "../../components/Loading";
-import { Calender, JournalContainer } from "../../containers";
+import { CalendarView, JournalContainer } from "../../containers";
 import { allJournals } from "../../api";
 
 export default function Journal() {
@@ -26,7 +26,7 @@ export default function Journal() {
         ) : (
           <>
             <JournalContainer journals={data?.data?.journals} />
-            <Calender />
+            <CalendarView />
           </>
         )}
       </div>
