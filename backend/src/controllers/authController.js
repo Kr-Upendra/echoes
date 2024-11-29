@@ -10,6 +10,7 @@ import {
   generateAccessToken,
   generateRefreshToken,
   checkPasswordStrength,
+  sendEmail,
 } from "../utils/index.js";
 
 export const register = async (req, res) => {
@@ -42,6 +43,8 @@ export const register = async (req, res) => {
       firstName: capitalizeFirstLetter(firstname),
       lastName: capitalizeFirstLetter(lastname),
     });
+
+    await sendEmail(email, firstname, lastname, "Welcome to El Echoes 🎉!");
 
     return res.status(STATUS_CODES.CREATED).json({
       status: "success",
@@ -113,16 +116,16 @@ export const login = async (req, res) => {
     };
 
     res.cookie("accessToken", accessToken, {
-      httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
-      secure: nodeEnv === "production", // Use secure cookies in production
-      maxAge: parseInt(accessTokenExpireTime, 10) * 1000, // Same expiration as the access token
-      sameSite: "strict", // CSRF protection
+      httpOnly: true,
+      secure: nodeEnv === "production",
+      maxAge: parseInt(accessTokenExpireTime, 10) * 1000,
+      sameSite: "strict",
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: nodeEnv === "production",
-      maxAge: parseInt(refreshTokenExpireTime, 10) * 1000, // Set refresh token expiration as well
+      maxAge: parseInt(refreshTokenExpireTime, 10) * 1000,
       sameSite: "strict",
     });
 
