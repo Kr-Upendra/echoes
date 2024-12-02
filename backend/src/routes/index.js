@@ -4,3 +4,4 @@ export * from "./categoryRoute.js";
 export * from "./noteRoute.js";
 export * from "./voiceNoteRoute.js";
 export * from "./journalRoute.js";
+export * from "./subscriptionRoute.js";

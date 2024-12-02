@@ -81,3 +81,17 @@ export const urlBase64ToUint8Array = (base64String: any) => {
   }
   return outputArray;
 };
+
+export const arrayBufferToBase64 = (arrayBuffer: ArrayBuffer) => {
+  // Convert the ArrayBuffer (Uint8Array) to a string using String.fromCharCode
+  const byteArray = new Uint8Array(arrayBuffer);
+  let binaryString = "";
+
+  // Convert each byte to its corresponding character code
+  byteArray.forEach((byte) => {
+    binaryString += String.fromCharCode(byte);
+  });
+
+  // Return the base64 encoding of the binary string
+  return btoa(binaryString);
+};

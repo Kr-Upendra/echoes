@@ -1,5 +1,5 @@
 import { getVapidKey } from "../../api";
-import { urlBase64ToUint8Array } from "./helperFunctions";
+import { arrayBufferToBase64, urlBase64ToUint8Array } from "./helperFunctions";
 
 export const subscribeToPushNotifications = async () => {
   if ("serviceWorker" in navigator && "PushManager" in window) {
@@ -22,9 +22,22 @@ export const subscribeToPushNotifications = async () => {
       applicationServerKey: convertedVapidKey,
     });
 
-    console.log("newSubscription", newSubscription);
+    const p256dh = newSubscription.getKey("p256dh");
+    const auth = newSubscription.getKey("auth");
+
+    const p256dhBase64 = arrayBufferToBase64(p256dh!);
+    const authBase64 = arrayBufferToBase64(auth!);
+
+    const dataToSend = {
+      endpoint: newSubscription.endpoint,
+      expirationTime: newSubscription.expirationTime,
+      keys: {
+        p256dh: p256dhBase64,
+        auth: authBase64,
+      },
+    };
 
     // Send the subscription to your server (to send push notifications later)
-    // await sendSubscriptionToServer(newSubscription);
+    // await sendSubscriptionToServer(dataToSend);
   }
 };
