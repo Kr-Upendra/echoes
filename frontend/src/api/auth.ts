@@ -18,7 +18,3 @@ export const loginUser = async (
     body: JSON.stringify(formdata),
   });
 };
-
-export const getVapidKey = async (): Promise<ApiResponse> => {
-  return apiFetch("/push/vapidPublicKey", { method: "GET" });
-};

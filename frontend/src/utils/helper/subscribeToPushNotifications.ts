@@ -1,4 +1,4 @@
-import { getVapidKey } from "../../api";
+import { getVapidKey, sendSubscription } from "../../api";
 import { arrayBufferToBase64, urlBase64ToUint8Array } from "./helperFunctions";
 
 export const subscribeToPushNotifications = async () => {
@@ -37,7 +37,6 @@ export const subscribeToPushNotifications = async () => {
       },
     };
 
-    // Send the subscription to your server (to send push notifications later)
-    // await sendSubscriptionToServer(dataToSend);
+    await sendSubscription(dataToSend);
   }
 };

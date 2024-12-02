@@ -1,11 +1,23 @@
 import { useSelector } from "react-redux";
 import LinkButton from "../components/buttons/LinkButton";
 import { RootState } from "../state";
+import Button from "../components/buttons/Button";
+import { sendNotification } from "../api";
+import { useMutation } from "@tanstack/react-query";
+import { ApiResponse, successAlert } from "../utils";
 
 export default function Hero() {
   const currentUserInfo = useSelector(
     (state: RootState) => state.currentUser.currentUserInfo
   );
+
+  const { mutate } = useMutation({
+    mutationKey: ["notification"],
+    mutationFn: sendNotification,
+    onSuccess: async (response: ApiResponse) => {
+      successAlert(response.message);
+    },
+  });
 
   return (
     <section id="hero" className="min-h-screen base-paddings hero-bg">
@@ -25,6 +37,7 @@ export default function Hero() {
             hrefValue={currentUserInfo ? "/dashboard" : "/register"}
             title="Get Started"
           />
+          <Button title="Send" extraStyle="ml-3" onclick={mutate} />
         </div>
       </div>
     </section>
