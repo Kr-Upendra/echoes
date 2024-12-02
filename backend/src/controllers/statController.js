@@ -1,61 +1,59 @@
 import { noteModel } from "../models/noteModel.js";
 import { journalModel } from "../models/journalModel.js";
-import { API_RESPONSE_MESSAGE, STATUS_CODES } from "../utils/index.js";
+import {
+  API_RESPONSE_MESSAGE,
+  STATUS_CODES,
+  getStartAndEndMonth,
+} from "../utils/index.js";
 
 export const getStat = async (req, res) => {
+  const { startOfMonth, endOfMonth } = getStartAndEndMonth();
   const userId = req.user.id;
 
   try {
     const totalMemories = await noteModel.countDocuments({ author: userId });
-    const totalJournals = await journalModel.countDocuments({ user: userId });
-
+    const categories = await noteModel.distinct("category", { author: userId });
+    const totalCategories = categories.length;
     const favoriteMemories = await noteModel.countDocuments({
       author: userId,
       isFavorite: true,
     });
-
-    const categories = await noteModel.distinct("category", { author: userId });
-    const totalCategories = categories.length;
-
-    const today = new Date();
-    const dailyCount = await noteModel.countDocuments({
+    const memoriesCreatedInCurrentMonth = await noteModel.countDocuments({
       author: userId,
       createdAt: {
-        $gte: new Date(today.setHours(0, 0, 0, 0)),
-      },
-    });
-    const weeklyCount = await noteModel.countDocuments({
-      author: userId,
-      createdAt: {
-        $gte: new Date(today.setDate(today.getDate() - 7)),
-      },
-    });
-    const monthlyCount = await noteModel.countDocuments({
-      author: userId,
-      createdAt: {
-        $gte: new Date(today.setMonth(today.getMonth() - 1)),
+        $gte: startOfMonth,
+        $lte: endOfMonth,
       },
     });
 
-    const tags = await noteModel.distinct("tags", { author: userId });
-    const uniqueTags = [...new Set(tags.flat())];
-    const totalUniqueTags = uniqueTags.length;
+    const totalJournals = await journalModel.countDocuments({ user: userId });
+    const journalsCreatedInCurrentMonth = await journalModel.countDocuments({
+      user: userId,
+      createdAt: {
+        $gte: startOfMonth,
+        $lte: endOfMonth,
+      },
+    });
 
-    const responseData = {
-      totalMemories,
-      totalJournals,
-      favoriteMemories,
-      totalCategories,
-      monthlyCount,
-      weeklyCount,
-      dailyCount,
-      totalUniqueTags,
+    const statData = {
+      memoryStats: {
+        totalMemories,
+        favoriteMemories,
+        totalCategories,
+        memoriesCreatedInCurrentMonth,
+      },
+      journalStats: {
+        totalJournals,
+        totalImages: 0,
+        currentStreak: 1,
+        journalsCreatedInCurrentMonth,
+      },
     };
 
     return res.status(STATUS_CODES.SUCCESS).json({
       status: "success",
       message: "Your stats",
-      data: { userStats: responseData },
+      data: statData,
     });
   } catch (err) {
     return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({

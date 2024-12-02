@@ -88,3 +88,17 @@ export const getStartAndEndDate = (dateString) => {
 
   return { startOfDay, endOfDay };
 };
+
+export const getStartAndEndMonth = () => {
+  const today = new Date();
+  const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  const endOfMonth = new Date(
+    today.getFullYear(),
+    today.getMonth() + 1,
+    0,
+    23,
+    59,
+    59
+  );
+  return { startOfMonth, endOfMonth };
+};

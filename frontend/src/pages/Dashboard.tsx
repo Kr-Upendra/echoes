@@ -5,58 +5,73 @@ import StatCard from "../components/dashboard/StatCard";
 import { UserStat } from "../utils";
 import { useLoaderData } from "react-router-dom";
 import { MdNoteAlt } from "react-icons/md";
-import { FaBook, FaCalendar, FaHeart, FaTags } from "react-icons/fa6";
+import {
+  FaBook,
+  FaCalendar,
+  FaFire,
+  FaHeart,
+  FaImage,
+  FaTags,
+} from "react-icons/fa6";
 import { BiCategory } from "react-icons/bi";
 import { IoToday } from "react-icons/io5";
+import { FaJournalWhills } from "react-icons/fa";
 
 export default function Dashboard() {
   const currentUserInfo = useSelector(
     (state: RootState) => state.currentUser.currentUserInfo
   );
 
-  const { userStats: userStatsData }: any = useLoaderData();
+  const { journalStats, memoryStats }: any = useLoaderData();
+
   const userStats: UserStat[] = [
     {
       id: "01",
       icon: MdNoteAlt,
-      count: userStatsData?.totalMemories,
+      count: memoryStats.totalMemories,
       label: "Total Memories",
     },
     {
       id: "02",
       icon: FaHeart,
-      count: userStatsData?.favoriteMemories,
+      count: memoryStats?.favoriteMemories,
       label: "Favorite Memories",
     },
     {
       id: "03",
       icon: BiCategory,
-      count: userStatsData?.totalCategories,
+      count: memoryStats?.totalCategories,
       label: "Total Categories",
     },
     {
       id: "04",
       icon: FaCalendar,
-      count: userStatsData?.monthlyCount,
+      count: memoryStats?.memoriesCreatedInCurrentMonth,
       label: "Memories This Month",
     },
     {
       id: "05",
-      icon: FaBook,
-      count: userStatsData?.weeklyCount,
-      label: "Memories This Week",
+      icon: FaJournalWhills,
+      count: journalStats?.totalJournals,
+      label: "Total Journals",
     },
     {
       id: "06",
-      icon: IoToday,
-      count: userStatsData?.dailyCount,
-      label: "Memories Today",
+      icon: FaImage,
+      count: journalStats?.totalImages,
+      label: "Total Images",
     },
     {
       id: "07",
-      icon: FaTags,
-      count: userStatsData?.totalUniqueTags,
-      label: "Unique Tags",
+      icon: FaFire,
+      count: journalStats?.currentStreak,
+      label: "Current Streak",
+    },
+    {
+      id: "08",
+      icon: FaCalendar,
+      count: journalStats?.journalsCreatedInCurrentMonth,
+      label: "Journals this month",
     },
   ];
 
