@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import NoRecord from "../../components/NoRecord";
 import { getCurrentDate, IJournalData } from "../../utils";
-import { JournalCard } from "./JournalCard";
+import { JournalList } from "./JournalList";
 
 type Props = { journals: IJournalData[] };
 
@@ -22,7 +22,7 @@ export default function JournalContainer({ journals }: Props) {
             hrefValue="/journals/create"
           />
         ) : (
-          <JournalCard journals={journals} />
+          <JournalList journals={journals} />
         )}
       </div>
     </>

@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import { getAccessToken } from "./handleCookie";
 import { getUserData } from "./localstorageHandler";
+import useScreenWidth from "../../hooks/useScreenWidth";
 
 export const getFileExt = (file: File) => {
   const parts = file.name.split(".");
@@ -48,4 +49,21 @@ export const getBucketFilepath = (file: string) => {
 export const getCurrentDate = () => {
   const date = new Date();
   return date.toLocaleDateString("en-CA");
+};
+
+export const renderImageLength = () => {
+  const screenWidth = useScreenWidth();
+  let imageToRender;
+
+  if (screenWidth > 1050) {
+    imageToRender = 5;
+  } else if (screenWidth > 750) {
+    imageToRender = 3;
+  } else if (screenWidth >= 481) {
+    imageToRender = 3;
+  } else {
+    imageToRender = 5;
+  }
+
+  return imageToRender;
 };
