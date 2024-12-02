@@ -5,16 +5,8 @@ import StatCard from "../components/dashboard/StatCard";
 import { UserStat } from "../utils";
 import { useLoaderData } from "react-router-dom";
 import { MdNoteAlt } from "react-icons/md";
-import {
-  FaBook,
-  FaCalendar,
-  FaFire,
-  FaHeart,
-  FaImage,
-  FaTags,
-} from "react-icons/fa6";
+import { FaCalendar, FaFire, FaHeart, FaImage } from "react-icons/fa6";
 import { BiCategory } from "react-icons/bi";
-import { IoToday } from "react-icons/io5";
 import { FaJournalWhills } from "react-icons/fa";
 
 export default function Dashboard() {
