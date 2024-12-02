@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import IconButton from "./buttons/IconButton";
 import { FaArrowLeftLong, FaArrowRightLong } from "react-icons/fa6";
 
 type Props = { onDateChange: (date: Date) => void };
 
-const Calendar: React.FC<Props> = ({ onDateChange }: Props) => {
+export default function Calendar({ onDateChange }: Props) {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
@@ -37,6 +37,9 @@ const Calendar: React.FC<Props> = ({ onDateChange }: Props) => {
         currentDate.getMonth(),
         day
       );
+      if (newSelectedDate > new Date()) {
+        return;
+      }
       setSelectedDate(newSelectedDate);
       onDateChange(newSelectedDate);
     }
@@ -52,6 +55,16 @@ const Calendar: React.FC<Props> = ({ onDateChange }: Props) => {
       today.getMonth() === currentDate.getMonth() &&
       today.getFullYear() === currentDate.getFullYear()
     );
+  };
+
+  const isFutureDate = (day: number | null): boolean => {
+    if (!day) return false;
+    const selectedDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      day
+    );
+    return selectedDate > new Date();
   };
 
   return (
@@ -76,13 +89,17 @@ const Calendar: React.FC<Props> = ({ onDateChange }: Props) => {
           <div
             key={idx}
             className={`cursor-pointer p-2 rounded-lg  ${
-              day ? "hover:bg-green-500/40" : ""
+              day && !isFutureDate(day) ? "hover:bg-green-500/40" : ""
             } ${
               day === selectedDate?.getDate() || isCurrentDate(day)
                 ? "bg-green-500/70 font-display text-white"
                 : ""
+            } ${
+              isFutureDate(day)
+                ? "bg-green-500/5 text-gray-400 cursor-not-allowed"
+                : ""
             }`}
-            onClick={() => handleDateClick(day)}
+            onClick={() => !isFutureDate(day) && handleDateClick(day)}
           >
             {day || ""}
           </div>
@@ -90,6 +107,4 @@ const Calendar: React.FC<Props> = ({ onDateChange }: Props) => {
       </div>
     </div>
   );
-};
-
-export default Calendar;
+}

@@ -4,19 +4,37 @@ import Error from "../../components/Error";
 import Loading from "../../components/Loading";
 import { CalendarView, JournalContainer } from "../../containers";
 import { allJournals } from "../../api";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { getCurrentDate } from "../../utils";
 
 export default function Journal() {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const dateString = selectedDate.toLocaleDateString("en-CA");
+  const todayDate = getCurrentDate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialDate = searchParams.get("date") || todayDate;
+  const [selectedDate, setSelectedDate] = useState<string>(initialDate);
+
+  useEffect(() => {
+    setSelectedDate(initialDate);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const newParams: { [key: string]: string } = {};
+
+    newParams.date = selectedDate;
+
+    setSearchParams(newParams);
+  }, [selectedDate]);
+
   const { data, isLoading, error } = useQuery({
-    queryKey: ["journals", dateString],
-    queryFn: () => allJournals({ date: dateString }),
+    queryKey: ["journals", selectedDate],
+    queryFn: () => allJournals({ date: selectedDate }),
     enabled: !!selectedDate,
   });
 
   const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
+    const dateStr = date.toLocaleDateString("en-CA");
+    setSelectedDate(dateStr);
   };
 
   return (

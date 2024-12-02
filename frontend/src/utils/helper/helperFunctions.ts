@@ -44,3 +44,8 @@ export const getBucketFilepath = (file: string) => {
   if (match) return { bucketName: match[1], filePath: match[2] };
   return { bucketName: "", filePath: "" };
 };
+
+export const getCurrentDate = () => {
+  const date = new Date();
+  return date.toLocaleDateString("en-CA");
+};

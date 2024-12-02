@@ -8,7 +8,7 @@ export default function JournalContainer({ journals }: Props) {
   return (
     <>
       <div className="h-full w-2/3 sm:w-full md:w-1/2 rounded-md">
-        {journals.length <= 0 ? (
+        {journals && journals.length <= 0 ? (
           <NoRecord
             containerStyle="mt-0 h-full"
             title="No journal found for today"
