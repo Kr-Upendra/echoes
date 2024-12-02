@@ -1,4 +1,3 @@
-import CountUp from "react-countup";
 import Calendar from "../../components/Calendar";
 
 type Props = { onDateChange: (date: Date) => void };
@@ -11,7 +10,7 @@ export default function CalendarView({ onDateChange }: Props) {
           <Calendar onDateChange={onDateChange} />
         </div>
 
-        <div className="mt-4 p-4 rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bg-green-200/5">
+        {/* <div className="mt-4 p-4 rounded-lg shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] bg-green-200/5">
           <h1 className="text-green-500 font-display line-clamp-1 sm:text-sm mb-2">
             Your Streaks (In days)
           </h1>
@@ -29,7 +28,7 @@ export default function CalendarView({ onDateChange }: Props) {
               <span className="text-sm text-center">Longest Streak</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

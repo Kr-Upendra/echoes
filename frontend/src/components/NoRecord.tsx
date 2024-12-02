@@ -6,7 +6,7 @@ type Props = {
   containerStyle?: string;
 } & (
   | {
-      hasUrl: true;
+      hasUrl: boolean;
       buttonTitle: string;
       hrefValue: string;
     }
