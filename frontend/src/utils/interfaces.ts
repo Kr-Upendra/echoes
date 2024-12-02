@@ -69,3 +69,16 @@ export interface IJournalData {
     email: string;
   };
 }
+
+export interface IMemoryStat {
+  totalMemories: number;
+  favoriteMemories: number;
+  totalCategories: number;
+  memoriesCreatedInCurrentMonth: number;
+}
+export interface IJournalStat {
+  totalJournals: number;
+  totalImages: number;
+  currentStreak: number;
+  journalsCreatedInCurrentMonth: number;
+}

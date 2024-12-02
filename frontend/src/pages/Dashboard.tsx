@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { RootState } from "../state";
 import Banner from "../components/dashboard/Banner";
 import StatCard from "../components/dashboard/StatCard";
@@ -8,6 +7,7 @@ import { MdNoteAlt } from "react-icons/md";
 import { FaCalendar, FaFire, FaHeart, FaImage } from "react-icons/fa6";
 import { BiCategory } from "react-icons/bi";
 import { FaJournalWhills } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 export default function Dashboard() {
   const currentUserInfo = useSelector(

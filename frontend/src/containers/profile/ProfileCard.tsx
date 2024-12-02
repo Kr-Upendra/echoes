@@ -6,15 +6,16 @@ import {
   FaThreads,
   FaTwitter,
 } from "react-icons/fa6";
-import { Link, useLoaderData, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CountUp from "react-countup";
 import default_user from "../../assets/icons/default_user.png";
 import { RootState } from "../../state";
 import { useState } from "react";
 import ImageUploader from "../../components/uploader/FileUploader";
-import { updateProfile } from "../../api";
+import { updateProfile, userStats } from "../../api";
 import { userProfileImageProperties } from "../../utils";
+import { useGetItem } from "../../hooks";
 
 export default function ProfileCard() {
   const location = useLocation();
@@ -24,7 +25,7 @@ export default function ProfileCard() {
     (state: RootState) => state.userProfile.userProfile
   );
 
-  const { userStats: userStatsData }: any = useLoaderData();
+  const { data: statData } = useGetItem(["userStats"], userStats);
 
   const handleUploadClick = () => {
     setShowUploader(true);
@@ -66,7 +67,7 @@ export default function ProfileCard() {
             <span className="text-4xl sm:text-3xl text-white font-display tracking-wider">
               <CountUp
                 start={0}
-                end={userStatsData?.totalMemories}
+                end={statData?.memoryStats?.totalMemories}
                 duration={2.5}
               />
             </span>
@@ -78,7 +79,7 @@ export default function ProfileCard() {
             <span className="text-4xl sm:text-3xl text-white font-display tracking-wider">
               <CountUp
                 start={0}
-                end={userStatsData?.favoriteMemories}
+                end={statData?.memoryStats?.favoriteMemories}
                 duration={2.5}
               />
             </span>
@@ -90,24 +91,24 @@ export default function ProfileCard() {
             <span className="text-4xl sm:text-3xl text-white font-display tracking-wider">
               <CountUp
                 start={0}
-                end={userStatsData?.totalUniqueTags}
+                end={statData?.journalStats?.totalJournals}
                 duration={2.5}
               />
             </span>
           </div>
-          <h3 className="text-gray-400 sm:text-sm">Total Tags</h3>
+          <h3 className="text-gray-400 sm:text-sm">Total Journals</h3>
         </div>
         <div className="p-3 py-4 rounded-lg bg-green-200/5 text-center shadow-lg shadow-black/5">
           <div className="my-2">
             <span className="text-4xl sm:text-3xl text-white font-display tracking-wider">
               <CountUp
                 start={0}
-                end={userStatsData?.totalCategories}
+                end={statData?.journalStats?.totalImages}
                 duration={2.5}
               />
             </span>
           </div>
-          <h3 className="text-gray-400 sm:text-sm">Total Categories</h3>
+          <h3 className="text-gray-400 sm:text-sm">Journal Images</h3>
         </div>
       </div>
       <div className="mt-4 flex gap-4 sm:gap-2">
