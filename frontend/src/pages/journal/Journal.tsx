@@ -4,35 +4,20 @@ import Error from "../../components/Error";
 import Loading from "../../components/Loading";
 import { CalendarView, JournalContainer } from "../../containers";
 import { allJournals } from "../../api";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Journal() {
-  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const dateString = selectedDate.toLocaleDateString("en-CA");
   const { data, isLoading, error } = useQuery({
-    queryKey: ["journals"],
-    queryFn: () => allJournals({ date: selectedDate }),
+    queryKey: ["journals", dateString],
+    queryFn: () => allJournals({ date: dateString }),
     enabled: !!selectedDate,
   });
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-
-    if (date.toDateString() !== new Date().toDateString()) {
-      const formattedDate = date.toISOString().split("T")[0];
-      navigate(`/journals?date=${formattedDate}`);
-    }
   };
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const dateParam = params.get("date");
-
-    if (dateParam) {
-      setSelectedDate(new Date(dateParam));
-    }
-  }, []);
 
   return (
     <>

@@ -37,8 +37,9 @@ export default function JournalForm({ journalData }: Props) {
   const navigate = useNavigate();
   const isCreateForm = pathname === "/journals/create";
   const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
+  const [isUpdaing, setIsUpdating] = useState<boolean>(false);
   const [errors, setErrors] = useState<any | null>({});
-  const { mutate: updateJournalMutation, isPending: isJouranlUpdating } =
+  const { mutate: updateJournalMutation } =
     useUpdateItem<JournalUpdateFormData>(
       updateJournal,
       ["journals", "journal"],
@@ -106,6 +107,7 @@ export default function JournalForm({ journalData }: Props) {
           images: [],
         });
       } else if (id) {
+        setIsUpdating(true);
         const filesOnly = formData?.images?.filter(
           (image: FileWithPreview | string) => image instanceof File
         );
@@ -120,6 +122,7 @@ export default function JournalForm({ journalData }: Props) {
             imagesToDelete: filesToDelete,
           },
         });
+        setIsUpdating(false);
       }
     } catch (err) {
       if (err instanceof z.ZodError) {
@@ -217,7 +220,7 @@ export default function JournalForm({ journalData }: Props) {
             <SubmitButton
               title="Update"
               isDisabled={false}
-              isWorking={isJouranlUpdating}
+              isWorking={isUpdaing}
               workingTitle="Updating..."
             />
           )}

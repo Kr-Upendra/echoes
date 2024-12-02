@@ -1,14 +1,9 @@
 import { ApiResponse, JournalFormData, JournalUpdateFormData } from "../utils";
 import { apiFetch } from "./api";
 
-export const allJournals = async ({ date }: { date?: Date } = {}) => {
-  let formattedDate;
-  if (date) {
-    formattedDate = date.toISOString().split("T")[0];
-  }
-  console.log("journal api", formattedDate);
+export const allJournals = async ({ date }: { date?: String } = {}) => {
   return apiFetch(
-    `/journals`,
+    `/journals?date=${date ? date : ""}`,
     {
       method: "GET",
     },

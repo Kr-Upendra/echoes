@@ -21,8 +21,6 @@ export const uploadImage = async (
     .from(bucket)
     .upload(filename, file);
 
-  console.log(uploadError);
-
   if (uploadError) {
     errorAlert(uploadError?.message || "Failed to upload file.");
     return;
@@ -83,7 +81,6 @@ export const deleteFiles = async (files: string[]) => {
           .from(bucketName)
           .remove([filePath]);
 
-        console.log("deleteError", deleteError);
         if (deleteError) {
           throw deleteError;
         }
@@ -93,6 +90,8 @@ export const deleteFiles = async (files: string[]) => {
     await Promise.all(deletePromises);
   } catch (err) {
     console.error("Error uploading images:", err);
-    throw new Error("There was an error uploading the images.");
+    throw new Error(
+      "There was an error uploading the images. please try again later."
+    );
   }
 };

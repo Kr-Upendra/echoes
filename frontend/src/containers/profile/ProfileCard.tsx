@@ -55,7 +55,9 @@ export default function ProfileCard() {
             100
           )}...`}</p>
         ) : (
-          <p className="text-gray-400 text-sm">{`${userProfile?.about}`}</p>
+          <p className="text-gray-400 text-sm">{`${
+            userProfile?.about ? userProfile?.about : ""
+          }`}</p>
         )}
       </div>
       <div className="mt-3 grid grid-cols-2 gap-2">

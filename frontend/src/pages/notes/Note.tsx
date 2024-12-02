@@ -79,7 +79,7 @@ export default function Note() {
         category: category !== "All" ? category : undefined,
       }),
     enabled:
-      debouncedSearchQuery.length >= 3 || debouncedSearchQuery.length === 0, // Only run when search is valid
+      debouncedSearchQuery.length >= 3 || debouncedSearchQuery.length === 0,
   });
 
   const notes = data?.data?.notes || [];
