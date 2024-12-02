@@ -21,6 +21,7 @@ import {
   Register,
 } from "./pages";
 import { journalsLoader, statLoader } from "./utils";
+import Error from "./components/Error";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,7 +37,13 @@ const router = createBrowserRouter(
           <Route path="create" element={<AddNote />} />
           <Route path=":id" element={<EditNote />} />
         </Route>
-        <Route path="journals" element={<PageLayout />}>
+        <Route
+          path="journals"
+          element={<PageLayout />}
+          errorElement={
+            <Error error={{ error: { message: "Some error occurred!" } }} />
+          }
+        >
           <Route index element={<Journal />} loader={journalsLoader} />
           <Route path="create" element={<AddJournal />} />
           <Route path=":id" element={<EditJournal />} />
