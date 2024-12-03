@@ -10,3 +10,5 @@ export { default as NotFound } from "./Error/NotFound";
 export { default as Journal } from "./journal/Journal";
 export { default as AddJournal } from "./journal/AddJournal";
 export { default as EditJournal } from "./journal/EditJournal";
+export { default as ForgotPassword } from "./ForgotPassword";
+export { default as ResetPassword } from "./ResetPassword";

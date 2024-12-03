@@ -97,7 +97,10 @@ export default function LoginForm() {
           <div className="-mt-2">
             <span className="text-gray-400 text-sm">
               Don't have an account?{" "}
-              <Link to="/register" className="text-green-500 font-display">
+              <Link
+                to="/register"
+                className="text-green-500 font-display text-sm"
+              >
                 Register
               </Link>
             </span>
@@ -107,6 +110,14 @@ export default function LoginForm() {
               title={mutation.isPending ? "Logging in" : "Login"}
               isDisabled={mutation.isPending}
             />
+          </div>
+          <div className="mt-3 text-center">
+            <Link
+              to="/forgot-password"
+              className="text-green-500 font-display text-sm"
+            >
+              Forgot your password?
+            </Link>
           </div>
         </div>
       </form>

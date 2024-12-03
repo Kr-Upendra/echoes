@@ -12,6 +12,7 @@ import {
   Dashboard,
   EditJournal,
   EditNote,
+  ForgotPassword,
   Home,
   Journal,
   Login,
@@ -19,6 +20,7 @@ import {
   NotFound,
   Profile,
   Register,
+  ResetPassword,
 } from "./pages";
 import { journalsLoader, statLoader } from "./utils";
 import Error from "./components/Error";
@@ -29,6 +31,8 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="reset-password/:token" element={<ResetPassword />} />
       <Route element={<ProtectedLayout />}>
         <Route path="dashboard" element={<Dashboard />} loader={statLoader} />
         <Route path="profile" element={<Profile />} loader={statLoader} />

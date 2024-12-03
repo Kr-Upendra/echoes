@@ -19,7 +19,7 @@ export default function PasswordInput({
   id,
   placeHolder,
   name,
-  type = "text",
+  type = "password",
   label,
   error,
   value,
