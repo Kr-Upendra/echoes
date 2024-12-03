@@ -1,32 +1,68 @@
 export const onBoardEmailTemplate = (firstname, lastname) => {
   return `
         <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-        <h2 style="color: #4CAF50;">Hi ${firstname + " " + lastname},</h2>
-        <p>Thank you for registering with <strong><a href="https://el-echoes.netlify.app" target="_blank" style="color: #22C55E; text-decoration: none;">El Echoes</a></strong>! 🎉 We're thrilled to have you onboard.</p>
-        <p>Start creating, sharing, and cherishing your unforgettable moments with ease.</p>
-        <br />
-        <h3>Here's what you can do next:</h3>
-        <ul>
-            <li><a style="color: #22C55E; text-decoration: none;" href="https://el-echoes.netlify.app/login" target="_blank">Log in</a> to your account and explore the features.</li>
-            <li>Add your first memory to get started.</li>
-        </ul>
-        <p>If you have any questions, feel free to reach out to us. We're here to help!</p>
-        <p>Happy exploring! 🌟</p>
-        <p><strong>El Echoes Team</strong></p>
+            <h2 style="color: #4CAF50;">Hi ${firstname + " " + lastname},</h2>
+            <p>Thank you for registering with <strong><a href="https://el-echoes.netlify.app" target="_blank" style="color: #22C55E; text-decoration: none;">El Echoes</a></strong>! 🎉 We're thrilled to have you onboard.</p>
+            <p>Start creating, sharing, and cherishing your unforgettable moments with ease.</p>
+            <br />
+            <h3>Here's what you can do next:</h3>
+            <ul>
+                <li><a style="color: #22C55E; text-decoration: none;" href="https://el-echoes.netlify.app/login" target="_blank">Log in</a> to your account and explore the features.</li>
+                <li>Add your first memory to get started.</li>
+            </ul>
+            <p>If you have any questions, feel free to reach out to us. We're here to help!</p>
+            <p>Happy exploring! 🌟</p>
+            <p><strong>El Echoes Team</strong></p>
         </div>
     `;
 };
 
-export const passwordResetTemplate = () => {
-  `
-    <h1>Password Reset Request</h1>
-    <p>Hello [User Name],</p>
-    <p>We received a request to reset the password for your [Your App Name] account.</p>
-    <p>To reset your password, click the link below:</p>
-    <p><a href="[Reset Password Link]">Reset My Password</a></p>
-    <p>If you didn't request this password reset, please ignore this email, and your password will remain unchanged.</p>
-    <p>For security reasons, this link will expire in 24 hours.</p>
-    <p>Best regards,<br>[Your App Name] Team</p>
+export const passwordResetTemplate = (username, resetUrl) => {
+  return `
+  <div
+  style="
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    padding: 20px 30px;
+  "
+>
+ <div
+    style="
+      display: flex;
+      justify-content: center;
+      justify-items: center;
+      margin-bottom: 50px;
+    "
+  >
+    <img
+      style="width: 60px"
+      src="https://qiehqccuygszbdxuuqjd.supabase.co/storage/v1/object/public/application/logos/icon_192x192.png?t=2024-12-03T13%3A59%3A12.508Z"
+      alt="Logo_1"
+    />
+    <h1 style="margin-left: 4px; color: #22c55e">El Echoes</h1>
+  </div>
+  <div>
+    <span style="color: #4caf50">Hello, <strong>${username}</strong></span>
+  </div>
+  <p>We received a request to reset the password for your El Echoes account.</p>
+  <p>To reset your password, click the link below:</p>
+  <p>
+    <a style="color: #22c55e; text-decoration: none" href="${resetUrl}"
+      >Reset My Password</a
+    >
+  </p>
+  <p>
+    If you didn't request this password reset, please ignore this email, and
+    your password will remain unchanged.
+  </p>
+  <p>For security reasons, this link will expire in 1 hours.</p>
+  <p>
+    Best regards,<br />
+    <strong style="color: #4caf50">El Echoes Team </strong>
+  </p>
+</div>
+
 `;
 };
 

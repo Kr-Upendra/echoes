@@ -12,6 +12,7 @@ import {
   checkPasswordStrength,
   sendEmail,
   onBoardEmailTemplate,
+  passwordResetTemplate,
 } from "../utils/index.js";
 
 export const register = async (req, res) => {
@@ -202,10 +203,11 @@ export const forgotPassword = async (req, res) => {
       "host"
     )}/api/v1/auth/reset-password/${resetToken}`;
 
-    const message = `<h1>Forgot your password</h1>,<br /> Submit a patch request with new password to: ${resetURL}.\nIf you didn't forgot your password please ignore this message.`;
-
-    // const template = passwordResetTemplate();
-    await sendEmail(user.email, "Reset your password.", message);
+    const template = passwordResetTemplate(
+      `${user.firstName} ${user.lastName}`,
+      resetURL
+    );
+    await sendEmail(user.email, "Reset your Password", template);
 
     return res.status(STATUS_CODES.SUCCESS).json({
       status: "success",
