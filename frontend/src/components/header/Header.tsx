@@ -82,35 +82,44 @@ export default function Header() {
         )}
 
         {currentUser && !showNavbar && (
-          <div className="hidden md:fixed md:z-30 md:top-0 md:left-0 md:flex md:flex-col md:justify-center md:items-center md:gap-y-3 md:w-full md:p-4 md:bg-black/90 md:backdrop-blur-sm md:rounded-md md:shadow-lg md:shadow-green-500/10 md:h-screen">
-            <NavItem
-              title="Dashboard"
-              hrefValue="/dashboard"
-              handleClick={closeUserMenu}
-            />
-            <NavItem
-              title="Journals"
-              hrefValue="/journals"
-              handleClick={closeUserMenu}
-            />
-            <NavItem
-              title="Memories"
-              hrefValue="/memories"
-              handleClick={closeUserMenu}
-            />
-            <NavItem
-              title="Profile"
-              hrefValue="/profile"
-              handleClick={closeUserMenu}
-            />
-            <Button
-              title="LOGOUT"
-              onclick={currentUser && handleClick}
-              extraStyle="border-red-700 ml-2 text-white bg-red-700 hover:bg-red-800"
-            />
+          <div className="hidden md:block md:absolute md:z-30 md:top-0 md:left-0 md:w-full md:p-4 md:bg-black/95 md:backdrop-blur-sm md:rounded-md md:shadow-lg md:shadow-green-500/10 md:h-screen">
+            <HeaderLogo />
+            <div className="md:flex md:flex-col md:justify-center md:items-center md:gap-y-3.5 h-[80%] mt-8">
+              <NavItem
+                title="Dashboard"
+                hrefValue="/dashboard"
+                handleClick={closeUserMenu}
+              />
+              <NavItem
+                title="Journals"
+                hrefValue="/journals"
+                handleClick={closeUserMenu}
+              />
+              <NavItem
+                title="Memories"
+                hrefValue="/memories"
+                handleClick={closeUserMenu}
+              />
+              <NavItem
+                title="Profile"
+                hrefValue="/profile"
+                handleClick={closeUserMenu}
+              />
+              <Button
+                title="LOGOUT"
+                onclick={currentUser && handleClick}
+                extraStyle="border-red-700 ml-2 text-white bg-red-700 hover:bg-red-800"
+              />
+            </div>
           </div>
         )}
       </header>
     </>
   );
 }
+
+/*
+
+ 
+
+*/
