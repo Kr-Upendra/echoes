@@ -1,19 +1,22 @@
 import nodemailer from "nodemailer";
 
+console.log("SENDGRID_SMTP_USERNAME", process.env.SENDGRID_SMTP_USERNAME);
+console.log("SENDGRID_API_KEY", process.env.SENDGRID_API_KEY);
+
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
+  host: "smtp.sendgrid.net",
+  port: 587,
+  secure: false,
   auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    user: process.env.SENDGRID_API_KEY,
+    pass: process.env.SENDGRID_SMTP_USERNAME,
   },
 });
 
 export const sendEmail = async (to, firstname, lastname, subject) => {
   try {
     const info = await transporter.sendMail({
-      from: `"El Echoes" <hello@elechoes.com>`,
+      from: `"El Echoes | Capture Your Moments, Keep Your Memories <toxic74412@gmail.com>"`,
       to,
       subject,
       html: `
@@ -30,9 +33,7 @@ export const sendEmail = async (to, firstname, lastname, subject) => {
             <p>If you have any questions, feel free to reach out to us. We're here to help!</p>
             <p>Happy exploring! 🌟</p>
             <p><strong>El Echoes Team</strong></p>
-            <hr style="border: none; border-top: 1px solid #ddd;" />
-            <p style="font-size: 0.9em; color: #555;">Follow us on <a href="https://twitter.com/elechoes" style="color: #4CAF50; text-decoration: none;">Twitter</a> | <a href="https://facebook.com/elechoes" style="color: #4CAF50; text-decoration: none;">Facebook</a></p>
-          </div>
+           </div>
         `,
     });
 
