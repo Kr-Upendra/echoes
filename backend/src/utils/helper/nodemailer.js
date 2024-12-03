@@ -25,14 +25,12 @@ const transporter =
 
 export const sendEmail = async (to, subject, template) => {
   try {
-    const info = await transporter.sendMail({
+    await transporter.sendMail({
       from: `"El Echoes | Capture Your Moments, Keep Your Memories" <toxic74412@gmail.com>`,
       to: to,
       subject: subject,
       html: template,
     });
-
-    console.log("Email sent: " + info.response);
   } catch (error) {
     console.error("Error sending email: ", error);
   }

@@ -17,7 +17,8 @@ export const onBoardEmailTemplate = (firstname, lastname) => {
     `;
 };
 
-export const passwordResetTemplate = `
+export const passwordResetTemplate = () => {
+  `
     <h1>Password Reset Request</h1>
     <p>Hello [User Name],</p>
     <p>We received a request to reset the password for your [Your App Name] account.</p>
@@ -27,6 +28,7 @@ export const passwordResetTemplate = `
     <p>For security reasons, this link will expire in 24 hours.</p>
     <p>Best regards,<br>[Your App Name] Team</p>
 `;
+};
 
 export const suspiciousLoginTemplate = `
    <h1>Suspicious Login Attempt</h1>

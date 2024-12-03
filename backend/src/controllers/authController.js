@@ -178,3 +178,50 @@ export const check = async (req, res) => {
     });
   }
 };
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email)
+    return res.status(STATUS_CODES.BAD_REQUEST).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.BAD_REQUEST,
+    });
+
+  const user = await userModel.findOne({ email });
+  if (!user)
+    return res.status(STATUS_CODES.NOT_FOUND).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.EMAIL_NOT_FOUND,
+    });
+
+  try {
+    const resetToken = await user.generatePasswordResetToken();
+    await user.save({ validateBeforeSave: false });
+
+    const resetURL = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/auth/reset-password/${resetToken}`;
+
+    const message = `<h1>Forgot your password</h1>,<br /> Submit a patch request with new password to: ${resetURL}.\nIf you didn't forgot your password please ignore this message.`;
+
+    // const template = passwordResetTemplate();
+    await sendEmail(user.email, "Reset your password.", message);
+
+    return res.status(STATUS_CODES.SUCCESS).json({
+      status: "success",
+      message: "Password reset link to your email.",
+    });
+  } catch (error) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    console.log(error);
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
+
+export const resetPassword = () => {};

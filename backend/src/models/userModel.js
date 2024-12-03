@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import crypto from "crypto";
 import { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 
@@ -72,6 +73,8 @@ const userSchema = new mongoose.Schema(
     address: addressSchema,
     socialMedia: socialMediaSchema,
     passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpire: Date,
   },
   { timestamps: true }
 );
@@ -117,6 +120,19 @@ userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {
     return JWTTimeStamp < changedTimeStamp;
   }
   return false;
+};
+
+userSchema.methods.generatePasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  console.log({ resetToken, resetPasswordToken: this.passwordResetToken });
+
+  this.passwordResetExpire = Date.now() + 60 * 60 * 1000;
+  return resetToken;
 };
 
 const User = mongoose.model("User", userSchema);
