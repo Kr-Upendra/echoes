@@ -76,6 +76,7 @@ export interface IMemoryStat {
   totalCategories: number;
   memoriesCreatedInCurrentMonth: number;
 }
+
 export interface IJournalStat {
   totalJournals: number;
   totalImages: number;

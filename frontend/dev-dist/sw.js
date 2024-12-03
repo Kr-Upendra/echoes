@@ -87,7 +87,7 @@ define(["./workbox-54d0af47"], function (workbox) {
       },
       {
         url: "index.html",
-        revision: "0.phcilecitv8",
+        revision: "0.cec0q9vdfc8",
       },
     ],
     {}
@@ -96,36 +96,6 @@ define(["./workbox-54d0af47"], function (workbox) {
   workbox.registerRoute(
     new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
       allowlist: [/^\/$/],
-    })
-  );
-});
-
-// Handle Push Notification event
-self.addEventListener("push", function (event) {
-  const data = event.data ? event.data.json() : {};
-  const title = data.title || "New Notification";
-  const options = {
-    body: data.body || "You have a new notification!",
-    icon: "/icon.png",
-    badge: "/badge.png", // You can customize these as needed
-  };
-
-  event.waitUntil(self.registration.showNotification(title, options));
-});
-
-// Handle Notification click event
-self.addEventListener("notificationclick", function (event) {
-  event.notification.close();
-
-  // Optionally, handle the click (open a URL, etc.)
-  event.waitUntil(clients.openWindow(event.notification.data.url || "/"));
-});
-
-// Optional: Cache and other events (use the default ones or customize)
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open("pwa-cache").then((cache) => {
-      return cache.addAll(["/index.html", "/icon.png"]);
     })
   );
 });

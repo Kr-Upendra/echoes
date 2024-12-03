@@ -6,7 +6,6 @@ import {
   categoryRouter,
   noteRouter,
   journalRouter,
-  subscriptionRouter,
 } from "./routes/index.js";
 
 const app = express();
@@ -25,6 +24,5 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/notes", noteRouter);
 app.use("/api/v1/journals", journalRouter);
-app.use("/api/v1/push", subscriptionRouter);
 
 export default app;

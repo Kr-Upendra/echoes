@@ -67,31 +67,3 @@ export const renderImageLength = () => {
 
   return imageToRender;
 };
-
-export const urlBase64ToUint8Array = (base64String: any) => {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/\-/g, "+")
-    .replace(/_/g, "/");
-  const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-};
-
-export const arrayBufferToBase64 = (arrayBuffer: ArrayBuffer) => {
-  // Convert the ArrayBuffer (Uint8Array) to a string using String.fromCharCode
-  const byteArray = new Uint8Array(arrayBuffer);
-  let binaryString = "";
-
-  // Convert each byte to its corresponding character code
-  byteArray.forEach((byte) => {
-    binaryString += String.fromCharCode(byte);
-  });
-
-  // Return the base64 encoding of the binary string
-  return btoa(binaryString);
-};
