@@ -37,7 +37,7 @@ export default function Header() {
       <header className="flex items-center base-paddings backdrop-blur-[2px] pt-3 pb-6 fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-green-500/20 to-[#0000000c]">
         <HeaderLogo />
         {!currentUser ? (
-          <Button title="Get Started" />
+          <Button title="Get Started" onclick={() => navigate("/login")} />
         ) : (
           <>
             <div className="md:hidden">

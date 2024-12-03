@@ -22,7 +22,7 @@ export default function Hero() {
         </p>
         <div className="mt-3">
           <LinkButton
-            hrefValue={currentUserInfo ? "/dashboard" : "/register"}
+            hrefValue={currentUserInfo ? "/dashboard" : "/login"}
             title="Get Started"
           />
         </div>
