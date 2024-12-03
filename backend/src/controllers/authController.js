@@ -11,6 +11,7 @@ import {
   generateRefreshToken,
   checkPasswordStrength,
   sendEmail,
+  onBoardEmailTemplate,
 } from "../utils/index.js";
 
 export const register = async (req, res) => {
@@ -44,7 +45,9 @@ export const register = async (req, res) => {
       lastName: capitalizeFirstLetter(lastname),
     });
 
-    await sendEmail(email, firstname, lastname, "Welcome to El Echoes 🎉!");
+    const template = onBoardEmailTemplate(firstname, lastname);
+
+    await sendEmail(email, "Welcome to El Echoes 🎉!", template);
 
     return res.status(STATUS_CODES.CREATED).json({
       status: "success",
