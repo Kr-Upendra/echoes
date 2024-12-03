@@ -1,8 +1,7 @@
 import { Link, Navigate } from "react-router-dom";
 import { isAuthenticated } from "../utils";
-import CustomInput from "../components/form/CustomInput";
-import SubmitButton from "../components/form/SubmitButton";
 import { forgotPassword } from "../assets";
+import { ForgotPasswordForm } from "../containers";
 
 export default function ForgotPassword() {
   if (isAuthenticated()) return <Navigate to="/dashboard" replace={true} />;
@@ -18,23 +17,7 @@ export default function ForgotPassword() {
               <p className="text-sm mb-6">
                 Enter your e-mail address and we'll give you reset instruction.
               </p>
-              <form>
-                <CustomInput
-                  type="email"
-                  id="forgot-email"
-                  label=""
-                  name="email"
-                  error=""
-                  onchange={() => {}}
-                  placeHolder="Your email"
-                />
-                <SubmitButton
-                  title="Password Reset Link"
-                  workingTitle="Sending..."
-                  isDisabled={false}
-                  isWorking={false}
-                />
-              </form>
+              <ForgotPasswordForm />
               <div className="mt-2.5">
                 <span className="text-gray-400 text-sm">
                   Back to{" "}

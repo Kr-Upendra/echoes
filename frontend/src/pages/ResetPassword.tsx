@@ -1,8 +1,7 @@
 import { Link, Navigate } from "react-router-dom";
 import { isAuthenticated } from "../utils";
 import { myPasswordImage } from "../assets";
-import SubmitButton from "../components/form/SubmitButton";
-import PasswordInput from "../components/form/PasswordInput";
+import { ResetPasswordForm } from "../containers";
 
 export default function ResetPassword() {
   if (isAuthenticated()) return <Navigate to="/dashboard" replace={true} />;
@@ -18,22 +17,7 @@ export default function ResetPassword() {
               <p className="text-sm mb-6">
                 Enter a strong password to change your password.
               </p>
-              <form>
-                <PasswordInput
-                  id="new-password"
-                  label=""
-                  name="password"
-                  error=""
-                  onchange={() => {}}
-                  placeHolder="******"
-                />
-                <SubmitButton
-                  title="Change Password"
-                  workingTitle="Changing..."
-                  isDisabled={false}
-                  isWorking={false}
-                />
-              </form>
+              <ResetPasswordForm />
               <div className="mt-2.5">
                 <span className="text-gray-400 text-sm">
                   Back to{" "}

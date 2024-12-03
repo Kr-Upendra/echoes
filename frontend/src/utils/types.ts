@@ -96,3 +96,11 @@ export type JournalUpdateFormData = {
   images?: any;
   imagesToDelete?: string[];
 };
+
+export type ForgotPasswordFormData = {
+  email: string;
+};
+
+export type ResetPasswordFormData = {
+  password: string;
+};

@@ -200,9 +200,11 @@ export const forgotPassword = async (req, res) => {
     const resetToken = await user.generatePasswordResetToken();
     await user.save({ validateBeforeSave: false });
 
-    const resetURL = `${req.protocol}://${req.get(
-      "host"
-    )}/api/v1/auth/reset-password/${resetToken}`;
+    const frontendUrl =
+      process.env.NODE_ENV === "production"
+        ? process.env.FRONTEND_URL_PROD
+        : process.env.FRONTEND_URL_DEV;
+    const resetURL = `${frontendUrl}/reset-password/${resetToken}`;
 
     const template = passwordResetTemplate(
       `${user.firstName} ${user.lastName}`,
@@ -212,7 +214,7 @@ export const forgotPassword = async (req, res) => {
 
     return res.status(STATUS_CODES.SUCCESS).json({
       status: "success",
-      message: "Password reset link to your email.",
+      message: "Password reset link sent to your email.",
     });
   } catch (error) {
     user.passwordResetToken = undefined;

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ApiResponse, errorAlert, successAlert } from "../utils";
 
 export const useCreateItem = <T>(
-  updateFn: (formdata: T) => Promise<ApiResponse>,
+  createFn: (formdata: T) => Promise<ApiResponse>,
   queryKey: string[],
   navigationLocation?: string
 ) => {
@@ -11,7 +11,7 @@ export const useCreateItem = <T>(
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: (formdata: T) => updateFn(formdata),
+    mutationFn: (formdata: T) => createFn(formdata),
     onSuccess: (response: ApiResponse) => {
       successAlert(response?.message);
       queryClient.invalidateQueries({ queryKey });

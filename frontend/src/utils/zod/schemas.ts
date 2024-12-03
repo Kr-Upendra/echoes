@@ -75,3 +75,11 @@ export const journalNoteSchema = z.object({
   mood: z.string(),
   tags: z.array(z.string()).optional(),
 });
+
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Invalid email format"),
+});
+
+export const resetPasswordSchema = z.object({
+  password: z.string().min(8),
+});
