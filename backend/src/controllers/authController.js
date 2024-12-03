@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { userModel } from "../models/userModel.js";
 import { userSessionModel } from "../models/userSessionModel.js";
 import {
@@ -226,4 +227,45 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-export const resetPassword = () => {};
+export const resetPassword = async (req, res) => {
+  const { password } = req.body;
+
+  const { isValid, message } = checkPasswordStrength(password);
+  if (!isValid)
+    return res.status(STATUS_CODES.BAD_REQUEST).json({
+      status: "failed",
+      message: message,
+    });
+
+  const hashedCrypto = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+  try {
+    const user = await userModel.findOne({
+      passwordResetToken: hashedCrypto,
+      passwordResetExpire: { $gt: Date.now() },
+    });
+    if (!user)
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
+        status: "failed",
+        message: "Token is invalid or has expired.",
+      });
+
+    user.password = password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpire = undefined;
+    await user.save();
+
+    return res.status(STATUS_CODES.SUCCESS).json({
+      status: "success",
+      message: "Your password has been changed successfully.",
+    });
+  } catch (error) {
+    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      status: "failed",
+      message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
