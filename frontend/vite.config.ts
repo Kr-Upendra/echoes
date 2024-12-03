@@ -48,7 +48,7 @@ export default defineConfig({
         ],
       },
 
-      devOptions: { enabled: true },
+      // devOptions: { enabled: true },
     }),
   ],
   build: {
