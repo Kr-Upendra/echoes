@@ -1,15 +1,14 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 import { FaXmark } from "react-icons/fa6";
-import NavItem from "../common/NavItem";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import NavItem from "../common/NavItem";
 import { RootState } from "../../state";
 import { clearUserData, removeTokens, successAlert } from "../../utils";
 import { clearCurrentUser } from "../../state";
-import default_user from "../../assets/icons/default_user.png";
-import appIcon from "../../assets/icons/app_icon.png";
-import { IoIosLogOut } from "react-icons/io";
+import HeaderLogo from "./HeaderLogo";
+import Button from "../buttons/Button";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -17,10 +16,6 @@ export default function Header() {
   const [showNavbar, setShowNavbar] = useState<boolean>(true);
   const currentUser = useSelector(
     (state: RootState) => state.currentUser.currentUserInfo
-  );
-
-  const userProfile = useSelector(
-    (state: RootState) => state.userProfile.userProfile
   );
 
   function handleClick() {
@@ -38,22 +33,64 @@ export default function Header() {
   }
 
   return (
-    <header className="flex items-center base-paddings backdrop-blur-[2px] pt-3 pb-6 fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-green-500/20 to-[#0000000c]">
-      <div className="mr-auto">
-        <Link to="/">
-          <img className="w-32" src={appIcon} />
-        </Link>
-      </div>
-      <nav
-        className={`sm:flex sm:items-center sm:justify-center sm:absolute sm:top-0 sm:rounded-tr-md sm:rounded-br-md sm:w-[75%] sm:h-screen sm:bg-[#00000069] sm:backdrop-blur-md transition-all duration-500 ${
-          showNavbar ? "sm:-left-full" : "sm:left-0"
-        }`}
-      >
-        {currentUser ? (
-          <div className="flex items-center sm:flex-col relative gap-3 sm:gap-y-5">
+    <>
+      <header className="flex items-center base-paddings backdrop-blur-[2px] pt-3 pb-6 fixed top-0 left-0 w-full z-50 bg-gradient-to-b from-green-500/20 to-[#0000000c]">
+        <HeaderLogo />
+        {!currentUser ? (
+          <Button title="Get Started" />
+        ) : (
+          <>
+            <div className="md:hidden">
+              <NavItem
+                title="Dashboard"
+                hrefValue="/dashboard"
+                handleClick={closeUserMenu}
+              />
+              <NavItem
+                title="Memories"
+                hrefValue="/memories"
+                handleClick={closeUserMenu}
+              />
+              <NavItem
+                title="Journals"
+                hrefValue="/journals"
+                handleClick={closeUserMenu}
+              />
+              <NavItem
+                title="Profile"
+                hrefValue="/profile"
+                handleClick={closeUserMenu}
+              />
+              <Button
+                title="LOGOUT"
+                onclick={currentUser && handleClick}
+                extraStyle="border-red-700 ml-2 text-white bg-red-700 hover:bg-red-800"
+              />
+            </div>
+            <button
+              type="button"
+              className="hidden md:block cursor-pointer z-50"
+              onClick={() => setShowNavbar((prev) => !prev)}
+            >
+              {showNavbar ? (
+                <IoMenu className="text-2xl text-white" />
+              ) : (
+                <FaXmark className="text-2xl text-white" />
+              )}
+            </button>
+          </>
+        )}
+
+        {currentUser && !showNavbar && (
+          <div className="hidden md:fixed md:z-30 md:top-0 md:left-0 md:flex md:flex-col md:justify-center md:items-center md:gap-y-3 md:w-full md:p-4 md:bg-black/90 md:backdrop-blur-sm md:rounded-md md:shadow-lg md:shadow-green-500/10 md:h-screen">
             <NavItem
               title="Dashboard"
               hrefValue="/dashboard"
+              handleClick={closeUserMenu}
+            />
+            <NavItem
+              title="Journals"
+              hrefValue="/journals"
               handleClick={closeUserMenu}
             />
             <NavItem
@@ -62,63 +99,18 @@ export default function Header() {
               handleClick={closeUserMenu}
             />
             <NavItem
-              title="Journals"
-              hrefValue="/journals"
+              title="Profile"
+              hrefValue="/profile"
               handleClick={closeUserMenu}
             />
-            {/* <NavItem
-              title="Voice"
-              hrefValue="/voice-notes"
-              handleClick={closeUserMenu}
-            /> */}
-            <NavLink to="/profile" className="mx-2">
-              <img
-                className={`w-8 h-8 border-2 border-green-500 rounded-full ${
-                  currentUser?.profilePicture || userProfile?.profilePicture
-                    ? "p-0"
-                    : "p-1"
-                }`}
-                src={
-                  currentUser?.profilePicture ||
-                  userProfile?.profilePicture ||
-                  default_user
-                }
-                alt={currentUser?.firstName || "Default User"}
-              />
-            </NavLink>
-            <button
-              onClick={currentUser && handleClick}
-              className="ml-2 sm:ml-0 border-2 border-red-500 w-8 h-8 rounded-md flex justify-center items-center"
-            >
-              <IoIosLogOut className="text-2xl font-extrabold text-red-500 " />
-            </button>
-          </div>
-        ) : (
-          <div className="flex items-center sm:flex-col gap-3 sm:gap-y-5">
-            {/* <NavItem title="Home" hrefValue="/" handleClick={closeUserMenu} /> */}
-            {/* <NavItem
-              title="About"
-              hrefValue="/about"
-              handleClick={closeUserMenu}
-            /> */}
-            <NavItem
-              title="Get Started"
-              hrefValue="/login"
-              handleClick={closeUserMenu}
+            <Button
+              title="LOGOUT"
+              onclick={currentUser && handleClick}
+              extraStyle="border-red-700 ml-2 text-white bg-red-700 hover:bg-red-800"
             />
           </div>
         )}
-      </nav>
-      <button
-        className="hidden sm:block cursor-pointer"
-        onClick={() => setShowNavbar((prev) => !prev)}
-      >
-        {showNavbar ? (
-          <IoMenu className="text-2xl text-white" />
-        ) : (
-          <FaXmark className="text-2xl text-white" />
-        )}
-      </button>
-    </header>
+      </header>
+    </>
   );
 }
