@@ -4,5 +4,6 @@ import user03 from "./user_03.jpg";
 import user04 from "./user_04.jpg";
 import user05 from "./user_05.jpg";
 import user06 from "./user_06.jpg";
+import defaultUser from "./default_user.png";
 
-export default { user01, user02, user03, user04, user05, user06 };
+export { user01, user02, user03, user04, user05, user06, defaultUser };

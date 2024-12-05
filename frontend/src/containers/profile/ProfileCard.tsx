@@ -9,13 +9,13 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CountUp from "react-countup";
-import default_user from "../../assets/icons/default_user.png";
 import { RootState } from "../../state";
 import { useState } from "react";
 import ImageUploader from "../../components/uploader/FileUploader";
 import { updateProfile, userStats } from "../../api";
 import { userProfileImageProperties } from "../../utils";
 import { useGetItem } from "../../hooks";
+import { defaultUser } from "../../assets";
 
 export default function ProfileCard() {
   const location = useLocation();
@@ -36,7 +36,7 @@ export default function ProfileCard() {
       <div className="mx-auto relative w-32 aspect-square rounded-full border-2 border-green-500 p-1 flex justify-center items-center">
         <img
           className="rounded-full"
-          src={userProfile?.profilePicture || default_user}
+          src={userProfile?.profilePicture || defaultUser}
           alt={`${userProfile?.firstName}'s display picture`}
         />
         <button
