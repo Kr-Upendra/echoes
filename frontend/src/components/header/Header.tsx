@@ -27,6 +27,7 @@ export default function Header() {
 
   function handleClick() {
     successAlert("You logged out successfully.");
+    setShowNavbar(true);
     setTimeout(() => {
       clearUserData();
       dispatch(clearCurrentUser());
@@ -152,10 +153,26 @@ export default function Header() {
       {currentUser && (
         <div className="hidden subsm:block subsm:fixed subsm:z-30 subsm:bottom-0 subsm:left-0 subsm:w-full subsm:bg-black/95 subsm:backdrop-blur-sm subsm:shadow-lg subsm:shadow-green-500/10">
           <div className="flex items-center justify-center">
-            <IconLink icon={BiGridAlt} href="/dashboard" />
-            <IconLink icon={FiEdit} href="/memories" />
-            <IconLink icon={IoBookOutline} href="/journals" />
-            <IconLink icon={AiOutlineUser} href="/profile" />
+            <IconLink
+              handleClick={closeUserMenu}
+              icon={BiGridAlt}
+              href="/dashboard"
+            />
+            <IconLink
+              handleClick={closeUserMenu}
+              icon={FiEdit}
+              href="/memories"
+            />
+            <IconLink
+              handleClick={closeUserMenu}
+              icon={IoBookOutline}
+              href="/journals"
+            />
+            <IconLink
+              handleClick={closeUserMenu}
+              icon={AiOutlineUser}
+              href="/profile"
+            />
           </div>
         </div>
       )}
@@ -166,11 +183,13 @@ export default function Header() {
 type Props = {
   icon: IconType;
   href: string;
+  handleClick?: () => void;
 };
 
-export function IconLink({ icon: Icon, href }: Props) {
+export function IconLink({ icon: Icon, href, handleClick }: Props) {
   return (
     <NavLink
+      onClick={handleClick}
       to={href}
       className={({ isActive }) =>
         `w-full py-4 flex justify-center font-bold items-start bg-green-200/5 border-x border-green-200/5 ${
