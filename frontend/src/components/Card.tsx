@@ -23,7 +23,7 @@ export default function Card({ note }: Props) {
           {note?.title}
         </h2>
       </div>
-      <p className="text-sm sm:text-xs text-gray-500 mb-4 h-20 line-clamp-4 md:h-17 sm:h-15">
+      <p className="text-sm sm:text-xs text-gray-500 mb-4 h-20 md:h-17 sm:h-15 line-clamp-4 ">
         {note?.content}
       </p>
       <div className="flex space-x-1">
