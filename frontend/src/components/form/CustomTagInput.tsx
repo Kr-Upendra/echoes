@@ -19,13 +19,23 @@ export default function CustomTagInput({
 
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" || e.key === ",") {
-      const tag = input.trim().replace(/,$/, "");
+      const tag = input.trim().replace(/,$/, ""); // Remove trailing commas
       if (tag && !tags.includes(tag)) {
         const newTags = [...tags, tag];
         setTags((prevTags) => [...prevTags, tag]);
         onTagsChange(newTags);
-        setInput("");
+        setInput(""); // Clear the input field
       }
+    }
+  };
+
+  const handleBlur = () => {
+    const tag = input.trim();
+    if (tag && !tags.includes(tag)) {
+      const newTags = [...tags, tag];
+      setTags((prevTags) => [...prevTags, tag]);
+      onTagsChange(newTags);
+      setInput(""); // Clear the input field
     }
   };
 
@@ -53,6 +63,7 @@ export default function CustomTagInput({
         }
         className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black border rounded-md border-green-500/15 focus:border-green-500/30`}
         onKeyUp={handleKeyUp}
+        onBlur={handleBlur}
       />
       <div className="mt-2 flex gap-x-2 flex-wrap gap-y-2">
         {tags.map((tag, index) => (

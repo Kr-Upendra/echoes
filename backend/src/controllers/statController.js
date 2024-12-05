@@ -12,8 +12,6 @@ export const getStat = async (req, res) => {
 
   try {
     const totalMemories = await noteModel.countDocuments({ author: userId });
-    const categories = await noteModel.distinct("category", { author: userId });
-    const totalCategories = categories.length;
     const favoriteMemories = await noteModel.countDocuments({
       author: userId,
       isFavorite: true,
@@ -39,7 +37,7 @@ export const getStat = async (req, res) => {
       memoryStats: {
         totalMemories,
         favoriteMemories,
-        totalCategories,
+        totalCategories: 0,
         memoriesCreatedInCurrentMonth,
       },
       journalStats: {

@@ -1,4 +1,3 @@
-import { categoryModel } from "../models/categoryModel.js";
 import { noteModel } from "../models/noteModel.js";
 import {
   API_RESPONSE_MESSAGE,
@@ -10,23 +9,12 @@ export const notes = async (req, res) => {
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit) || 10;
   const search = req.query.search || "";
-  const category = req.query.category || "";
   const offset = (page - 1) * limit;
   const userId = req.user.id;
 
   try {
     const searchQuery = { author: userId };
     if (search) searchQuery["title"] = { $regex: search, $options: "i" };
-
-    if (category && (category !== "All" || category !== "all")) {
-      const categoryRes = await categoryModel.findOne({
-        slug: category.toLowerCase(),
-      });
-
-      if (categoryRes) {
-        searchQuery["category"] = categoryRes._id; // Use the ObjectId in the search
-      }
-    }
 
     const count = await noteModel.countDocuments(searchQuery);
     const totalPages = Math.ceil(count / limit);
@@ -37,8 +25,7 @@ export const notes = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip(offset)
       .limit(limit)
-      .populate("author", "firstName lastName email")
-      .populate("category", "title slug");
+      .populate("author", "firstName lastName email");
 
     const pagination = {
       totalRecords: count,
@@ -65,8 +52,7 @@ export const note = async (req, res) => {
   try {
     const note = await noteModel
       .findById(req.params.id)
-      .populate("author", "firstName lastName email")
-      .populate("category", "title slug");
+      .populate("author", "firstName lastName email");
 
     if (!note)
       return res.status(STATUS_CODES.NOT_FOUND).json({
@@ -91,8 +77,8 @@ export const note = async (req, res) => {
 
 export const createNote = async (req, res) => {
   const author = req.user.id;
-  const { title, content, tags, isFavorite, category } = req.body;
-  if (!title || !content || !category)
+  const { title, content, tags, isFavorite } = req.body;
+  if (!title || !content)
     return res.status(STATUS_CODES.BAD_REQUEST).json({
       status: "failed",
       messag: "Invalid inputs",
@@ -113,7 +99,6 @@ export const createNote = async (req, res) => {
       content,
       tags,
       isFavorite,
-      category,
       author,
     });
 
@@ -134,7 +119,7 @@ export const createNote = async (req, res) => {
 
 export const updateNote = async (req, res) => {
   const id = req.params.id;
-  const { title, content, tags, isFavorite, category } = req.body;
+  const { title, content, tags, isFavorite } = req.body;
 
   const updateFields = {};
   if (title !== undefined) {
@@ -144,7 +129,6 @@ export const updateNote = async (req, res) => {
   if (content !== undefined) updateFields.content = content;
   if (tags !== undefined) updateFields.tags = tags;
   if (isFavorite !== undefined) updateFields.isFavorite = isFavorite;
-  if (category !== undefined) updateFields.category = category;
 
   try {
     const updatedNote = await noteModel.findByIdAndUpdate(

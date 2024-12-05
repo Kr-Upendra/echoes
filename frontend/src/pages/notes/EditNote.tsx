@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import NoteForm from "../../containers/notes/NoteForm";
-import { categories, note } from "../../api";
+import { note } from "../../api";
 import Loading from "../../components/Loading";
 import Error from "../../components/Error";
 
@@ -14,11 +14,7 @@ export default function EditNote() {
     queryFn: () => note(noteId),
     enabled: !!noteId, // Ensure the query only runs if id is defined
   });
-  const { data: categoryData, isLoading: isLoadingCategories } = useQuery({
-    queryKey: ["allCategories"],
-    queryFn: categories,
-  });
-  const categoriesList = categoryData?.data?.categories;
+
   const noteData = data?.data?.note;
 
   return (
@@ -29,11 +25,7 @@ export default function EditNote() {
       ) : error ? (
         <Error error={error} />
       ) : (
-        <NoteForm
-          noteData={noteData}
-          categoriesList={categoriesList}
-          isLoadingCategories={isLoadingCategories}
-        />
+        <NoteForm noteData={noteData} />
       )}
     </>
   );

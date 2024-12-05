@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import CustomCheckbox from "../../components/form/CustomCheckBox";
 import CustomInput from "../../components/form/CustomInput";
-import CustomSelect from "../../components/form/CustomSelect";
 import CustomTextArea from "../../components/form/CustomTextArea";
 import {
   handleChange,
@@ -18,15 +17,9 @@ import CustomTagInput from "../../components/form/CustomTagInput";
 
 type Props = {
   noteData?: INote;
-  categoriesList: any;
-  isLoadingCategories: boolean;
 };
 
-export default function NoteForm({
-  noteData,
-  categoriesList,
-  isLoadingCategories,
-}: Props) {
+export default function NoteForm({ noteData }: Props) {
   const { mutate: addNoteMutation, isPending: isAddPending } =
     useCreateItem<NoteFormData>(createNote, ["allNotes", "note"], "/memories");
   const { mutate: updateNoteMutation, isPending: isUpdatePending } =
@@ -44,7 +37,6 @@ export default function NoteForm({
   const [errors, setErrors] = useState<any | null>(null);
   const [formData, setFormData] = useState<NoteFormData>({
     title: noteData?.title || "",
-    category: noteData?.category?._id || "",
     content: noteData?.content || "",
     tags: noteData?.tags || [],
     isFavorite: noteData?.isFavorite || false,
@@ -54,7 +46,6 @@ export default function NoteForm({
     if (noteData) {
       setFormData({
         title: noteData.title || "",
-        category: noteData.category?._id || "",
         content: noteData.content || "",
         tags: noteData.tags || [],
         isFavorite: noteData.isFavorite || false,
@@ -65,7 +56,6 @@ export default function NoteForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      console.log("formData: ", formData);
       noteSchema.parse(formData);
       if (isCreateForm) addNoteMutation(formData);
       else if (id) {
@@ -98,24 +88,6 @@ export default function NoteForm({
               handleChange(e, setFormData)
             }
             error={errors?.title}
-          />
-          <CustomSelect
-            id="noteCategory"
-            label="Category"
-            name="category"
-            value={formData?.category}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              handleChange(e, setFormData)
-            }
-            options={
-              isLoadingCategories
-                ? []
-                : categoriesList.map((category: any) => ({
-                    value: category._id,
-                    label: category.title,
-                  }))
-            }
-            error={errors?.category}
           />
         </div>
         <div className="flex gap-x-5 lg:flex-col">

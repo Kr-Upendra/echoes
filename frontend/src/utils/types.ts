@@ -17,7 +17,6 @@ export type UpdatePasswordFromData = {
 
 export type NoteFormData = {
   title?: string;
-  category?: string;
   content?: string;
   tags?: string[];
   isFavorite?: boolean;

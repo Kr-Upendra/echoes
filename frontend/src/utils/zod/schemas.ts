@@ -18,9 +18,7 @@ export const noteSchema = z.object({
     .min(3, { message: "Title must have at least 3 words" })
     .max(50, { message: "Title must not exceed 50 words" }),
   content: z.string().min(20),
-  tags: z
-    .array(z.string())
-    .nonempty({ message: "Tags must be an array of strings" }),
+  tags: z.array(z.string()),
 });
 
 export const updatePasswordSchema = z.object({

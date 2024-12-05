@@ -67,3 +67,9 @@ export const renderImageLength = () => {
 
   return imageToRender;
 };
+
+export const formatDate = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const formattedDate = new Intl.DateTimeFormat("en-GB").format(date);
+  return formattedDate;
+};

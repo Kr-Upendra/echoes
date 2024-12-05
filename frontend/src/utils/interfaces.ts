@@ -2,11 +2,6 @@ export interface INote {
   _id: string;
   title: string;
   content: string;
-  category: {
-    _id?: string;
-    title: string;
-    slug: string;
-  };
   tags: string[];
   slug?: string;
   isFavorite: boolean;
@@ -42,7 +37,6 @@ export interface IFilterArgs {
   search?: string;
   page?: number;
   limit?: number;
-  category?: string;
   date?: Date;
 }
 

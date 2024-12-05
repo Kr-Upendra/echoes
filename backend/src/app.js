@@ -3,7 +3,6 @@ import cors from "cors";
 import {
   authRouter,
   userRouter,
-  categoryRouter,
   noteRouter,
   journalRouter,
   testRouter,
@@ -22,7 +21,6 @@ app.get("/", (_, res) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/notes", noteRouter);
 app.use("/api/v1/journals", journalRouter);
 app.use("/api/v1/test", testRouter);

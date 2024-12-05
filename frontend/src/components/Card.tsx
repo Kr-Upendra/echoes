@@ -1,28 +1,13 @@
 import { deleteNote } from "../api";
 import { useDeleteItem } from "../hooks";
+import { formatDate, INote } from "../utils";
 import ActionButtons from "./buttons/ActionButtons";
 
 type Props = {
-  id: string;
-  title: string;
-  content: string;
-  category: {
-    id?: string;
-    title?: string;
-    slug?: string;
-  };
-  tags: string[];
-  isFavorite: boolean;
+  note: INote;
 };
 
-export default function Card({
-  id,
-  title,
-  content,
-  category,
-  tags,
-  isFavorite,
-}: Props) {
+export default function Card({ note }: Props) {
   const { mutate: deleteNoteMutation } = useDeleteItem(deleteNote, [
     "allNotes",
   ]);
@@ -35,32 +20,32 @@ export default function Card({
     <div className="card-diff rounded-lg p-3 group relative">
       <div className="mb-2">
         <h2 className="text-green-500 font-display line-clamp-1 sm:text-sm">
-          {title}
+          {note?.title}
         </h2>
       </div>
       <p className="text-sm sm:text-xs text-gray-500 mb-4 h-20 line-clamp-4 md:h-17 sm:h-15">
-        {content}
+        {note?.content}
       </p>
-      <div className="flex items-center justify-between mb-2">
-        <span className="px-2.5 py-0.5 font-display rounded-full text-green-600 border border-green-600 text-xs">
-          {category?.title}
+      <div className="flex space-x-1">
+        {note?.tags.slice(0, 2).map((tag, index) => (
+          <span
+            key={index}
+            className="text-xs px-2 py-1 bg-white/10 text-gray-100 font-monaco rounded-sm capitalize"
+          >
+            {tag}
+          </span>
+        ))}
+      </div>
+      <div className="mt-2.5">
+        <span className="text-xs px-2 py-1 bg-white/10 text-gray-100 font-monaco rounded-sm capitalize">
+          {formatDate(note.createdAt!)}
         </span>
-        <div className="flex space-x-1">
-          {tags.slice(0, 2).map((tag, index) => (
-            <span
-              key={index}
-              className="text-xs px-2 py-1 bg-white/10 text-gray-100 font-monaco rounded-sm capitalize"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
       </div>
 
       <ActionButtons
-        id={id}
+        id={note?._id}
         hasFavorite={true}
-        isFavorite={isFavorite}
+        isFavorite={note?.isFavorite}
         onDelete={handleDeleteNote}
       />
     </div>
