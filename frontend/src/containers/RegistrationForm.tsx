@@ -70,7 +70,7 @@ export default function RegistrationForm() {
   return (
     <div className="container my-6">
       <form onSubmit={handleSubmit}>
-        <div className="border px-10 py-6 rounded-md border-gray-900 md:px-6 sm:px-4 max-w-[500px] sm:w-full mx-auto">
+        <div className="border px-10 py-6 rounded-md border-green-500/10 md:px-6 sm:px-4 max-w-[500px] sm:w-full mx-auto">
           <CustomInput
             id="firstname"
             placeHolder="John"

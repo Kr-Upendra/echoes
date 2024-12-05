@@ -7,11 +7,11 @@ export default function Login() {
   if (isAuthenticated()) return <Navigate to="/dashboard" replace={true} />;
   return (
     <section className="base-paddings">
-      <main>
-        <div className="min-h-screen h-full flex justify-center items-center flex-col">
+      <main className="pt-24">
+        <div className="min-h-[80vh] w-[70%] xl:w-full mx-auto py-10 px-10 md:px-6 big-shadow bg-green-200/5">
           <SectionHeading
             title="Login to your account"
-            description="Start your journey from here"
+            description="By login you will have access to Echoe's world, Don't wait"
           />
           <LoginForm />
         </div>
