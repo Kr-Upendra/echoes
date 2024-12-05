@@ -10,7 +10,7 @@ export default function UserStories() {
           title="User Stories"
           description="See how others are using our platform to capture and organize their memories."
         />
-        <div className="grid grid-cols-3 gap-6 md:grid-cols-2 sm:grid-cols-1 sm:gap-4 my-12 overflow-x-hidden">
+        <div className="grid grid-cols-3 gap-6 md:grid-cols-2 sm:grid-cols-1 sm:gap-4 my-12">
           {userStories.map((userStory: UserStory) => (
             <UserStoriesCard key={userStory?.id} userStory={userStory} />
           ))}
