@@ -1,10 +1,18 @@
+import { useScrollAnimation } from "../../hooks";
 import { HowItWork } from "../../utils";
 
 type Props = { howItWork: HowItWork };
 
 export default function HowItWorkCard({ howItWork }: Props) {
+  const { cardRef, animationStyles } = useScrollAnimation({
+    threshold: 0.25,
+    direction: "bottom",
+  });
   return (
-    <div className="border border-gray-900 sm:w-full shadow-xl shadow-green-500/10 rounded-md p-5">
+    <div
+      className={`border border-gray-900 sm:w-full shadow-xl shadow-green-500/10 rounded-md p-5 ${animationStyles}`}
+      ref={cardRef}
+    >
       <div className="flex gap-x-3 mb-3 items-center">
         <span className="border-2 font-display text-green-500 px-2 py-1 rounded-full border-green-500">
           {howItWork?.index}

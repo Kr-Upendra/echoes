@@ -1,15 +1,24 @@
 import { useSelector } from "react-redux";
 import LinkButton from "../components/buttons/LinkButton";
 import { RootState } from "../state";
+import { useScrollAnimation } from "../hooks";
 
 export default function Hero() {
   const currentUserInfo = useSelector(
     (state: RootState) => state.currentUser.currentUserInfo
   );
 
+  const { cardRef, animationStyles } = useScrollAnimation({
+    direction: "bottom",
+    delay: "500",
+  });
+
   return (
     <section id="hero" className="min-h-screen base-paddings hero-bg">
-      <div className="flex items-center justify-center flex-col min-h-screen">
+      <div
+        className={`flex items-center justify-center flex-col min-h-screen ${animationStyles}`}
+        ref={cardRef}
+      >
         <h1 className="text-5xl sm:text-2xl text-center text-green-500 font-display">
           <span>Capture Your Moments,</span> <br />
           <span>Keep Your Memories Safe</span>

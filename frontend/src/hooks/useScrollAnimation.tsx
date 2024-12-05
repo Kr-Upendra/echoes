@@ -8,7 +8,7 @@ interface UseScrollAnimationOptions {
   delay?: string;
 }
 
-const useScrollAnimation = ({
+export const useScrollAnimation = ({
   threshold = 0.1,
   direction = "bottom",
   animationClass = "opacity-100 translate-x-0",
@@ -62,5 +62,3 @@ const useScrollAnimation = ({
 
   return { cardRef, animationStyles };
 };
-
-export default useScrollAnimation;

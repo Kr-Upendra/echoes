@@ -1,10 +1,19 @@
 import { Feature } from "../../utils";
+import { useScrollAnimation } from "../../hooks";
 
 type Props = { feature: Feature };
 
 export default function FeatureCard({ feature }: Props) {
+  const { cardRef, animationStyles } = useScrollAnimation({
+    threshold: 0.25,
+    direction: "left",
+  });
+
   return (
-    <div className="flex flex-col items-center relative py-8 px-6 border border-gray-900 rounded-lg shadow-xl shadow-green-500/10 transition-custom">
+    <div
+      className={`flex flex-col items-center relative py-8 px-6 border border-gray-900 rounded-lg shadow-xl shadow-green-500/10 transition-custom ${animationStyles}`}
+      ref={cardRef}
+    >
       <div className="absolute top-6 left-6 sm:top-3 sm:left-3 border-2 p-2 px-3 rounded-full border-green-600">
         <span className="font-display text-green-500 text-xl sm:text-base">
           {feature.index}
