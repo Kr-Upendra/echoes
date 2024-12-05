@@ -13,6 +13,7 @@ export default {
       lg: { max: "1023px" },
       md: { max: "767px" },
       sm: { max: "639px" },
+      subsm: { max: "520px" },
       xs: { max: "480px" },
     },
     extend: {},
