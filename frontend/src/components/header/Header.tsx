@@ -173,8 +173,10 @@ export function IconLink({ icon: Icon, href }: Props) {
     <NavLink
       to={href}
       className={({ isActive }) =>
-        `w-full py-3 flex justify-center font-bold items-start bg-green-200/5 border-x border-green-200/5 ${
-          isActive ? "text-green-500 font-display" : "text-white"
+        `w-full py-4 flex justify-center font-bold items-start bg-green-200/5 border-x border-green-200/5 ${
+          isActive
+            ? "text-green-500 font-display font-extrabold"
+            : "text-white font-display font-extrabold"
         }`
       }
     >
