@@ -8,12 +8,14 @@ export default function Login() {
   return (
     <section className="base-paddings">
       <main className="pt-24">
-        <div className="min-h-[80vh] w-[70%] xl:w-full mx-auto py-10 px-10 md:px-6 big-shadow bg-green-200/5">
-          <SectionHeading
-            title="Login to your account"
-            description="By login you will have access to Echoe's world, Don't wait"
-          />
-          <LoginForm />
+        <div className="flex justify-center items-center min-h-[80vh] w-[70%] xl:w-full mx-auto py-10 px-10 md:px-6 big-shadow bg-green-200/5">
+          <div>
+            <SectionHeading
+              title="Login to your account"
+              description="By login you will have access to Echoe's world, Don't wait"
+            />
+            <LoginForm />
+          </div>
         </div>
       </main>
     </section>
