@@ -42,6 +42,24 @@ export const createJournal = async (req, res) => {
         message: "Title already exists.",
       });
 
+    let streak = 1;
+    let lastStreakDate = new Date();
+    const lastJournal = await journalModel.findOne({ user }).sort({
+      createdAt: -1,
+    });
+
+    if (lastJournal) {
+      const lastJournalDate = new Date(lastJournal.createdAt);
+      const diffInTime = lastStreakDate.getTime() - lastJournalDate.getTime();
+      const diffInDays = diffInTime / (1000 * 3600 * 24);
+
+      if (diffInDays === 1) {
+        streak = lastJournal.streak + 1;
+      } else {
+        streak = 1;
+      }
+    }
+
     const color = getMoodColor(mood);
 
     const journal = new journalModel({
@@ -53,6 +71,8 @@ export const createJournal = async (req, res) => {
       images,
       color,
       user,
+      streak,
+      lastStreakDate,
     });
 
     await journal.save();

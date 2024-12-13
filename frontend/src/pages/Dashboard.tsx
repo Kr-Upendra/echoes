@@ -4,8 +4,7 @@ import StatCard from "../components/dashboard/StatCard";
 import { UserStat } from "../utils";
 import { useLoaderData } from "react-router-dom";
 import { MdNoteAlt } from "react-icons/md";
-import { FaCalendar, FaFire, FaHeart, FaImage } from "react-icons/fa6";
-import { BiCategory } from "react-icons/bi";
+import { FaCalendar, FaFire, FaHeart, FaImage, FaTag } from "react-icons/fa6";
 import { FaJournalWhills } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
@@ -31,9 +30,9 @@ export default function Dashboard() {
     },
     {
       id: "03",
-      icon: BiCategory,
-      count: memoryStats?.totalCategories,
-      label: "Total Categories",
+      icon: FaTag,
+      count: memoryStats?.uniqueTags,
+      label: "Unique Tags",
     },
     {
       id: "04",

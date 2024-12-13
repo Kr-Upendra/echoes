@@ -27,6 +27,8 @@ const journalSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    streak: { type: Number },
+    lastStreakDate: Date,
   },
   { timestamps: true }
 );
