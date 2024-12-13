@@ -48,13 +48,15 @@ export function JournalList({ journals }: Props) {
             />
           ))}
       </div>
-      <ModelContainer isOpen={isModalOpen} onCancel={handleCancelDelete}>
-        <DeleteModel
-          onCancel={handleCancelDelete}
-          onConfirm={handleConfirmDelete}
-          message="Are you sure you want to delete this journal? This action cannot be undone."
-        />
-      </ModelContainer>
+      {isModalOpen && (
+        <ModelContainer onClose={() => setIsModalOpen(false)}>
+          <DeleteModel
+            onCancel={handleCancelDelete}
+            onConfirm={handleConfirmDelete}
+            message="Are you sure you want to delete this journal? This action cannot be undone."
+          />
+        </ModelContainer>
+      )}
     </>
   );
 }

@@ -15,7 +15,7 @@ export default function IconButton({
     <>
       <button
         type="button"
-        className={`rounded-md ${buttonStyle}`}
+        className={`rounded-full ${buttonStyle}`}
         onClick={onClick}
         aria-label="icon-button"
       >

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaCircle, FaXmark } from "react-icons/fa6";
+import IconButton from "../buttons/IconButton";
 
 interface ImageModalProps {
   images: string[];
@@ -79,12 +80,11 @@ const ViewImageModel: React.FC<ImageModalProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <button
+      <IconButton
+        icon={FaXmark}
         onClick={onClose}
-        className="absolute top-2 sm:top-10 right-2 text-white bg-green-200/30 p-2 rounded-full hover:bg-orange-600 transition-color"
-      >
-        <FaXmark />
-      </button>
+        buttonStyle="absolute top-4 right-4 sm:top-6 sm:right-6 text-white bg-green-200/30 p-2 rounded-full hover:bg-orange-600 transition-color"
+      />
       <div
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -100,7 +100,7 @@ const ViewImageModel: React.FC<ImageModalProps> = ({
             <FaChevronLeft />
           </button>
           <div
-            className={`px-4 sm:px-2 relative overflow-hidden w-full max-h-[80vh] object-contain transition-opacity duration-500 ${
+            className={`px-4 sm:px-2 relative overflow-hidden w-full max-h-[80vh] object-cover transition-opacity duration-500 ${
               isTransitioning ? "opacity-0" : "opacity-100"
             }`}
           >
@@ -118,7 +118,7 @@ const ViewImageModel: React.FC<ImageModalProps> = ({
             <FaChevronRight />
           </button>
         </div>
-        <div className="text-center text-white mt-3">
+        <div className="text-center text-white mt-6">
           <div className="flex justify-center gap-2">
             {images.map((_, index) => (
               <button
