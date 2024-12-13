@@ -107,7 +107,8 @@ const ViewImageModel: React.FC<ImageModalProps> = ({
             <img
               src={images[currentIndex]}
               alt="Journal Image"
-              className="w-full max-h-[80vh] selectDisable rounded-lg big-shadow"
+              className="mx-auto w-full max-h-[80vh] selectDisable rounded-lg big-shadow"
+              style={{ width: "auto", height: "auto", maxWidth: "100%" }}
             />
           </div>
           <button
