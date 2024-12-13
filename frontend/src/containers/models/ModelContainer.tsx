@@ -28,11 +28,9 @@ export default function ModelContainer({ onClose, children }: Props) {
       <IconButton
         icon={FaXmark}
         onClick={onClose}
-        buttonStyle="absolute top-4 right-4 sm:top-6 sm:right-6 text-white bg-green-200/30 p-2 rounded-full hover:bg-orange-600 transition-color"
+        buttonStyle="absolute top-4 right-4 text-white bg-green-200/30 p-2 rounded-full hover:bg-orange-600 transition-color"
       />
-      <div ref={modalRef} className="relative w-full max-w-lg big-shadow">
-        {children}
-      </div>
+      <div ref={modalRef}>{children}</div>
     </div>
   );
 }

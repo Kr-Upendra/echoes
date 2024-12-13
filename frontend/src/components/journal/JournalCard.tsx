@@ -3,6 +3,7 @@ import { IJournalData, renderImageLength } from "../../utils";
 import ActionButtons from "../buttons/ActionButtons";
 import MoodIcon from "../common/MoodIcon";
 import ViewImageModel from "../common/ViewImageModel";
+import { ModelContainer } from "../../containers";
 
 type Props = {
   journal: IJournalData;
@@ -19,7 +20,6 @@ export default function JournalCard({ journal, onRequestDelete }: Props) {
     setIsModalOpen(true);
   };
 
-  // Close the modal
   const closeImageModal = () => {
     setIsModalOpen(false);
   };
@@ -72,11 +72,12 @@ export default function JournalCard({ journal, onRequestDelete }: Props) {
         onDelete={onRequestDelete}
       />
       {isModalOpen && (
-        <ViewImageModel
-          images={journal.images} // Pass the images to the modal
-          initialIndex={modalImageIndex} // Pass the initial index of the clicked image
-          onClose={closeImageModal} // Pass the close function to the modal
-        />
+        <ModelContainer onClose={closeImageModal}>
+          <ViewImageModel
+            images={journal.images}
+            initialIndex={modalImageIndex}
+          />
+        </ModelContainer>
       )}
     </div>
   );
