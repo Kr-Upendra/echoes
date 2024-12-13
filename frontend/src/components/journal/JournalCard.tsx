@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { IJournalData, renderImageLength } from "../../utils";
 import ActionButtons from "../buttons/ActionButtons";
 import MoodIcon from "../common/MoodIcon";
+import ViewImageModel from "../common/ViewImageModel";
 
 type Props = {
   journal: IJournalData;
@@ -8,7 +10,19 @@ type Props = {
 };
 
 export default function JournalCard({ journal, onRequestDelete }: Props) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalImageIndex, setModalImageIndex] = useState(0);
   const imageToRender = renderImageLength();
+
+  const openImageModal = (index: number) => {
+    setModalImageIndex(index);
+    setIsModalOpen(true);
+  };
+
+  // Close the modal
+  const closeImageModal = () => {
+    setIsModalOpen(false);
+  };
   return (
     <div
       key={journal._id}
@@ -28,8 +42,9 @@ export default function JournalCard({ journal, onRequestDelete }: Props) {
               .slice(0, imageToRender)
               .map((image, index: number) => (
                 <div
-                  className="w-8 h-8 rounded-lg overflow-hidden"
+                  className="w-8 h-8 rounded-lg overflow-hidden cursor-pointer"
                   key={journal._id + index}
+                  onClick={() => openImageModal(index)} // Open the modal on image click
                 >
                   <img
                     src={image}
@@ -56,6 +71,13 @@ export default function JournalCard({ journal, onRequestDelete }: Props) {
         hasFavorite={false}
         onDelete={onRequestDelete}
       />
+      {isModalOpen && (
+        <ViewImageModel
+          images={journal.images} // Pass the images to the modal
+          initialIndex={modalImageIndex} // Pass the initial index of the clicked image
+          onClose={closeImageModal} // Pass the close function to the modal
+        />
+      )}
     </div>
   );
 }
