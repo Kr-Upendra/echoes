@@ -2,15 +2,12 @@ import { useEffect, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa6";
 
-interface ImageModalProps {
+type Props = {
   images: string[];
   initialIndex: number;
-}
+};
 
-const ViewImageModel: React.FC<ImageModalProps> = ({
-  images,
-  initialIndex,
-}) => {
+const ImageViewer: React.FC<Props> = ({ images, initialIndex }) => {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [touchStartX, setTouchStartX] = useState(0);
@@ -115,4 +112,4 @@ const ViewImageModel: React.FC<ImageModalProps> = ({
   );
 };
 
-export default ViewImageModel;
+export default ImageViewer;
