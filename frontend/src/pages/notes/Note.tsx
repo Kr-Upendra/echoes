@@ -78,7 +78,7 @@ export default function Note() {
           <>
             {notes.length > 0 ? (
               <>
-                <div className="grid grid-cols-3 gap-4 sm:gap-2.5 xs:gap-x-1.5 mt-5 lg:grid-cols-2 md:grid-cols-2 subsm:grid-cols-1">
+                <div className="grid grid-cols-3 gap-4 sm:gap-2.5 xs:gap-x-1.5 mt-5 lg:grid-cols-2 md:grid-cols-2 subsm:grid-cols-1 subsm:gap-y-3.5">
                   {notes.map((note: INote) => (
                     <Card note={note} key={note?._id} />
                   ))}

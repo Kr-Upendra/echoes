@@ -38,7 +38,7 @@ export function JournalList({ journals }: Props) {
 
   return (
     <>
-      <div className="grid grid-cols-2 md:grid-cols-1 sm:grid-cols-2 subsm:grid-cols-1 gap-4 sm:gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-1 sm:grid-cols-2 subsm:grid-cols-1 subsm:gap-y-3.5 gap-4 sm:gap-3">
         {journals &&
           journals.map((journal: IJournalData) => (
             <JournalCard
