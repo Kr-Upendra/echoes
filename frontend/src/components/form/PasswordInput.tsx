@@ -49,7 +49,7 @@ export default function PasswordInput({
           value={value}
           disabled={isDisabled}
           onChange={onchange}
-          className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black `}
+          className={`w-full text-green-500 font-display px-2 py-3 outline-none placeholder:font-body bg-black rounded-l-lg border border-green-500/15 focus:border-green-500/50`}
         />
         <IconButton
           icon={showPassword ? GoEyeClosed : BsEye}
