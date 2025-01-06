@@ -7,6 +7,8 @@ import {
   journalRouter,
   testRouter,
 } from "./routes/index.js";
+import { ErrorHandler } from "./utils/index.js";
+import { globalErrorHandler } from "./controllers/errorController.js";
 
 const app = express();
 app.use(express.json());
@@ -24,5 +26,13 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/notes", noteRouter);
 app.use("/api/v1/journals", journalRouter);
 app.use("/api/v1/test", testRouter);
+
+app.all("*", (req, _res, next) => {
+  return next(
+    new ErrorHandler(`Can't find ${req.originalUrl} on this server.`, 404)
+  );
+});
+
+app.use(globalErrorHandler);
 
 export default app;

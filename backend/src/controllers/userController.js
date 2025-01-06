@@ -1,11 +1,16 @@
 import bcrypt from "bcryptjs";
-
+import { v2 as cloudinary } from "cloudinary";
 import { userModel } from "../models/userModel.js";
 import {
   STATUS_CODES,
   API_RESPONSE_MESSAGE,
 } from "../utils/api-response/index.js";
-import { validatePassword } from "../utils/index.js";
+import {
+  asyncHandler,
+  ErrorHandler,
+  getFileExt,
+  validatePassword,
+} from "../utils/index.js";
 
 export const getUsers = async (req, res) => {
   const users = await userModel.find();
@@ -28,6 +33,37 @@ export const userProfile = async (req, res) => {
     data: { user },
   });
 };
+
+// profile filename: user/avatar/user_avatar_user-id_timestamp.ext
+// Jounral imagefilename and path: journals/[user_id]_user-id/[journal_id]-journal-id/images/journal_[kupendradev/username]_[1733405525182/timestamp]_[cl81b5ydv1t/random_string].png
+export const userProfileImage = asyncHandler(async (req, res, next) => {
+  const { id } = req.user;
+  const file = req.file;
+  if (!file) return next(new ErrorHandler("No file uploaded", 400));
+
+  const fileExt = getFileExt(file);
+  const timestamp = Date.now();
+
+  const fileName = `avatars/user_avatar_${id}_${timestamp}.${fileExt}`;
+
+  const result = await new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { public_id: fileName, folder: "user" }, // Directory and filename
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
+    uploadStream.end(file.buffer);
+  });
+
+  console.log("result: ", result);
+
+  res.status(STATUS_CODES.SUCCESS).json({
+    status: "success",
+    message: "Profile Picture updated successfully.",
+  });
+});
 
 export const updateProfile = async (req, res) => {
   const userId = req.user.id;

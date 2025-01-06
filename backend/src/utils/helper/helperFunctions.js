@@ -102,3 +102,8 @@ export const getStartAndEndMonth = () => {
   );
   return { startOfMonth, endOfMonth };
 };
+
+export const getFileExt = (file) => {
+  const parts = file.originalname.split(".");
+  return parts.length > 1 ? parts.pop() : "";
+};
