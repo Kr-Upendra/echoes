@@ -1,5 +1,6 @@
 import slugify from "slugify";
 import { moodColors } from "./constants.js";
+import { dir } from "console";
 
 export function capitalizeFirstLetter(str) {
   if (typeof str !== "string" || str.length === 0) return str;
@@ -106,4 +107,31 @@ export const getStartAndEndMonth = () => {
 export const getFileExt = (file) => {
   const parts = file.originalname.split(".");
   return parts.length > 1 ? parts.pop() : "";
+};
+
+// profile filename: user/avatar/user_avatar_user-id_timestamp.ext
+// Jounral imagefilename and path: journals/[user_id]_user-id/[journal_id]-journal-id/images/journal_[kupendradev/username]_[1733405525182/timestamp]_[cl81b5ydv1t/random_string].png
+
+// dir | dir | dir | dir | filename;
+// jouranls/user_id /
+//   journal_id /
+//   images /
+//   journal_username_timestamp_randomstring.png;
+
+export const randomString = (length = 8) => {
+  const str = "1234567890qwertyuioasdfghjklzxcvbnm";
+  let result = "";
+  const charactersLength = str.length;
+
+  for (let i = 0; i < length; i++) {
+    result += str.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return result;
+};
+
+export const generateFileName = (dirs, uploadFor, index = 0) => {
+  const timestamp = Date.now();
+  const randStr = randomString();
+  return `${dirs}/${uploadFor}_${timestamp}_${randStr}_${index}`;
 };

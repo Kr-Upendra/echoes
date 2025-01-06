@@ -1,5 +1,4 @@
 import bcrypt from "bcryptjs";
-import { v2 as cloudinary } from "cloudinary";
 import { userModel } from "../models/userModel.js";
 import {
   STATUS_CODES,
@@ -8,9 +7,9 @@ import {
 import {
   asyncHandler,
   ErrorHandler,
-  getFileExt,
   validatePassword,
 } from "../utils/index.js";
+import { handleFileUpload } from "../services/index.js";
 
 export const getUsers = async (req, res) => {
   const users = await userModel.find();
@@ -41,23 +40,12 @@ export const userProfileImage = asyncHandler(async (req, res, next) => {
   const file = req.file;
   if (!file) return next(new ErrorHandler("No file uploaded", 400));
 
-  const fileExt = getFileExt(file);
-  const timestamp = Date.now();
-
-  const fileName = `avatars/user_avatar_${id}_${timestamp}.${fileExt}`;
-
-  const result = await new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { public_id: fileName, folder: "user" }, // Directory and filename
-      (error, result) => {
-        if (error) return reject(error);
-        resolve(result);
-      }
-    );
-    uploadStream.end(file.buffer);
+  const result = await handleFileUpload(file, {
+    dir: `avatars/${id}_user_id`,
+    subFilename: `user_avatar_`,
   });
 
-  console.log("result: ", result);
+  console.log({ result });
 
   res.status(STATUS_CODES.SUCCESS).json({
     status: "success",
