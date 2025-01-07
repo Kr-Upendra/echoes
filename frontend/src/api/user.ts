@@ -50,3 +50,9 @@ export const updateProfile = async (
     true
   );
 };
+
+// export const updateProfilePicture = async (formdata: any) => {
+//   return apiFetch("/users/update-profile", {
+//     method: "POST",
+//   });
+// };
