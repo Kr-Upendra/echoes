@@ -4,7 +4,6 @@ import {
   updatePassword,
   updateProfile,
   userProfile,
-  userProfileImage,
 } from "../controllers/userController.js";
 import { protect, restrictTo } from "../middlewares/middleware.js";
 import { getStat } from "../controllers/statController.js";
@@ -18,8 +17,5 @@ router.route("/update-password").post(protect, updatePassword);
 router
   .route("/update-profile")
   .post(protect, uploadFilesWithFields, updateProfile);
-router
-  .route("/update-profile-image")
-  .post(protect, uploadSingleFile, userProfileImage);
 
 export { router as userRouter };
