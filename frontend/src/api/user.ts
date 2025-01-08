@@ -41,11 +41,17 @@ export const updatePassword = async (
 export const updateProfile = async (
   formdata: UpdateProfileFormData
 ): Promise<ApiResponse> => {
+  const formData = new FormData();
+
+  if (formdata.profilePicture)
+    formData.append("profile", formdata.profilePicture);
+
+  console.log(formdata);
   return apiFetch(
     "/users/update-profile",
     {
       method: "POST",
-      body: JSON.stringify(formdata),
+      body: formData,
     },
     true
   );

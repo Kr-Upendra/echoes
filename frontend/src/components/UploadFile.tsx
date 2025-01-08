@@ -1,14 +1,41 @@
 import { useDropzone } from "react-dropzone";
-import { errorAlert, FileWithPreview, warnAlert } from "../utils";
+import {
+  ApiResponse,
+  errorAlert,
+  FileWithPreview,
+  successAlert,
+  UpdateProfileFormData,
+  warnAlert,
+} from "../utils";
 import { useEffect, useState } from "react";
 import ImagePreview from "./views/ImagePreivew";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+type UpdateProfileMutationFunction = (
+  formdata: UpdateProfileFormData
+) => Promise<ApiResponse>;
 
 interface IUploadFile {
   onClose: () => void;
+  mutationFunction: UpdateProfileMutationFunction;
 }
 
-export default function UploadFile({ onClose }: IUploadFile) {
+export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
   const [file, setFile] = useState<FileWithPreview | null>(null);
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: mutationFunction,
+    onSuccess: () => {
+      successAlert("Profile picture updated successfully.");
+      queryClient.invalidateQueries({ queryKey: ["profileData"] });
+      setFile(null);
+      onClose();
+    },
+    onError: (error: any) => {
+      errorAlert(error.message || "An error occurred while uploading.");
+    },
+  });
 
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -57,8 +84,7 @@ export default function UploadFile({ onClose }: IUploadFile) {
       return;
     }
     try {
-      const formData = new FormData();
-      formData.append("file", file);
+      mutation.mutate({ profilePicture: file });
     } catch (error) {
       errorAlert("Failed to upload file.");
     }
@@ -92,14 +118,14 @@ export default function UploadFile({ onClose }: IUploadFile) {
         <div className="mt-4 text-center flex gap-3">
           <button
             onClick={onClose}
-            // disabled={mutation?.isPending}
+            disabled={mutation?.isPending}
             className="font-display text-white bg-[#DC3545] w-full py-1.5 rounded-full"
           >
             Cancel
           </button>
           <button
-            // onClick={handleUpload}
-            disabled={!file}
+            onClick={handleUpload}
+            disabled={!file || mutation.isPending}
             className="font-display text-white bg-green-600 disabled:bg-gray-700 w-full py-1.5 rounded-full"
           >
             Upload

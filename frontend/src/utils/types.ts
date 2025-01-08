@@ -1,3 +1,5 @@
+import { FileWithPreview } from "./interfaces";
+
 export type LoginFromData = {
   email: string;
   password: string;
@@ -69,8 +71,8 @@ export interface UpdateProfileFormData {
   firstName?: string;
   lastName?: string;
   about?: string;
-  profilePicture?: File;
-  profileBanner?: File;
+  profilePicture?: FileWithPreview;
+  profileBanner?: FileWithPreview;
   address?: Address;
   socialMedia?: SocialMedia;
 }

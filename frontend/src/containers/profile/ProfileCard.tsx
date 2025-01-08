@@ -158,7 +158,10 @@ export default function ProfileCard() {
         //   imageProperties={userProfileImageProperties}
         //   oldImagePath={userProfile?.profilePicture}
         // />
-        <UploadFile onClose={() => setShowUploader(false)} />
+        <UploadFile
+          onClose={() => setShowUploader(false)}
+          mutationFunction={updateProfile}
+        />
       )}
     </div>
   );
