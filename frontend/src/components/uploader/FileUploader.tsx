@@ -160,7 +160,7 @@ export default function ImageUploader({
   }, [file]);
   return (
     <div className="fixed z-50 top-0 left-0 w-full h-screen flex justify-center items-center bg-black/10 backdrop-blur-sm">
-      <div className="w-[40%] lg:w-[50%] md:w-[60%] sm:w-[80%] xs:w-[95%] py-10 px-6 rounded-xl bg-black border-green-500/20 border">
+      <div className=" w-[40%] lg:w-[50%] md:w-[60%] sm:w-[80%] xs:w-[95%] py-10 px-6 rounded-xl bg-black border-green-500 border">
         <h1 className="mb-4 font-display text-center">{title}</h1>
         <div
           {...getRootProps()}

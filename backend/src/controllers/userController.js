@@ -1,11 +1,15 @@
 import bcrypt from "bcryptjs";
-
 import { userModel } from "../models/userModel.js";
 import {
   STATUS_CODES,
   API_RESPONSE_MESSAGE,
 } from "../utils/api-response/index.js";
-import { validatePassword } from "../utils/index.js";
+import {
+  asyncHandler,
+  ErrorHandler,
+  validatePassword,
+} from "../utils/index.js";
+import { handleFileUpload } from "../services/index.js";
 
 export const getUsers = async (req, res) => {
   const users = await userModel.find();
@@ -29,25 +33,39 @@ export const userProfile = async (req, res) => {
   });
 };
 
-export const updateProfile = async (req, res) => {
+// profile filename: user/avatar/user_avatar_user-id_timestamp.ext
+// Jounral imagefilename and path: journals/[user_id]_user-id/[journal_id]-journal-id/images/journal_[kupendradev/username]_[1733405525182/timestamp]_[cl81b5ydv1t/random_string].png
+
+export const updateProfile = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
-  const {
-    firstName,
-    lastName,
-    about,
-    profilePicture,
-    profileBanner,
-    socialMedia,
-    address,
-  } = req.body;
+  const { firstName, lastName, about, socialMedia, address } = req.body;
+
+  const bannerFile = req.files?.banner ? req.files.banner[0] : null;
+  const profileFile = req.files?.profile ? req.files.profile[0] : null;
+
+  let bannerUrl,
+    avatarUrl = null;
+  if (bannerFile) {
+    bannerUrl = await handleFileUpload(bannerFile, {
+      dir: `userId_${userId}/banner`,
+      subFilename: `user_banner`,
+    });
+  }
+
+  if (profileFile) {
+    avatarUrl = await handleFileUpload(profileFile, {
+      dir: `userId_${userId}/avatar`,
+      subFilename: `user_avatar`,
+    });
+  }
 
   const updateData = {};
 
   if (firstName !== undefined) updateData.firstName = firstName;
   if (lastName !== undefined) updateData.lastName = lastName;
   if (about !== undefined) updateData.about = about;
-  if (profilePicture !== undefined) updateData.profilePicture = profilePicture;
-  if (profileBanner !== undefined) updateData.profileBanner = profileBanner;
+  if (bannerFile) updateData.profileBanner = bannerUrl[0];
+  if (profileFile) updateData.profilePicture = avatarUrl[0];
 
   if (address) {
     if (address.street !== undefined)
@@ -75,33 +93,20 @@ export const updateProfile = async (req, res) => {
   }
 
   if (Object.keys(updateData).length === 0)
-    return res.status(STATUS_CODES.NOT_FOUND).json({
-      status: "failed",
-      message: "No data provided to made changes.",
-    });
+    return next(new ErrorHandler("No data provided to made changes.", 404));
 
-  try {
-    const result = await userModel.updateOne(
-      { _id: userId },
-      { $set: updateData }
-    );
-    if (result.nModified === 0) {
-      return res.status(STATUS_CODES.NOT_FOUND).json({
-        status: "failed",
-        message: "User not found or no changes made.",
-      });
-    }
-    return res.status(STATUS_CODES.SUCCESS).json({
-      status: "success",
-      message: "Profile updated successfully.",
-    });
-  } catch (error) {
-    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      status: "failed",
-      message: error?.message || "Something went wrong.",
-    });
-  }
-};
+  const result = await userModel.updateOne(
+    { _id: userId },
+    { $set: updateData }
+  );
+  if (result.nModified === 0)
+    return next(new ErrorHandler("User not found or no changes made.", 400));
+
+  return res.status(STATUS_CODES.SUCCESS).json({
+    status: "success",
+    message: "Profile updated successfully.",
+  });
+});
 
 export const updatePassword = async (req, res) => {
   const user = req.user;
