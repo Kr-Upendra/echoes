@@ -39,26 +39,33 @@ export const userProfile = async (req, res) => {
 export const updateProfile = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
   const { firstName, lastName, about, socialMedia, address } = req.body;
-  const bannerFile = req.files.banner[0];
-  const profileFile = req.files.profile[0];
 
-  const bannerUrl = await handleFileUpload(bannerFile, {
-    dir: `userId_${userId}/banner`,
-    subFilename: `user_banner`,
-  });
+  const bannerFile = req.files?.banner ? req.files.banner[0] : null;
+  const profileFile = req.files?.profile ? req.files.profile[0] : null;
 
-  const avatarUrl = await handleFileUpload(profileFile, {
-    dir: `userId_${userId}/avatar`,
-    subFilename: `user_avatar`,
-  });
+  let bannerUrl,
+    avatarUrl = null;
+  if (bannerFile) {
+    bannerUrl = await handleFileUpload(bannerFile, {
+      dir: `userId_${userId}/banner`,
+      subFilename: `user_banner`,
+    });
+  }
+
+  if (profileFile) {
+    avatarUrl = await handleFileUpload(profileFile, {
+      dir: `userId_${userId}/avatar`,
+      subFilename: `user_avatar`,
+    });
+  }
 
   const updateData = {};
 
   if (firstName !== undefined) updateData.firstName = firstName;
   if (lastName !== undefined) updateData.lastName = lastName;
   if (about !== undefined) updateData.about = about;
-  if (bannerFile) updateData.profilePicture = bannerUrl[0];
-  if (profileFile) updateData.profileBanner = avatarUrl[0];
+  if (bannerFile) updateData.profileBanner = bannerUrl[0];
+  if (profileFile) updateData.profilePicture = avatarUrl[0];
 
   if (address) {
     if (address.street !== undefined)

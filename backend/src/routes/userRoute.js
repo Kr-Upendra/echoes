@@ -16,6 +16,6 @@ router.route("/stat").get(protect, getStat);
 router.route("/update-password").post(protect, updatePassword);
 router
   .route("/update-profile")
-  .post(protect, uploadFilesWithFields, updateProfile);
+  .patch(protect, uploadFilesWithFields, updateProfile);
 
 export { router as userRouter };

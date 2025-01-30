@@ -2,12 +2,11 @@ import { useDropzone } from "react-dropzone";
 import {
   ApiResponse,
   errorAlert,
-  FileWithPreview,
   successAlert,
   UpdateProfileFormData,
   warnAlert,
 } from "../utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ImagePreview from "./views/ImagePreivew";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -21,7 +20,8 @@ interface IUploadFile {
 }
 
 export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
-  const [file, setFile] = useState<FileWithPreview | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string>("");
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -56,11 +56,8 @@ export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
 
       const image = new Image();
       const objectURL = URL.createObjectURL(file);
-
-      const newFile = Object.assign(file, {
-        preview: objectURL,
-      }) as FileWithPreview;
-      setFile(newFile);
+      setFilePreview(objectURL);
+      setFile(file);
 
       image.onerror = () => {
         warnAlert("Invalid image file.");
@@ -70,20 +67,14 @@ export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
     },
   });
 
-  useEffect(() => {
-    return () => {
-      if (file) {
-        URL.revokeObjectURL(file?.preview);
-      }
-    };
-  }, [file]);
-
   const handleUpload = async () => {
     if (!file) {
       errorAlert("Please select a file to upload.");
       return;
     }
+
     try {
+      console.log({ file });
       mutation.mutate({ profilePicture: file });
     } catch (error) {
       errorAlert("Failed to upload file.");
@@ -109,7 +100,7 @@ export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
         <div className="flex flex-wrap justify-center mt-4 gap-4">
           {file && (
             <ImagePreview
-              image={file.preview}
+              image={filePreview}
               imageName="Preview"
               containerStyles="w-14 h-14"
             />

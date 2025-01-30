@@ -71,7 +71,7 @@ export interface UpdateProfileFormData {
   firstName?: string;
   lastName?: string;
   about?: string;
-  profilePicture?: FileWithPreview;
+  profilePicture?: File;
   profileBanner?: FileWithPreview;
   address?: Address;
   socialMedia?: SocialMedia;
