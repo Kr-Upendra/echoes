@@ -18,14 +18,7 @@ const allowedOrigins = [
 
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: allowedOrigins,
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.get("/", (_, res) => {
   return res.status(200).json({
