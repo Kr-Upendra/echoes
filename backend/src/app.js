@@ -13,7 +13,7 @@ import { globalErrorHandler } from "./controllers/errorController.js";
 const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
-  "https://recallmomentsapi.onrender.com/",
+  "https://el-echoes.netlify.app/",
 ];
 
 const app = express();

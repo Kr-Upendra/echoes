@@ -1,5 +1,8 @@
+import axios from "axios";
 import {
   ApiResponse,
+  BASE_URL,
+  getAccessToken,
   UpdatePasswordFromData,
   UpdateProfileFormData,
 } from "../utils";
@@ -41,10 +44,16 @@ export const updatePassword = async (
 export const updateProfile = async (
   formdata: UpdateProfileFormData
 ): Promise<ApiResponse> => {
+  const URL = `${BASE_URL}/users/update-profile`;
+  const accesstoken = getAccessToken();
   const requestData = new FormData();
 
   if (formdata.profilePicture) {
     requestData.append("profile", formdata.profilePicture);
+  }
+
+  if (formdata.profileBanner) {
+    requestData.append("banner", formdata.profileBanner);
   }
 
   if (formdata.firstName) {
@@ -57,19 +66,16 @@ export const updateProfile = async (
     requestData.append("about", formdata.about);
   }
 
-  console.log(requestData);
-  return apiFetch(
-    "/users/update-profile",
-    {
-      method: "PATCH",
-      body: requestData,
-    },
-    true
-  );
+  try {
+    const response = await axios.patch(URL, requestData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${accesstoken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    throw new Error("Profile update failed");
+  }
 };
-
-// export const updateProfilePicture = async (formdata: any) => {
-//   return apiFetch("/users/update-profile", {
-//     method: "POST",
-//   });
-// };
