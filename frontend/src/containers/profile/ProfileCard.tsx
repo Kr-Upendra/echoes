@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import CountUp from "react-countup";
 import { RootState } from "../../state";
 import { useState } from "react";
-// import ImageUploader from "../../components/uploader/FileUploader";
 import { updateProfile, userStats } from "../../api";
 // import { userProfileImageProperties } from "../../utils";
 import { useGetItem } from "../../hooks";
@@ -151,16 +150,11 @@ export default function ProfileCard() {
       </div>
 
       {showUploader && (
-        // <ImageUploader
-        //   onClose={() => setShowUploader(false)} // Pass a function to close the uploader
-        //   mutationFunction={updateProfile}
-        //   title="Update your profile picture"
-        //   imageProperties={userProfileImageProperties}
-        //   oldImagePath={userProfile?.profilePicture}
-        // />
         <UploadFile
           onClose={() => setShowUploader(false)}
           mutationFunction={updateProfile}
+          cardTitle="Upload your profile picture"
+          uploadFor="profile"
         />
       )}
     </div>

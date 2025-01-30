@@ -17,9 +17,16 @@ type UpdateProfileMutationFunction = (
 interface IUploadFile {
   onClose: () => void;
   mutationFunction: UpdateProfileMutationFunction;
+  cardTitle: string;
+  uploadFor: string;
 }
 
-export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
+export default function UploadFile({
+  onClose,
+  mutationFunction,
+  cardTitle,
+  uploadFor,
+}: IUploadFile) {
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string>("");
   const queryClient = useQueryClient();
@@ -27,7 +34,7 @@ export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
   const mutation = useMutation({
     mutationFn: mutationFunction,
     onSuccess: () => {
-      successAlert("Profile picture updated successfully.");
+      successAlert(`Profile ${uploadFor} updated successfully.`);
       queryClient.invalidateQueries({ queryKey: ["profileData"] });
       setFile(null);
       onClose();
@@ -62,8 +69,6 @@ export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
       image.onerror = () => {
         warnAlert("Invalid image file.");
       };
-
-      image.src = objectURL;
     },
   });
 
@@ -74,8 +79,9 @@ export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
     }
 
     try {
-      console.log({ file });
-      mutation.mutate({ profilePicture: file });
+      if (uploadFor.includes("profile"))
+        mutation.mutate({ profilePicture: file });
+      else mutation.mutate({ profileBanner: file });
     } catch (error) {
       errorAlert("Failed to upload file.");
     }
@@ -84,9 +90,7 @@ export default function UploadFile({ onClose, mutationFunction }: IUploadFile) {
   return (
     <div className="fixed z-50 top-0 left-0 w-full h-screen flex justify-center items-center bg-black/10 backdrop-blur-sm">
       <div className=" w-[40%] lg:w-[50%] md:w-[60%] sm:w-[80%] xs:w-[95%] py-10 px-6 rounded-xl bg-black border-green-500 border">
-        <h1 className="mb-4 font-display text-center">
-          Upload your profile picture
-        </h1>
+        <h1 className="mb-4 font-display text-center">{cardTitle}</h1>
         <div
           {...getRootProps()}
           className="text-center font-display py-14 md:py-12 sm:py-10 px-4 rounded-md bg-green-200/5 shadow-lg shadow-black/10"
