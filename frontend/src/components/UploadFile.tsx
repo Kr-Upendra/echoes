@@ -3,7 +3,7 @@ import {
   ApiResponse,
   errorAlert,
   successAlert,
-  UpdateProfileFormData,
+  UpdateProfileImageFormData,
   warnAlert,
 } from "../utils";
 import { useState } from "react";
@@ -11,7 +11,7 @@ import ImagePreview from "./views/ImagePreivew";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type UpdateProfileMutationFunction = (
-  formdata: UpdateProfileFormData
+  args: UpdateProfileImageFormData
 ) => Promise<ApiResponse>;
 
 interface IUploadFile {
@@ -29,6 +29,7 @@ export default function UploadFile({
 }: IUploadFile) {
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string>("");
+  const [progress, setProgress] = useState<number>(0);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -77,11 +78,10 @@ export default function UploadFile({
       errorAlert("Please select a file to upload.");
       return;
     }
-
     try {
       if (uploadFor.includes("profile"))
-        mutation.mutate({ profilePicture: file });
-      else mutation.mutate({ profileBanner: file });
+        mutation.mutate({ profilePicture: file, onProgress: setProgress });
+      else mutation.mutate({ profileBanner: file, onProgress: setProgress });
     } catch (error) {
       errorAlert("Failed to upload file.");
     }
@@ -110,10 +110,21 @@ export default function UploadFile({
             />
           )}
         </div>
+        {mutation.isPending && (
+          <div className="flex items-center justify-between mt-2.5">
+            <div className="relative h-2 rounded-full bg-green-200/10 flex-1">
+              <div
+                className={`absolute top-0 left-0 rounded-full h-full bg-green-500/70`}
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <span className="text-xs font-display ml-1.5">{progress} %</span>
+          </div>
+        )}
         <div className="mt-4 text-center flex gap-3">
           <button
             onClick={onClose}
-            disabled={mutation?.isPending}
+            disabled={mutation.isPending}
             className="font-display text-white bg-[#DC3545] w-full py-1.5 rounded-full"
           >
             Cancel
@@ -123,7 +134,7 @@ export default function UploadFile({
             disabled={!file || mutation.isPending}
             className="font-display text-white bg-green-600 disabled:bg-gray-700 w-full py-1.5 rounded-full"
           >
-            Upload
+            {mutation.isPending ? "Uploading..." : "Upload"}
           </button>
         </div>
       </div>

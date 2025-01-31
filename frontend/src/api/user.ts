@@ -1,10 +1,11 @@
-import axios from "axios";
+import axios, { AxiosProgressEvent } from "axios";
 import {
   ApiResponse,
   BASE_URL,
   getAccessToken,
   UpdatePasswordFromData,
   UpdateProfileFormData,
+  UpdateProfileImageFormData,
 } from "../utils";
 import { apiFetch } from "./api";
 
@@ -54,19 +55,21 @@ export const updateProfileDetails = async (
   );
 };
 
-export const updateProfileImages = async (
-  formdata: UpdateProfileFormData
-): Promise<ApiResponse> => {
+export const updateProfileImages = async ({
+  onProgress,
+  profileBanner,
+  profilePicture,
+}: UpdateProfileImageFormData) => {
   const URL = `${BASE_URL}/users/update-profile`;
   const accesstoken = getAccessToken();
   const requestData = new FormData();
 
-  if (formdata.profilePicture) {
-    requestData.append("profile", formdata.profilePicture);
+  if (profilePicture) {
+    requestData.append("profile", profilePicture);
   }
 
-  if (formdata.profileBanner) {
-    requestData.append("banner", formdata.profileBanner);
+  if (profileBanner) {
+    requestData.append("banner", profileBanner);
   }
 
   try {
@@ -74,6 +77,12 @@ export const updateProfileImages = async (
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${accesstoken}`,
+      },
+      onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+        const progress = Math.round(
+          (progressEvent.loaded / progressEvent.total!) * 100
+        );
+        onProgress(progress);
       },
     });
     return response.data;
