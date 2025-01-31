@@ -5,7 +5,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { RootState } from "../../state";
 import CustomInput from "../form/CustomInput";
 import CustomTextArea from "../form/CustomTextArea";
-import { updateProfile } from "../../api";
+import { updateProfileDetails } from "../../api";
 import {
   ApiResponse,
   errorAlert,
@@ -92,7 +92,7 @@ export default function ProfileUpdateForm() {
   };
 
   const mutation = useMutation({
-    mutationFn: updateProfile,
+    mutationFn: updateProfileDetails,
     onSuccess: (response: ApiResponse) => {
       if (response.status === "success") {
         queryClient.invalidateQueries({ queryKey: ["profileData"] });

@@ -41,7 +41,20 @@ export const updatePassword = async (
   );
 };
 
-export const updateProfile = async (
+export const updateProfileDetails = async (
+  formdata: UpdateProfileFormData
+): Promise<ApiResponse> => {
+  return apiFetch(
+    "/users/update-profile",
+    {
+      method: "PATCH",
+      body: JSON.stringify(formdata),
+    },
+    true
+  );
+};
+
+export const updateProfileImages = async (
   formdata: UpdateProfileFormData
 ): Promise<ApiResponse> => {
   const URL = `${BASE_URL}/users/update-profile`;
@@ -54,16 +67,6 @@ export const updateProfile = async (
 
   if (formdata.profileBanner) {
     requestData.append("banner", formdata.profileBanner);
-  }
-
-  if (formdata.firstName) {
-    requestData.append("firstName", formdata.firstName);
-  }
-  if (formdata.lastName) {
-    requestData.append("lastName", formdata.lastName);
-  }
-  if (formdata.about) {
-    requestData.append("about", formdata.about);
   }
 
   try {
