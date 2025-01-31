@@ -1,9 +1,7 @@
 import { FaPen } from "react-icons/fa6";
 import default_bg_cover from "../../assets/bg/default_cover_image.jpg";
 import { useState } from "react";
-// import ImageUploader from "../uploader/FileUploader";
-import { updateProfile } from "../../api";
-// import { userBannerImageProperties } from "../../utils";
+import { updateProfileImages } from "../../api";
 import { useSelector } from "react-redux";
 import { RootState } from "../../state";
 import UploadFile from "../UploadFile";
@@ -40,21 +38,11 @@ export default function ProfileBanner() {
       {showUploader && (
         <UploadFile
           onClose={() => setShowUploader(false)}
-          mutationFunction={updateProfile}
+          mutationFunction={updateProfileImages}
           cardTitle="Update your banner image"
           uploadFor="banner"
         />
       )}
-      {/* 
-      {showUploader && (
-        <ImageUploader
-          onClose={() => setShowUploader(false)}
-          mutationFunction={updateProfile}
-          title="Update your banner image"
-          imageProperties={userBannerImageProperties}
-          oldImagePath={userProfile?.profileBanner}
-        />
-      )} */}
     </div>
   );
 }

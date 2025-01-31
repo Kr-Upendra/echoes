@@ -69,10 +69,14 @@ export interface UpdateProfileFormData {
   firstName?: string;
   lastName?: string;
   about?: string;
-  profilePicture?: File;
-  profileBanner?: File;
   address?: Address;
   socialMedia?: SocialMedia;
+}
+
+export interface UpdateProfileImageFormData {
+  profilePicture?: File;
+  profileBanner?: File;
+  onProgress: any;
 }
 
 export type MoodType = {

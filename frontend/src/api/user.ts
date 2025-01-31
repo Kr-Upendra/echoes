@@ -1,10 +1,11 @@
-import axios from "axios";
+import axios, { AxiosProgressEvent } from "axios";
 import {
   ApiResponse,
   BASE_URL,
   getAccessToken,
   UpdatePasswordFromData,
   UpdateProfileFormData,
+  UpdateProfileImageFormData,
 } from "../utils";
 import { apiFetch } from "./api";
 
@@ -41,29 +42,34 @@ export const updatePassword = async (
   );
 };
 
-export const updateProfile = async (
+export const updateProfileDetails = async (
   formdata: UpdateProfileFormData
 ): Promise<ApiResponse> => {
+  return apiFetch(
+    "/users/update-profile",
+    {
+      method: "PATCH",
+      body: JSON.stringify(formdata),
+    },
+    true
+  );
+};
+
+export const updateProfileImages = async ({
+  onProgress,
+  profileBanner,
+  profilePicture,
+}: UpdateProfileImageFormData) => {
   const URL = `${BASE_URL}/users/update-profile`;
   const accesstoken = getAccessToken();
   const requestData = new FormData();
 
-  if (formdata.profilePicture) {
-    requestData.append("profile", formdata.profilePicture);
+  if (profilePicture) {
+    requestData.append("profile", profilePicture);
   }
 
-  if (formdata.profileBanner) {
-    requestData.append("banner", formdata.profileBanner);
-  }
-
-  if (formdata.firstName) {
-    requestData.append("firstName", formdata.firstName);
-  }
-  if (formdata.lastName) {
-    requestData.append("lastName", formdata.lastName);
-  }
-  if (formdata.about) {
-    requestData.append("about", formdata.about);
+  if (profileBanner) {
+    requestData.append("banner", profileBanner);
   }
 
   try {
@@ -71,6 +77,12 @@ export const updateProfile = async (
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${accesstoken}`,
+      },
+      onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+        const progress = Math.round(
+          (progressEvent.loaded / progressEvent.total!) * 100
+        );
+        onProgress(progress);
       },
     });
     return response.data;

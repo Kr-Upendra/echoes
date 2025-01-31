@@ -11,8 +11,7 @@ import { useSelector } from "react-redux";
 import CountUp from "react-countup";
 import { RootState } from "../../state";
 import { useState } from "react";
-import { updateProfile, userStats } from "../../api";
-// import { userProfileImageProperties } from "../../utils";
+import { updateProfileImages, userStats } from "../../api";
 import { useGetItem } from "../../hooks";
 import { defaultUser } from "../../assets";
 import UploadFile from "../../components/UploadFile";
@@ -38,6 +37,7 @@ export default function ProfileCard() {
           className="rounded-full"
           src={userProfile?.profilePicture || defaultUser}
           alt={`${userProfile?.firstName}'s display picture`}
+          onError={(e: any) => (e.target.src = defaultUser)}
         />
         <button
           onClick={handleUploadClick}
@@ -152,7 +152,7 @@ export default function ProfileCard() {
       {showUploader && (
         <UploadFile
           onClose={() => setShowUploader(false)}
-          mutationFunction={updateProfile}
+          mutationFunction={updateProfileImages}
           cardTitle="Upload your profile picture"
           uploadFor="profile"
         />
