@@ -7,9 +7,11 @@ import {
 import {
   asyncHandler,
   ErrorHandler,
+  extractPublicId,
   validatePassword,
 } from "../utils/index.js";
 import { handleFileUpload } from "../services/index.js";
+import { v2 as cloudinary } from "cloudinary";
 
 export const getUsers = async (req, res) => {
   const users = await userModel.find();
@@ -43,8 +45,24 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
   const bannerFile = req.files?.banner ? req.files.banner[0] : null;
   const profileFile = req.files?.profile ? req.files.profile[0] : null;
 
-  let bannerUrl,
-    avatarUrl = null;
+  let bannerUrl = null;
+  let avatarUrl = null;
+
+  const user = await userModel.findById(userId);
+  if (!user) {
+    return next(new ErrorHandler("User not found", 404));
+  }
+
+  if (bannerFile && user.profileBanner) {
+    const oldBannerId = extractPublicId(user.profileBanner);
+    if (oldBannerId) await cloudinary.uploader.destroy(oldBannerId);
+  }
+
+  if (profileFile && user.profilePicture) {
+    const oldAvatarId = extractPublicId(user.profilePicture);
+    if (oldAvatarId) await cloudinary.uploader.destroy(oldAvatarId);
+  }
+
   if (bannerFile) {
     bannerUrl = await handleFileUpload(bannerFile, {
       dir: `userId_${userId}/banner`,
@@ -93,14 +111,9 @@ export const updateProfile = asyncHandler(async (req, res, next) => {
   }
 
   if (Object.keys(updateData).length === 0)
-    return next(new ErrorHandler("No data provided to made changes.", 404));
+    return next(new ErrorHandler("No data provided to make changes.", 400));
 
-  const result = await userModel.updateOne(
-    { _id: userId },
-    { $set: updateData }
-  );
-  if (result.nModified === 0)
-    return next(new ErrorHandler("User not found or no changes made.", 400));
+  await userModel.updateOne({ _id: userId }, { $set: updateData });
 
   return res.status(STATUS_CODES.SUCCESS).json({
     status: "success",

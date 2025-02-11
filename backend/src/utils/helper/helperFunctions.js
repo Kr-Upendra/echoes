@@ -135,3 +135,11 @@ export const generateFileName = (dirs, uploadFor, index = 0) => {
   const randStr = randomString();
   return `${dirs}/${uploadFor}_${timestamp}_${randStr}_${index}`;
 };
+
+export const extractPublicId = (url) => {
+  if (!url) return null;
+
+  // Extract the path after "/upload/"
+  const match = url.match(/upload\/v\d+\/(.+)\.\w+$/);
+  return match ? match[1] : null; // Returns the public ID (without extension)
+};
