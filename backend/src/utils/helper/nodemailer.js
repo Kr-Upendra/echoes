@@ -12,7 +12,7 @@ const devTransporter = nodemailer.createTransport({
 
 const prodTransporter = nodemailer.createTransport({
   host: "smtp.mailgun.org",
-  port: 587,
+  port: 465,
   secure: true,
   auth: {
     user: "api",
