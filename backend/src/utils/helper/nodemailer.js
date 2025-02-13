@@ -11,12 +11,12 @@ const devTransporter = nodemailer.createTransport({
 });
 
 const prodTransporter = nodemailer.createTransport({
-  host: "smtp.sendgrid.net",
+  host: "smtp.mailgun.org",
   port: 587,
-  secure: false,
+  secure: true,
   auth: {
-    user: "apikey",
-    pass: process.env.SENDGRID_API_KEY,
+    user: "api",
+    pass: process.env.MAILGUN_API_KEY,
   },
 });
 
@@ -26,7 +26,7 @@ const transporter =
 export const sendEmail = async (to, subject, template) => {
   try {
     await transporter.sendMail({
-      from: `"El Echoes | Capture Your Moments, Keep Your Memories" <toxic74412@gmail.com>`,
+      from: `"El Echoes | Capture Your Moments, Keep Your Memories" <mailgun@sandbox55813286d6b84558a7cfdff5ad233be3.mailgun.org>`,
       to: to,
       subject: subject,
       html: template,
