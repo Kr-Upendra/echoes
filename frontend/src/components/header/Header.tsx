@@ -15,6 +15,8 @@ import { FiEdit } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { BiGridAlt } from "react-icons/bi";
 import useScreenWidth from "../../hooks/useScreenWidth";
+import { useMutation } from "@tanstack/react-query";
+import { logoutUser } from "../../api";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -25,15 +27,26 @@ export default function Header() {
     (state: RootState) => state.currentUser.currentUserInfo
   );
 
+  const mutation = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      successAlert("You logged out successfully.");
+      setTimeout(() => {
+        // Clear user data and tokens, reset state
+        clearUserData();
+        dispatch(clearCurrentUser());
+        removeTokens();
+        navigate("/login");
+      }, 1000);
+    },
+    onError: (error) => {
+      // Handle error state, for example by showing an error alert
+      console.error("Logout failed:", error.message);
+    },
+  });
+
   function handleClick() {
-    successAlert("You logged out successfully.");
-    setShowNavbar(true);
-    setTimeout(() => {
-      clearUserData();
-      dispatch(clearCurrentUser());
-      removeTokens();
-      navigate("/login");
-    }, 1000);
+    mutation.mutate();
   }
 
   function closeUserMenu() {

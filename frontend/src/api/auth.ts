@@ -25,6 +25,16 @@ export const loginUser = async (
   });
 };
 
+export const logoutUser = async (): Promise<ApiResponse> => {
+  return apiFetch(
+    "/auth/logout",
+    {
+      method: "POST",
+    },
+    true
+  );
+};
+
 export const forgotPassword = async (
   formdata: ForgotPasswordFormData
 ): Promise<ApiResponse> => {
