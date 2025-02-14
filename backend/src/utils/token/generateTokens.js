@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
 import {
   accessToken,
-  accessTokenExpireTime,
+  accessTokenExpireTimeInSeconds,
   refreshToken,
-  refreshTokenExpireTime,
+  refreshTokenExpireTimeInSeconds,
 } from "./../helper/index.js";
 
 export const generateAccessToken = (id, email) => {
   const payload = { _id: id.toString(), email: email };
   const token = jwt.sign(payload, accessToken, {
-    expiresIn: accessTokenExpireTime,
+    expiresIn: accessTokenExpireTimeInSeconds,
   });
   return token;
 };
@@ -17,7 +17,7 @@ export const generateAccessToken = (id, email) => {
 export const generateRefreshToken = (id, email) => {
   const payload = { _id: id.toString(), email: email };
   const token = jwt.sign(payload, refreshToken, {
-    expiresIn: refreshTokenExpireTime,
+    expiresIn: refreshTokenExpireTimeInSeconds,
   });
   return token;
 };

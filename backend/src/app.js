@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import {
   authRouter,
   userRouter,
@@ -10,15 +11,10 @@ import {
 import { ErrorHandler } from "./utils/index.js";
 import { globalErrorHandler } from "./controllers/errorController.js";
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
-  "https://el-echoes.netlify.app/",
-];
-
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 app.get("/", (_, res) => {
   return res.status(200).json({
