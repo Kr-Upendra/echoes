@@ -26,7 +26,7 @@ const transporter =
 export const sendEmail = async (to, subject, template) => {
   try {
     await transporter.sendMail({
-      from: `"El Echoes | Capture Your Moments, Keep Your Memories" <mailgun@sandbox55813286d6b84558a7cfdff5ad233be3.mailgun.org>`,
+      from: `"El Echoes | Capture Your Moments, Keep Your Memories" <hello.elechoes@gmail.com>`,
       to: to,
       subject: subject,
       html: template,
