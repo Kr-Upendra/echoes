@@ -36,7 +36,6 @@ export const userProfile = async (req, res) => {
 };
 
 // profile filename: user/avatar/user_avatar_user-id_timestamp.ext
-// Jounral imagefilename and path: journals/[user_id]_user-id/[journal_id]-journal-id/images/journal_[kupendradev/username]_[1733405525182/timestamp]_[cl81b5ydv1t/random_string].png
 
 export const updateProfile = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;

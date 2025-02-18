@@ -1,6 +1,5 @@
 import slugify from "slugify";
 import { moodColors } from "./constants.js";
-import { dir } from "console";
 
 export function capitalizeFirstLetter(str) {
   if (typeof str !== "string" || str.length === 0) return str;

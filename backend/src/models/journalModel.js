@@ -17,7 +17,7 @@ const journalSchema = new Schema(
       required: true,
       default: moodColors.neutral,
     },
-    images: { type: [String], default: "" },
+    images: { type: [String], default: [] },
     user: {
       type: Schema.Types.ObjectId,
       required: true,

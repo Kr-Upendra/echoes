@@ -24,3 +24,6 @@ export const allowedOrigins = [
   "http://127.0.0.1:5173",
   "https://el-echoes.netlify.app/",
 ];
+
+export const startOfDay = new Date().setHours(0, 0, 0, 0);
+export const endOfDay = new Date().setHours(23, 59, 59, 999);

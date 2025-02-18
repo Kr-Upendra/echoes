@@ -1,95 +1,73 @@
 import { journalModel } from "../models/journalModel.js";
+import { handleFileUpload } from "../services/fileUpload.js";
 import {
   API_RESPONSE_MESSAGE,
+  asyncHandler,
   createSlug,
+  endOfDay,
+  ErrorHandler,
   getMoodColor,
   getStartAndEndDate,
+  startOfDay,
   STATUS_CODES,
 } from "../utils/index.js";
 
-export const createJournal = async (req, res) => {
-  const user = req.user.id;
-  const { title, content, tags, images, mood } = req.body;
+export const addNewJournal = asyncHandler(async (req, res, next) => {
+  const userId = req.user.id;
+  const { title, content, tags, mood } = req.body;
+  const images = req.files;
   if (!title || !content)
-    return res.status(STATUS_CODES.BAD_REQUEST).json({
-      status: "failed",
-      messag: "Invalid inputs.",
-    });
+    return next(new ErrorHandler("Please provide title and content.", 400));
+
+  if (images && images.length > 5)
+    return next(
+      new ErrorHandler("Only 5 images you can attach with a journal.", 400)
+    );
+
+  const numberOfJournalsCreatedToday = await journalModel.countDocuments({
+    user: userId,
+    createdAt: { $gte: startOfDay, $lt: endOfDay },
+  });
+
+  if (numberOfJournalsCreatedToday >= 5)
+    return next(
+      new ErrorHandler("You can only create 5 journals per day.", 400)
+    );
 
   const slug = createSlug(title);
-  try {
-    const startOfDay = new Date();
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date();
-    endOfDay.setHours(23, 59, 59, 999);
 
-    const journalsToday = await journalModel.countDocuments({
-      user,
-      createdAt: { $gte: startOfDay, $lt: endOfDay },
-    });
+  const doesExist = await journalModel.findOne({ slug, user: userId });
+  if (doesExist)
+    return next(
+      new ErrorHandler("Journal with same title already exist.", 400)
+    );
 
-    if (journalsToday >= 5) {
-      return res.status(STATUS_CODES.FORBIDDEN).json({
-        status: "failed",
-        message: "You can only create 5 journals per day.",
-      });
-    }
+  const color = getMoodColor(mood);
 
-    const doesExist = await journalModel.findOne({ slug, user });
-    if (doesExist)
-      return res.status(STATUS_CODES.CONFLICT).json({
-        status: "failed",
-        message: "Title already exists.",
-      });
+  const journal = new journalModel({
+    title,
+    slug,
+    content,
+    tags,
+    mood,
+    color,
+    user: userId,
+  });
 
-    let streak = 1;
-    let lastStreakDate = new Date();
-    const lastJournal = await journalModel.findOne({ user }).sort({
-      createdAt: -1,
-    });
+  const result = await handleFileUpload(images, {
+    dir: `journals/user_id_${userId}/journal_id_${journal?._id}/images`,
+    subFilename: `journal`,
+  });
 
-    if (lastJournal) {
-      const lastJournalDate = new Date(lastJournal.createdAt);
-      const diffInTime = lastStreakDate.getTime() - lastJournalDate.getTime();
-      const diffInDays = diffInTime / (1000 * 3600 * 24);
+  journal.images = result;
 
-      if (diffInDays === 1) {
-        streak = lastJournal.streak + 1;
-      } else {
-        streak = 1;
-      }
-    }
+  await journal.save();
 
-    const color = getMoodColor(mood);
-
-    const journal = new journalModel({
-      title,
-      slug,
-      content,
-      tags,
-      mood,
-      images,
-      color,
-      user,
-      streak,
-      lastStreakDate,
-    });
-
-    await journal.save();
-
-    return res.status(STATUS_CODES.CREATED).json({
-      status: "success",
-      message: "New journal added.",
-      data: { journalId: journal._id },
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(STATUS_CODES.INTERNAL_SERVER_ERROR).json({
-      status: "failed",
-      message: API_RESPONSE_MESSAGE.INTERNAL_SERVER_ERROR,
-    });
-  }
-};
+  res.status(201).json({
+    status: "success",
+    message: "New journal added.",
+  });
+});
 
 export const getAllJournal = async (req, res) => {
   const search = req.query.search || "";

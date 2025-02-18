@@ -11,6 +11,10 @@ const handleTokenExpiredError = () => {
   return new ErrorHandler("JWT token has expired. Please log in again.", 401);
 };
 
+const handleMulterError = () => {
+  return new ErrorHandler("Error occurred while uploading files.", 400);
+};
+
 const developmentError = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -45,6 +49,7 @@ export const globalErrorHandler = (error, req, res, next) => {
 
     if (err.name === "JsonWebTokenError") err = handleJsonWebTokenError();
     if (err.name === "TokenExpiredError") err = handleTokenExpiredError();
+    if (err.name === "MulterError") err = handleMulterError();
     productionError(err, res);
   }
 };

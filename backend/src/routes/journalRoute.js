@@ -2,14 +2,18 @@ import express from "express";
 const router = express.Router();
 import { protect } from "../middlewares/middleware.js";
 import {
-  createJournal,
+  addNewJournal,
   getJournal,
   getAllJournal,
   updateJournal,
   deleteJournal,
 } from "../controllers/journalController.js";
+import { uploadMultipleFiles } from "../utils/index.js";
 
-router.route("/").post(protect, createJournal).get(protect, getAllJournal);
+router
+  .route("/")
+  .post(protect, uploadMultipleFiles, addNewJournal)
+  .get(protect, getAllJournal);
 
 router
   .route("/:id")

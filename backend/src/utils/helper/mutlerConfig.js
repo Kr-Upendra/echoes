@@ -18,7 +18,7 @@ export const upload = multer({
   },
 });
 
-export const uploadMultipleFiles = upload.array("files", 10);
+export const uploadMultipleFiles = upload.array("files", 5);
 export const uploadSingleFile = upload.single("file");
 export const uploadFilesWithFields = upload.fields([
   { name: "profile", maxCount: 1 },

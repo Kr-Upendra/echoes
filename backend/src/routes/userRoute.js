@@ -7,7 +7,7 @@ import {
 } from "../controllers/userController.js";
 import { protect, restrictTo } from "../middlewares/middleware.js";
 import { getStat } from "../controllers/statController.js";
-import { uploadSingleFile, uploadFilesWithFields } from "../utils/index.js";
+import { uploadFilesWithFields } from "../utils/index.js";
 const router = express.Router();
 
 router.route("/").get(protect, restrictTo("admin"), getUsers);
