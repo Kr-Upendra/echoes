@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 
-type Props = { hrefValue: string; title: string; isDisabled?: boolean };
+type Props = { hrefValue?: string; title: string; isDisabled?: boolean };
 
-export default function LinkButton({ hrefValue, title, isDisabled }: Props) {
+export default function LinkButton({
+  hrefValue = "#",
+  title,
+  isDisabled,
+}: Props) {
   return (
     <>
       <Link to={hrefValue}>

@@ -24,6 +24,7 @@ import {
 } from "./pages";
 import { journalsLoader, statLoader } from "./utils";
 import Error from "./components/Error";
+import SettingPage from "./pages/Settings/Page";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -52,6 +53,7 @@ const router = createBrowserRouter(
           <Route path="create" element={<AddJournal />} />
           <Route path=":id" element={<EditJournal />} />
         </Route>
+        <Route path="settings" element={<SettingPage />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Route>

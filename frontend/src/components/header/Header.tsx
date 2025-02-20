@@ -1,49 +1,21 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { IoBookOutline } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import NavItem from "../common/NavItem";
 import { RootState } from "../../state";
-import { clearUserData, removeTokens, successAlert } from "../../utils";
-import { clearCurrentUser } from "../../state";
 import HeaderLogo from "./HeaderLogo";
 import Button from "../buttons/Button";
 import { AiOutlineUser } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
-
 import { IconType } from "react-icons";
 import { BiGridAlt } from "react-icons/bi";
-import { useMutation } from "@tanstack/react-query";
-import { logoutUser } from "../../api";
 import { IoSettingsOutline } from "react-icons/io5";
 
 export default function Header() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const currentUser = useSelector(
     (state: RootState) => state.currentUser.currentUserInfo
   );
-
-  const mutation = useMutation({
-    mutationFn: logoutUser,
-    onSuccess: () => {
-      successAlert("You logged out successfully.");
-      setTimeout(() => {
-        // Clear user data and tokens, reset state
-        clearUserData();
-        dispatch(clearCurrentUser());
-        removeTokens();
-        navigate("/login");
-      }, 1000);
-    },
-    onError: (error) => {
-      // Handle error state, for example by showing an error alert
-      console.error("Logout failed:", error.message);
-    },
-  });
-
-  function handleClick() {
-    mutation.mutate();
-  }
 
   return (
     <>
