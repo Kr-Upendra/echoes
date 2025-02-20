@@ -72,20 +72,6 @@ export default function JournalForm({ journalData }: Props) {
       mutationFn: createJournal,
       onSuccess: async (response: ApiResponse) => {
         if (response.status === "success") {
-          const createdJournalId = response?.data.journalId;
-          if (formData?.images.length > 0 && createdJournalId) {
-            const supabaseImageUrls = await uploadMultipleFiles(
-              formData?.images,
-              createdJournalId
-            );
-            if (supabaseImageUrls) {
-              updateJournalMutation({
-                id: createdJournalId,
-                formdata: { images: supabaseImageUrls },
-              });
-            }
-          }
-
           setTimeout(() => {
             navigate("/journals");
           }, 1000);
@@ -102,14 +88,11 @@ export default function JournalForm({ journalData }: Props) {
       setErrors({});
       journalNoteSchema.parse(formData);
       if (isCreateForm) {
-        addJournalMutation({
-          ...formData,
-          images: [],
-        });
+        addJournalMutation(formData);
       } else if (id) {
         setIsUpdating(true);
         const filesOnly = formData?.images?.filter(
-          (image: FileWithPreview | string) => image instanceof File
+          (image: File | string) => image instanceof File
         );
 
         const imagesToUpload = await uploadMultipleFiles(filesOnly, id);
@@ -137,17 +120,17 @@ export default function JournalForm({ journalData }: Props) {
   };
 
   const handleRemoveFile = (fileToRemove: string) => {
-    const filteredFiles = formData?.images.filter(
-      (file: string | FileWithPreview) =>
-        typeof file === "string"
-          ? file !== fileToRemove
-          : file.preview !== fileToRemove
-    );
+    // const filteredFiles = formData?.images.filter(
+    //   (file: string | File) =>
+    //     typeof file === "string"
+    //       ? file !== fileToRemove
+    //       : file.preview !== fileToRemove
+    // );
 
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      images: filteredFiles,
-    }));
+    // setFormData((prevFormData) => ({
+    //   ...prevFormData,
+    //   images: filteredFiles,
+    // }));
 
     if (fileToRemove.startsWith("https")) {
       setFilesToDelete((prevRemovedFiles) => {

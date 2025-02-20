@@ -1,5 +1,3 @@
-import { FileWithPreview } from "../interfaces";
-
 export const setSelectedMood = <T>(
   mood: string,
   setFormData: React.Dispatch<React.SetStateAction<T>>
@@ -36,7 +34,7 @@ export const handleChange = <T>(
 };
 
 export const handleFilesChange = <T>(
-  files: (FileWithPreview | string)[],
+  files: (File | string)[],
   setFormData: React.Dispatch<React.SetStateAction<T>>
 ) => {
   setFormData((prevFormData) => ({

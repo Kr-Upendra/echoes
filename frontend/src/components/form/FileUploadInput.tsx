@@ -3,9 +3,9 @@ import { FileWithPreview, warnAlert } from "../../utils";
 import ImagePreview from "../views/ImagePreivew";
 
 interface FileUploadInputProps {
-  onFilesChange: (files: (FileWithPreview | string)[]) => void;
+  onFilesChange: (files: (File | string)[]) => void;
   onRemoveFile: (fileToRemove: string) => void;
-  files: (FileWithPreview | string)[];
+  files: (File | string)[];
   maxFiles: number;
 }
 
@@ -37,12 +37,8 @@ export default function FileUploadInput({
       return;
     }
 
-    const newFilesWithPreview = newFiles.map((file) =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      })
-    );
-    onFilesChange([...files, ...newFilesWithPreview]);
+    console.log({ newFiles });
+    onFilesChange([...newFiles]);
   };
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -80,7 +76,7 @@ export default function FileUploadInput({
           )}
         </p>
       </div>
-      <div className="flex flex-wrap justify-start px-2 mt-4 gap-4">
+      {/* <div className="flex flex-wrap justify-start px-2 mt-4 gap-4">
         {files.map((file, index: number) => {
           const previewUrl = typeof file === "string" ? file : file.preview;
           return (
@@ -92,7 +88,7 @@ export default function FileUploadInput({
             />
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 }

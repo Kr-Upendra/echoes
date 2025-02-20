@@ -58,14 +58,15 @@ export default function JournalCard({ journal, onRequestDelete }: Props) {
         <MoodIcon mood={journal.mood} />
       </div>
       <div className="mt-4 flex items-center gap-x-1">
-        {journal.tags.slice(0, 2).map((tag, index) => (
-          <span
-            key={index}
-            className="text-xs px-2 py-1 bg-white/10 text-gray-100 font-monaco rounded-sm capitalize"
-          >
-            {tag}
-          </span>
-        ))}
+        {/* {journal?.tags.map((tag, index) => ( */}
+        <span
+          // key={index}
+          className="text-xs px-2 py-1 bg-white/10 text-gray-100 font-monaco rounded-sm capitalize"
+        >
+          {/* {journal?.tags[0]} */}
+          hello
+        </span>
+        {/* ))} */}
       </div>
       <ActionButtons
         id={journal._id}

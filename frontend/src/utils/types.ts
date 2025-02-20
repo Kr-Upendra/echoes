@@ -88,7 +88,7 @@ export type JournalFormData = {
   content: string;
   mood: string;
   tags?: string[];
-  images: any;
+  images: File[] | string[];
 };
 
 export type JournalUpdateFormData = {
@@ -96,7 +96,7 @@ export type JournalUpdateFormData = {
   content?: string;
   mood?: string;
   tags?: string[];
-  images?: any;
+  images?: File[] | string[];
   imagesToDelete?: string[];
 };
 
