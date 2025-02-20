@@ -1,6 +1,5 @@
 import { useDropzone } from "react-dropzone";
-import { FileWithPreview, warnAlert } from "../../utils";
-import ImagePreview from "../views/ImagePreivew";
+import { warnAlert } from "../../utils";
 
 interface FileUploadInputProps {
   onFilesChange: (files: (File | string)[]) => void;
@@ -11,10 +10,10 @@ interface FileUploadInputProps {
 
 export default function FileUploadInput({
   onFilesChange,
-  onRemoveFile,
   files,
   maxFiles,
 }: FileUploadInputProps) {
+  console.log({ files });
   const maxLimit = files.length >= maxFiles;
   const onDrop = (acceptedFiles: File[]) => {
     const newFiles = acceptedFiles.filter(
@@ -37,7 +36,6 @@ export default function FileUploadInput({
       return;
     }
 
-    console.log({ newFiles });
     onFilesChange([...newFiles]);
   };
 
@@ -77,13 +75,13 @@ export default function FileUploadInput({
         </p>
       </div>
       {/* <div className="flex flex-wrap justify-start px-2 mt-4 gap-4">
-        {files.map((file, index: number) => {
-          const previewUrl = typeof file === "string" ? file : file.preview;
+        {files.map((file: any, index: number) => {
+          const objectURL = URL.createObjectURL(file);
           return (
             <ImagePreview
               key={index}
-              image={previewUrl}
-              handleRemove={() => onRemoveFile(previewUrl)}
+              image={objectURL}
+              handleRemove={() => onRemoveFile(objectURL)}
               hasRemoveFn={true}
             />
           );

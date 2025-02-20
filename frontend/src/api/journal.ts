@@ -51,7 +51,6 @@ export const createJournal = async (
 
   if (formdata.images && Array.isArray(formdata.images)) {
     formdata.images.forEach((file) => {
-      console.log("file: ", file);
       if (file instanceof File) {
         requestData.append(`files`, file);
       }

@@ -13,7 +13,7 @@ import {
   journalNoteSchema,
   setSelectedMood,
   JournalUpdateFormData,
-  FileWithPreview,
+  successAlert,
 } from "../../utils";
 import CustomInput from "../../components/form/CustomInput";
 import CustomTextArea from "../../components/form/CustomTextArea";
@@ -72,6 +72,7 @@ export default function JournalForm({ journalData }: Props) {
       mutationFn: createJournal,
       onSuccess: async (response: ApiResponse) => {
         if (response.status === "success") {
+          successAlert(response?.message || "New journal added successfully.");
           setTimeout(() => {
             navigate("/journals");
           }, 1000);
