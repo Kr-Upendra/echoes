@@ -1,5 +1,5 @@
 import ProfileBanner from "../components/profile/ProfileBanner";
-import { MyAccount } from "./profile";
+import MyAccount from "./profile/MyAccount";
 
 export default function ProfileContainer() {
   return (
