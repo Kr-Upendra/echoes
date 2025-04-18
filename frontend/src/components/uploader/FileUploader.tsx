@@ -10,7 +10,7 @@ import {
   UpdateProfileFormData,
   warnAlert,
 } from "../../utils";
-import { uploadImage } from "../../api";
+// import { uploadImage } from "../../api";
 import ImagePreview from "../views/ImagePreivew";
 
 type UpdateProfileMutationFunction = (
@@ -134,12 +134,13 @@ export default function ImageUploader({
         imageProperties?.keyName
       );
 
-      const publicUrl = await uploadImage(
-        file,
-        imageProperties?.bucketName,
-        filename,
-        oldImagePath
-      );
+      // const publicUrl = await uploadImage(
+      //   file,
+      //   imageProperties?.bucketName,
+      //   filename,
+      //   oldImagePath
+      // );
+      const publicUrl = "";
       if (publicUrl) {
         const formData = { [imageProperties?.formValue]: publicUrl };
         mutation.mutate(formData);
