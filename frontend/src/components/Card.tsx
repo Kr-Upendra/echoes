@@ -17,7 +17,7 @@ export default function Card({ note }: Props) {
   };
 
   return (
-    <div className="card-diff rounded-lg p-3 group relative">
+    <div className="card-diff rounded-lg p-3 group relative border border-green-200/5 hover:border-green-500/20">
       <div className="mb-2">
         <h2 className="text-green-500 font-display line-clamp-1 sm:text-sm">
           {note?.title}
