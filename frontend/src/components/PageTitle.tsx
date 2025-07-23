@@ -18,6 +18,7 @@ export default function PageTitle({
   isButton = false,
   buttonHandler,
 }: Props) {
+  console.log({ title, buttonTitle, hrefValue, isDisabled });
   return (
     <div className="flex items-center justify-between py-6 px-4 sm:px-3 bg-gradient-to-l from-green-950 to-green-600 rounded-lg shadow-2xl shadow-green-500/10">
       <h1 className="text-white font-display text-xl">{title}</h1>
@@ -28,11 +29,15 @@ export default function PageTitle({
           onclick={buttonHandler}
         />
       ) : (
-        <LinkButton
-          title={buttonTitle}
-          hrefValue={hrefValue}
-          isDisabled={isDisabled}
-        />
+        <>
+          {hrefValue && (
+            <LinkButton
+              title={buttonTitle}
+              hrefValue={hrefValue}
+              isDisabled={isDisabled}
+            />
+          )}
+        </>
       )}
     </div>
   );

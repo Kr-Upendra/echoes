@@ -59,9 +59,11 @@ export const login = asyncHandler(async (req, res, next) => {
     return next(new ErrorHandler("Email and password is required.", 400));
 
   const user = await userModel.findOne({ email: email });
+
   if (!user) return next(new ErrorHandler("Invalid email or password.", 400));
 
   const isMatch = await user.isPasswordMatch(password);
+
   if (!isMatch)
     return next(new ErrorHandler("Invalid email or password.", 400));
 

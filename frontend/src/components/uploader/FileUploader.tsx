@@ -4,13 +4,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   ApiResponse,
   errorAlert,
-  generateFileName,
+  // generateFileName,
   ImageProperties,
   successAlert,
   UpdateProfileFormData,
   warnAlert,
 } from "../../utils";
-import { uploadImage } from "../../api";
+// import { uploadImage } from "../../api";
 import ImagePreview from "../views/ImagePreivew";
 
 type UpdateProfileMutationFunction = (
@@ -36,8 +36,8 @@ export default function ImageUploader({
   title,
   maxFiles = 1,
   imageProperties,
-  oldImagePath,
-}: Props) {
+}: // oldImagePath,
+Props) {
   const queryClient = useQueryClient();
   const [file, setFile] = useState<FileWithPreview | null>(null);
 
@@ -127,19 +127,20 @@ export default function ImageUploader({
     }
 
     try {
-      const filename = generateFileName(
-        file,
-        imageProperties?.dirName,
-        imageProperties?.preTitle,
-        imageProperties?.keyName
-      );
+      // const filename = generateFileName(
+      //   file,
+      //   imageProperties?.dirName,
+      //   imageProperties?.preTitle,
+      //   imageProperties?.keyName
+      // );
 
-      const publicUrl = await uploadImage(
-        file,
-        imageProperties?.bucketName,
-        filename,
-        oldImagePath
-      );
+      // const publicUrl = await uploadImage(
+      //   file,
+      //   imageProperties?.bucketName,
+      //   filename,
+      //   oldImagePath
+      // );
+      const publicUrl = "";
       if (publicUrl) {
         const formData = { [imageProperties?.formValue]: publicUrl };
         mutation.mutate(formData);

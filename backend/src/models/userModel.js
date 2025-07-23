@@ -112,9 +112,15 @@ userSchema.pre("save", function (next) {
   next();
 });
 
+// userSchema.methods.isPasswordMatch = async function (password) {
+//   const user = this;
+//   return bcrypt.compare(password, user.password);
+// };
+
 userSchema.methods.isPasswordMatch = async function (password) {
   const user = this;
-  return bcrypt.compare(password, user.password);
+  const result = await bcrypt.compare(password, user.password);
+  return result;
 };
 
 userSchema.methods.changedPasswordAfter = function (JWTTimeStamp) {

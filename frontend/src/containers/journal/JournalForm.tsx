@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   ApiResponse,
@@ -12,7 +12,7 @@ import {
   JournalFormData,
   journalNoteSchema,
   setSelectedMood,
-  JournalUpdateFormData,
+  // JournalUpdateFormData,
   successAlert,
 } from "../../utils";
 import CustomInput from "../../components/form/CustomInput";
@@ -21,31 +21,24 @@ import CustomTagInput from "../../components/form/CustomTagInput";
 import MoodInput from "../../components/form/MoodInput";
 import FileUploadInput from "../../components/form/FileUploadInput";
 import SubmitButton from "../../components/form/SubmitButton";
-import {
-  createJournal,
-  deleteFiles,
-  updateJournal,
-  uploadMultipleFiles,
-} from "../../api";
-import { useUpdateItem } from "../../hooks";
+import { createJournal } from "../../api";
 
 type Props = { journalData?: IJournalData };
 
 export default function JournalForm({ journalData }: Props) {
   const { pathname } = useLocation();
-  const { id } = useParams();
   const navigate = useNavigate();
   const isCreateForm = pathname === "/journals/create";
-  const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
-  const [isUpdaing, setIsUpdating] = useState<boolean>(false);
+  // const [setFilesToDelete] = useState<string[]>([]);
+  const [isUpdaing] = useState<boolean>(false);
   const [errors, setErrors] = useState<any | null>({});
-  const { mutate: updateJournalMutation } =
-    useUpdateItem<JournalUpdateFormData>(
-      updateJournal,
-      ["journals", "journal"],
-      true,
-      "/journals"
-    );
+  // const { mutate: updateJournalMutation } =
+  //   useUpdateItem<JournalUpdateFormData>(
+  //     updateJournal,
+  //     ["journals", "journal"],
+  //     true,
+  //     "/journals"
+  //   );
 
   const [formData, setFormData] = useState<JournalFormData>({
     title: journalData?.title || "",
@@ -90,24 +83,8 @@ export default function JournalForm({ journalData }: Props) {
       journalNoteSchema.parse(formData);
       if (isCreateForm) {
         addJournalMutation(formData);
-      } else if (id) {
-        setIsUpdating(true);
-        const filesOnly = formData?.images?.filter(
-          (image: File | string) => image instanceof File
-        );
-
-        const imagesToUpload = await uploadMultipleFiles(filesOnly, id);
-        await deleteFiles(filesToDelete);
-        updateJournalMutation({
-          id,
-          formdata: {
-            ...formData,
-            images: imagesToUpload,
-            imagesToDelete: filesToDelete,
-          },
-        });
-        setIsUpdating(false);
       }
+      // Handle journal update here
     } catch (err) {
       if (err instanceof z.ZodError) {
         console.log("errer", err);
@@ -121,26 +98,25 @@ export default function JournalForm({ journalData }: Props) {
   };
 
   const handleRemoveFile = (fileToRemove: string) => {
+    console.log(fileToRemove);
     // const filteredFiles = formData?.images.filter(
     //   (file: string | File) =>
     //     typeof file === "string"
     //       ? file !== fileToRemove
     //       : file.preview !== fileToRemove
     // );
-
     // setFormData((prevFormData) => ({
     //   ...prevFormData,
     //   images: filteredFiles,
     // }));
-
-    if (fileToRemove.startsWith("https")) {
-      setFilesToDelete((prevRemovedFiles) => {
-        if (!prevRemovedFiles.includes(fileToRemove)) {
-          return [...prevRemovedFiles, fileToRemove];
-        }
-        return prevRemovedFiles;
-      });
-    }
+    // if (fileToRemove.startsWith("https")) {
+    //   // setFilesToDelete((prevRemovedFiles) => {
+    //     if (!prevRemovedFiles.includes(fileToRemove)) {
+    //       return [...prevRemovedFiles, fileToRemove];
+    //     }
+    //     return prevRemovedFiles;
+    //   // });
+    // }
   };
 
   return (

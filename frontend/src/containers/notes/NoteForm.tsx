@@ -126,6 +126,7 @@ export default function NoteForm({ noteData }: Props) {
             <button
               disabled={isAddPending}
               className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
+              type="submit"
             >
               {isAddPending ? "Adding" : "Add Memory"}
             </button>
@@ -133,6 +134,7 @@ export default function NoteForm({ noteData }: Props) {
             <button
               disabled={isUpdatePending}
               className="w-full text-center py-2 rounded-full bg-gradient-to-tr from-green-700 via-green-800 to-green-700 text-white font-display"
+              type="submit"
             >
               {isUpdatePending ? "Updating" : "Update Memory"}
             </button>
