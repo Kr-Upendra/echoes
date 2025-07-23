@@ -35,11 +35,11 @@ export const passwordResetTemplate = (username, resetUrl) => {
       margin-bottom: 50px;
     "
   >
-    <img
-      style="width: 60px"
-      src="https://qiehqccuygszbdxuuqjd.supabase.co/storage/v1/object/public/application/logos/icon_192x192.png?t=2024-12-03T13%3A59%3A12.508Z"
-      alt="Logo_1"
-    />
+    // <img
+    //   style="width: 60px"
+    //   src="https://qiehqccuygszbdxuuqjd.supabase.co/storage/v1/object/public/application/logos/icon_192x192.png?t=2024-12-03T13%3A59%3A12.508Z"
+    //   alt="Logo_1"
+    // />
     <h1 style="margin-left: 4px; color: #22c55e">El Echoes</h1>
   </div>
   <div>
